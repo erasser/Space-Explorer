@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: dd723c31be22ba940870fb9d3ee85e92
+timeCreated: 1487267715
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 81663
+  packageName: Final Wireframe
+  packageVersion: 0.9 Beta
+  assetPath: Assets/Wilberforce Wireframe/Demo/Assets/Materials/WireframeBallCenter-back.mat
+  uploadId: 209543

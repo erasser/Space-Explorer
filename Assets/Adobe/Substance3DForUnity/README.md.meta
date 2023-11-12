@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: eb05bfb054214a2429619f7cb0cdfee2
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 213208
+  packageName: Substance 3D for Unity
+  packageVersion: 3.8.0
+  assetPath: Assets/Adobe/Substance3DForUnity/README.md
+  uploadId: 594448

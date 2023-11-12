@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 47f25e5527ce01949b4a9cc2b0b4ceb2
+timeCreated: 1461251127
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 61167
+  packageName: Star Fighter
+  packageVersion: 1.0
+  assetPath: Assets/StarFighter/Materials/Mat.mat
+  uploadId: 115162

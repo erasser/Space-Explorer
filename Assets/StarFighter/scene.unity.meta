@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ec19624bc33f955479a8a3de650d13af
+timeCreated: 1461850758
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 61167
+  packageName: Star Fighter
+  packageVersion: 1.0
+  assetPath: Assets/StarFighter/scene.unity
+  uploadId: 115162
