@@ -1,17 +1,22 @@
+using System;
 using UnityEngine;
+using UnityEngine.VFX;
 using static UniverseController;
 
 public class Ship : CachedMonoBehaviour
 {
     public static Ship ship;
-    Rigidbody _rb;
+    public Rigidbody _rb; /***/
     Vector3 _moveVector;
     public const float Speed = 20000;
     public const float RotationSpeed = 150;
     Vector3 _userTarget;
     [HideInInspector]
     public Vector3 toTargetV3;
+    public static Ship DefaultShip;
     public static Ship ActiveShip;
+    // [SerializeField]
+    // VisualEffect visualEffect;  // To bude stačit jen zapnout / vypnout
 
     void Start()
     {
@@ -19,7 +24,7 @@ public class Ship : CachedMonoBehaviour
         _rb = GetComponent<Rigidbody>();
         
         if (CompareTag("Default Ship"))
-            ActiveShip = this;
+            DefaultShip = ActiveShip = this;
     }
 
     public void SetMoveVectorHorizontal(float horizontal)
@@ -36,6 +41,11 @@ public class Ship : CachedMonoBehaviour
     {
         Move();
         Rotate();
+    }
+
+    void Update()
+    {
+        // visualEffect.SetFloat("Player speed", ActiveShip.rigidBody.velocity.magnitude);
     }
 
     void Move()
