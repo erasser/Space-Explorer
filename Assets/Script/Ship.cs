@@ -29,7 +29,6 @@ public class Ship : CachedMonoBehaviour
 
     public void SetMoveVectorVertical(float vertical)
     {
-        print("W 2");
         _moveVector.z = vertical;
     }
 
