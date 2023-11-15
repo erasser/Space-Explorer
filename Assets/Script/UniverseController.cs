@@ -53,7 +53,7 @@ public class UniverseController : MonoBehaviour
                 _astronaut.transform.position = ActiveShip.transformCached.position;
                 _astronaut.transform.rotation = ActiveShip.transformCached.rotation;
 
-                _astronaut.GetComponent<Rigidbody>().AddForce(- 12000 * ActiveShip.transformCached.forward, ForceMode.Impulse);
+                _astronaut.GetComponent<Rigidbody>().AddForce(- 10000 * ActiveShip.transformCached.forward, ForceMode.Impulse);
                 ActiveShip = _astronaut.GetComponent<Ship>();
             }
             else

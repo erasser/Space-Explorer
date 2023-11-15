@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.VFX;
 using static UniverseController;
@@ -8,8 +7,8 @@ public class Ship : CachedMonoBehaviour
     public static Ship ship;
     Rigidbody _rb; /***/ // TODO
     Vector3 _moveVector;
-    public const float Speed = 40000;
-    public const float RotationSpeed = 100;
+    public float speed = 40000;
+    public float rotationSpeed = 250;
     Vector3 _userTarget;
     [HideInInspector]
     public Vector3 toTargetV3;
@@ -62,14 +61,14 @@ public class Ship : CachedMonoBehaviour
         // visualEffect.pause = false;
         visualEffect.SetBool("jet enabled", true);
 
-        _rb.AddForce(SetVectorLength(_moveVector, Speed));
+        _rb.AddForce(SetVectorLength(_moveVector, speed));
     }
 
     void Rotate()
     {
         toTargetV3 = _userTarget - transformCached.position;
 
-        _rb.AddTorque(- Vector2.SignedAngle(new(transformCached.forward.x, transformCached.forward.z), new(toTargetV3.x, toTargetV3.z)) * RotationSpeed * Vector3.up);
+        _rb.AddTorque(- Vector2.SignedAngle(new(transformCached.forward.x, transformCached.forward.z), new(toTargetV3.x, toTargetV3.z)) * rotationSpeed * Vector3.up);
     }
 
     public void SetUserTarget(Vector3 target)
