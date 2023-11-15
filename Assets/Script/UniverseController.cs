@@ -1,3 +1,4 @@
+using DigitalRuby.Tween;
 using UnityEngine;
 using static Ship;
 
@@ -10,12 +11,14 @@ public class UniverseController : MonoBehaviour
     Vector3 _initialCameraOffset;
     public GameObject astronautPrefab;
     GameObject _astronaut;
+    Rigidbody _astronautRb;
 
     void Start()
     {
         _mainCameraTransform = mainCamera.transform;
         _initialCameraOffset = _mainCameraTransform.position - ActiveShip.transformCached.position;
         _astronaut = Instantiate(astronautPrefab);
+        _astronautRb = _astronaut.GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -44,24 +47,58 @@ public class UniverseController : MonoBehaviour
             ActiveShip.SetMoveVectorHorizontal(1);
         else
             ActiveShip.SetMoveVectorHorizontal(0);
-        
+
+        bool wasQPressedThisFrame = false;
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            if (!_astronaut.activeSelf)
-            {
-                _astronaut.SetActive(true);
-                _astronaut.transform.position = ActiveShip.transformCached.position;
-                _astronaut.transform.rotation = ActiveShip.transformCached.rotation;
+            wasQPressedThisFrame = true;
 
-                _astronaut.GetComponent<Rigidbody>().AddForce(- 10000 * ActiveShip.transformCached.forward, ForceMode.Impulse);
-                ActiveShip = _astronaut.GetComponent<Ship>();
-            }
+            if (!_astronaut.activeSelf)
+                EjectAstronaut();
             else
             {
-                _astronaut.SetActive(false);
-                ActiveShip = DefaultShip;
+                if ((DefaultShip.transformCached.position - _astronaut.transform.position).sqrMagnitude <= 15)
+                    BoardAstronaut();
             }
         }
+
+        if (Input.GetKey(KeyCode.Q))
+        {
+            if (!wasQPressedThisFrame && _astronaut.activeSelf)
+            {
+                var shipToAstronautV3 = DefaultShip.transformCached.position - _astronaut.transform.position;
+
+                if (shipToAstronautV3.sqrMagnitude > 15)
+                    _astronautRb.AddForce(60 * shipToAstronautV3.normalized, ForceMode.Impulse);
+                // else
+                //     BoardAstronaut();
+            }
+        }
+    }
+
+    void BoardAstronaut()
+    {
+        _astronaut.SetActive(false);
+        ActiveShip = DefaultShip;
+
+        // SetCameraHeight(1);
+        mainCamera.fieldOfView = 100;
+    }
+
+    void EjectAstronaut()
+    {
+        _astronaut.SetActive(true);
+        _astronaut.transform.position = ActiveShip.transformCached.position;
+        _astronaut.transform.rotation = ActiveShip.transformCached.rotation;
+
+        _astronaut.GetComponent<Rigidbody>().AddForce(- 10000 * ActiveShip.transformCached.forward, ForceMode.Impulse);
+        ActiveShip.moveVector.x = ActiveShip.moveVector.z = 0;
+        ActiveShip = _astronaut.GetComponent<Ship>();
+
+        // SetCameraHeight(.4f);
+        mainCamera.fieldOfView = 40;
+        // ZoomIn();
     }
 
     void ProcessMouseMove()
@@ -74,6 +111,36 @@ public class UniverseController : MonoBehaviour
         _mainCameraTransform.position = ActiveShip.transformCached.position + _initialCameraOffset +                      // vertical offset
                                         // SetVectorLength(player.toTargetV3, player.toTargetV3.sqrMagnitude / 3);  // horizontal offset  // Fungovalo to, teď problikává obraz
                                         ActiveShip.toTargetV3 * .2f;  // horizontal offset
+    }
+
+    void SetCameraHeight(float multiplier)
+    {
+        var startPos = _mainCameraTransform.position;
+        // var endPos = SetVectorLength(startPos, multiplier * startPos.y);
+        var endPos = startPos - Vector3.up * 10;
+
+        _mainCameraTransform.gameObject.Tween("Zoom", startPos, endPos, 1.5f, TweenScaleFunctions.SineEaseInOut, Bubu);
+
+        void Bubu(ITween<Vector3> t)
+        {
+            _mainCameraTransform.position = t.CurrentValue;
+        }
+    }
+
+    void ZoomIn()
+    {
+        var startFov = mainCamera.fieldOfView;
+        var endFov = 40;
+        
+        // mainCamera.gameObject.Tween("ZoomIn", startFov, endFov, 100, TweenScaleFunctions.Linear, TweenFov);
+        TweenFactory.Tween("ZoomIn", startFov, endFov, 100, TweenScaleFunctions.Linear, TweenFov);
+
+    }
+
+    void TweenFov(ITween<float> t)
+    {
+        print("tween start");
+        mainCamera.fieldOfView = t.CurrentValue;
     }
 
     

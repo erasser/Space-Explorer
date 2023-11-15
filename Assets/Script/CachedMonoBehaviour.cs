@@ -7,14 +7,11 @@ public class CachedMonoBehaviour : MonoBehaviour
     [HideInInspector]
     public GameObject gameObjectCached;
     [HideInInspector]
-    public Rigidbody rigidBody;
+    public Rigidbody rigidBodyCached;
 
     void Awake()
     {
         gameObjectCached = gameObject;
         transformCached = gameObjectCached.transform;
-        rigidBody = gameObjectCached.GetComponent<Rigidbody>();  // Beware, could be null
-        
-        // TODO: Tady by potenciálně mohly být všechny možné komponenty, ne?
     }
 }

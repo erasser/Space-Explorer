@@ -1024,7 +1024,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
@@ -1069,9 +1069,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
-  rigidBody: {fileID: 0}
+  rigidBodyCached: {fileID: 0}
+  moveVector: {x: 0, y: 0, z: 0}
   speed: 40000
-  rotationSpeed: 250
+  rotationSpeed: 300
+  maxRollAngle: 80
   toTargetV3: {x: 0, y: 0, z: 0}
   visualEffect: {fileID: 497562540}
 --- !u!135 &1223899197
@@ -1272,7 +1274,7 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
-  m_FOVAxisMode: 0
+  m_FOVAxisMode: 1
   m_Iso: 200
   m_ShutterSpeed: 0.005
   m_Aperture: 16
@@ -1292,7 +1294,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 10000
-  field of view: 60
+  field of view: 63.29999
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1317,8 +1319,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823688464}
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -140.77654, y: 20, z: 49.899902}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -140.77654, y: 30, z: 49.899902}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1795,6 +1797,7 @@ GameObject:
   - component: {fileID: 1223899189}
   - component: {fileID: 1223899196}
   - component: {fileID: 1223899197}
+  - component: {fileID: 3469287838414098532}
   m_Layer: 0
   m_Name: PLAYER
   m_TagString: Default Ship
@@ -2043,6 +2046,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132148231701884}
   m_Mesh: {fileID: 1744508815841717229, guid: b5197f3cee91ea74aa4625892dbb35fd, type: 3}
+--- !u!1818360609 &3469287838414098532
+RotationConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148231701884}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Weight: 1
+  m_RotationAtRest: {x: 0, y: 0, z: 0}
+  m_RotationOffset: {x: 0, y: 0, z: 0}
+  m_AffectRotationX: 1
+  m_AffectRotationY: 0
+  m_AffectRotationZ: 0
+  m_Active: 1
+  m_IsLocked: 0
+  m_Sources:
+  - sourceTransform: {fileID: 0}
+    weight: 1
 --- !u!1 &3502141341164346034
 GameObject:
   m_ObjectHideFlags: 0
@@ -2102,7 +2125,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7776732952639860686}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -197, y: -65.3, z: 88}
+  m_LocalPosition: {x: -82, y: -65.3, z: 263}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children:

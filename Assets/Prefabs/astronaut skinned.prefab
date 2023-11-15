@@ -150,7 +150,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2068799337638298193}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1.251}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -185,7 +185,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2108578051387169140}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.33, z: 1}
+  m_LocalPosition: {x: 0, y: 0.33, z: -0.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1513,7 +1513,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5160178147307153412
 Transform:
   m_ObjectHideFlags: 0
@@ -1522,7 +1522,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7761217256956321192}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -21.696516, y: 10.0122, z: 49.840794}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1550,7 +1550,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 0.6
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &6239122666782772147
 Rigidbody:
@@ -1560,8 +1560,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7761217256956321192}
   serializedVersion: 4
-  m_Mass: 80
-  m_Drag: 16
+  m_Mass: 100
+  m_Drag: 18
   m_AngularDrag: 40
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -1593,7 +1593,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
-  rigidBody: {fileID: 0}
+  rigidBodyCached: {fileID: 0}
+  moveVector: {x: 0, y: 0, z: 0}
+  speed: 40000
+  rotationSpeed: 250
+  maxRollAngle: 80
   toTargetV3: {x: 0, y: 0, z: 0}
   visualEffect: {fileID: 3865592449528812338}
 --- !u!96 &-6931913766147552067
@@ -1638,7 +1642,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 1
+  m_Time: 0.5
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3

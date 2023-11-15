@@ -1,27 +1,30 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.VFX;
 using static UniverseController;
 
 public class Ship : CachedMonoBehaviour
 {
     public static Ship ship;
-    Rigidbody _rb; /***/ // TODO
-    Vector3 _moveVector;
+    public Vector3 moveVector;
     public float speed = 40000;
-    public float rotationSpeed = 250;
+    public float rotationSpeed = 300;
+    [Range(0, 90)]
+    public float maxRollAngle = 80;
     Vector3 _userTarget;
+    Rigidbody _rb;
     [HideInInspector]
     public Vector3 toTargetV3;
     public static Ship DefaultShip;
     public static Ship ActiveShip;
     [SerializeField]
-    VisualEffect visualEffect;  // To bude stačit jen zapnout / vypnout
+    VisualEffect visualEffect;
 
     void Start()
     {
         ship = this;
         _rb = GetComponent<Rigidbody>();
-        // visualEffect.pause = true;
         visualEffect.SetBool("jet enabled", false);
         
         if (CompareTag("Default Ship"))
@@ -30,12 +33,12 @@ public class Ship : CachedMonoBehaviour
 
     public void SetMoveVectorHorizontal(float horizontal)
     {
-        _moveVector.x = horizontal;
+        moveVector.x = horizontal;
     }
 
     public void SetMoveVectorVertical(float vertical)
     {
-        _moveVector.z = vertical;
+        moveVector.z = vertical;
     }
 
     void FixedUpdate()
@@ -51,24 +54,26 @@ public class Ship : CachedMonoBehaviour
 
     void Move()
     {
-        if (_moveVector is { x: 0, z: 0 })
+        if (moveVector is { x: 0, z: 0 })
         {
-            // visualEffect.pause = true;
             visualEffect.SetBool("jet enabled", false);
             return;
         }
 
-        // visualEffect.pause = false;
         visualEffect.SetBool("jet enabled", true);
 
-        _rb.AddForce(SetVectorLength(_moveVector, speed));
+        _rb.AddForce(SetVectorLength(moveVector, speed));
     }
 
     void Rotate()
     {
         toTargetV3 = _userTarget - transformCached.position;
 
+        // yaw
         _rb.AddTorque(- Vector2.SignedAngle(new(transformCached.forward.x, transformCached.forward.z), new(toTargetV3.x, toTargetV3.z)) * rotationSpeed * Vector3.up);
+
+        // roll
+        _rb.transform.localEulerAngles = new(0, _rb.transform.localEulerAngles.y, Mathf.Clamp(- 20 * _rb.angularVelocity.y, - maxRollAngle, maxRollAngle));
     }
 
     public void SetUserTarget(Vector3 target)

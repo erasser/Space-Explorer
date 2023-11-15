@@ -1,1 +1,3 @@
-﻿KDyž už mám tu funkcionalitu sledování kurzoru, dalo by se tím něco označit (cizí jednotka), loď pak na ní při pohybu míří.
+﻿Když už mám tu funkcionalitu sledování kurzoru, dalo by se tím něco označit (cizí jednotka), loď pak na ní při pohybu míří.
+
+Přidat trysky - bude to chtít udělat relativně ke směru pohybu
