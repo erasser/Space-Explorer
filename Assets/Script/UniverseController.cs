@@ -51,9 +51,9 @@ public class UniverseController : MonoBehaviour
             {
                 _astronaut.SetActive(true);
                 _astronaut.transform.position = ActiveShip.transformCached.position;
-                _astronaut.transform.rotation = ActiveShip.transformCached.rotation;  // TODO: položit ho na břicho
+                _astronaut.transform.rotation = ActiveShip.transformCached.rotation;
 
-                _astronaut.GetComponent<Rigidbody>().AddForce(- 1500 * ActiveShip.transformCached.forward, ForceMode.Impulse);
+                _astronaut.GetComponent<Rigidbody>().AddForce(- 12000 * ActiveShip.transformCached.forward, ForceMode.Impulse);
                 ActiveShip = _astronaut.GetComponent<Ship>();
             }
             else

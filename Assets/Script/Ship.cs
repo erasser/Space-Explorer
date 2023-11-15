@@ -6,22 +6,24 @@ using static UniverseController;
 public class Ship : CachedMonoBehaviour
 {
     public static Ship ship;
-    public Rigidbody _rb; /***/
+    Rigidbody _rb; /***/ // TODO
     Vector3 _moveVector;
-    public const float Speed = 20000;
-    public const float RotationSpeed = 150;
+    public const float Speed = 40000;
+    public const float RotationSpeed = 100;
     Vector3 _userTarget;
     [HideInInspector]
     public Vector3 toTargetV3;
     public static Ship DefaultShip;
     public static Ship ActiveShip;
-    // [SerializeField]
-    // VisualEffect visualEffect;  // To bude stačit jen zapnout / vypnout
+    [SerializeField]
+    VisualEffect visualEffect;  // To bude stačit jen zapnout / vypnout
 
     void Start()
     {
         ship = this;
         _rb = GetComponent<Rigidbody>();
+        // visualEffect.pause = true;
+        visualEffect.SetBool("jet enabled", false);
         
         if (CompareTag("Default Ship"))
             DefaultShip = ActiveShip = this;
@@ -51,7 +53,14 @@ public class Ship : CachedMonoBehaviour
     void Move()
     {
         if (_moveVector is { x: 0, z: 0 })
+        {
+            // visualEffect.pause = true;
+            visualEffect.SetBool("jet enabled", false);
             return;
+        }
+
+        // visualEffect.pause = false;
+        visualEffect.SetBool("jet enabled", true);
 
         _rb.AddForce(SetVectorLength(_moveVector, Speed));
     }
