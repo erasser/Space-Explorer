@@ -1,5 +1,6 @@
 using DigitalRuby.Tween;
 using UnityEngine;
+using UnityEngine.Serialization;
 using static Ship;
 
 public class UniverseController : MonoBehaviour
@@ -12,6 +13,7 @@ public class UniverseController : MonoBehaviour
     public GameObject astronautPrefab;
     GameObject _astronaut;
     Rigidbody _astronautRb;
+    public Texture2D mouseCursor;
 
     void Start()
     {
@@ -19,6 +21,7 @@ public class UniverseController : MonoBehaviour
         _initialCameraOffset = _mainCameraTransform.position - ActiveShip.transformCached.position;
         _astronaut = Instantiate(astronautPrefab);
         _astronautRb = _astronaut.GetComponent<Rigidbody>();
+        Cursor.SetCursor(mouseCursor, new (32, 32), CursorMode.ForceSoftware);
     }
 
     void Update()

@@ -239,6 +239,7 @@ MonoBehaviour:
   - {fileID: -7724654706381055090}
   - {fileID: -4151792930034644520}
   - {fileID: 7642060734654139733}
+  - {fileID: 4387711707014519254}
 --- !u!114 &1142777632297148762
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -251,15 +252,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7593b3a9277ac4696b20006c21dde2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   skyType:
-    m_OverrideState: 1
-    m_Value: 4
+    m_OverrideState: 0
+    m_Value: 1
   cloudType:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 1
   skyAmbientMode:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   windOrientation:
     m_OverrideState: 0
@@ -270,6 +271,34 @@ MonoBehaviour:
   fogType:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &4387711707014519254
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f034cba68ab55e046ae1445a42f18c0e, type: 3}
+  m_Name: IndirectLightingController
+  m_EditorClassIdentifier: 
+  active: 0
+  indirectDiffuseLightingMultiplier:
+    m_OverrideState: 1
+    m_Value: 36.3
+  indirectDiffuseLightingLayers:
+    m_OverrideState: 0
+    m_Value: 65535
+  reflectionLightingMultiplier:
+    m_OverrideState: 0
+    m_Value: 1
+  reflectionLightingLayers:
+    m_OverrideState: 0
+    m_Value: 65535
+  reflectionProbeIntensityMultiplier:
+    m_OverrideState: 0
+    m_Value: 1
 --- !u!114 &7642060734654139733
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -282,7 +311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d08ce26990eb1a4a9177b860541e702, type: 3}
   m_Name: Exposure
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   mode:
     m_OverrideState: 1
     m_Value: 0

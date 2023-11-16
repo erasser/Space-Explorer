@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Animations;
 using UnityEngine.VFX;
 using static UniverseController;
 
@@ -24,9 +22,10 @@ public class Ship : CachedMonoBehaviour
     void Start()
     {
         ship = this;
-        _rb = GetComponent<Rigidbody>();
         visualEffect.SetBool("jet enabled", false);
-        
+        _rb = GetComponent<Rigidbody>();
+        _rb.constraints = RigidbodyConstraints.FreezePositionY;
+
         if (CompareTag("Default Ship"))
             DefaultShip = ActiveShip = this;
     }
@@ -63,6 +62,8 @@ public class Ship : CachedMonoBehaviour
         visualEffect.SetBool("jet enabled", true);
 
         _rb.AddForce(SetVectorLength(moveVector, speed));
+
+        // _rb.transform.position = new(_rb.transform.position.x, 0, _rb.transform.position.z);
     }
 
     void Rotate()
