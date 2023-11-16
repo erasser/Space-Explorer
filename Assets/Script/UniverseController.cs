@@ -1,6 +1,5 @@
 using DigitalRuby.Tween;
 using UnityEngine;
-using UnityEngine.Serialization;
 using static Ship;
 
 public class UniverseController : MonoBehaviour
@@ -21,7 +20,7 @@ public class UniverseController : MonoBehaviour
         _initialCameraOffset = _mainCameraTransform.position - ActiveShip.transformCached.position;
         _astronaut = Instantiate(astronautPrefab);
         _astronautRb = _astronaut.GetComponent<Rigidbody>();
-        Cursor.SetCursor(mouseCursor, new (32, 32), CursorMode.ForceSoftware);
+        Cursor.SetCursor(mouseCursor, new(32, 32), CursorMode.ForceSoftware);
     }
 
     void Update()
@@ -29,7 +28,7 @@ public class UniverseController : MonoBehaviour
         ProcessKeys();
 
         ProcessMouseMove();
-        
+
         ActiveShip.SetUserTarget(_mouseCursorHit.point);
 
         UpdateCameraPosition();
@@ -95,7 +94,8 @@ public class UniverseController : MonoBehaviour
         _astronaut.transform.position = ActiveShip.transformCached.position;
         _astronaut.transform.rotation = ActiveShip.transformCached.rotation;
 
-        _astronaut.GetComponent<Rigidbody>().AddForce(- 10000 * ActiveShip.transformCached.forward, ForceMode.Impulse);
+        _astronaut.GetComponent<Rigidbody>()
+            .AddForce(-10000 * ActiveShip.transformCached.forward, ForceMode.Impulse);
         ActiveShip.moveVector.x = ActiveShip.moveVector.z = 0;
         ActiveShip = _astronaut.GetComponent<Ship>();
 
@@ -106,14 +106,16 @@ public class UniverseController : MonoBehaviour
 
     void ProcessMouseMove()
     {
-        Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out _mouseCursorHit, Mathf.Infinity, raycastPlane);
+        Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out _mouseCursorHit, Mathf.Infinity,
+            raycastPlane);
     }
 
     void UpdateCameraPosition()
     {
-        _mainCameraTransform.position = ActiveShip.transformCached.position + _initialCameraOffset +                      // vertical offset
+        _mainCameraTransform.position = ActiveShip.transformCached.position +
+                                        _initialCameraOffset + // vertical offset
                                         // SetVectorLength(player.toTargetV3, player.toTargetV3.sqrMagnitude / 3);  // horizontal offset  // Fungovalo to, teď problikává obraz
-                                        ActiveShip.toTargetV3 * .2f;  // horizontal offset
+                                        ActiveShip.toTargetV3 * .2f; // horizontal offset
     }
 
     void SetCameraHeight(float multiplier)
@@ -122,7 +124,8 @@ public class UniverseController : MonoBehaviour
         // var endPos = SetVectorLength(startPos, multiplier * startPos.y);
         var endPos = startPos - Vector3.up * 10;
 
-        _mainCameraTransform.gameObject.Tween("Zoom", startPos, endPos, 1.5f, TweenScaleFunctions.SineEaseInOut, Bubu);
+        _mainCameraTransform.gameObject.Tween("Zoom", startPos, endPos, 1.5f, TweenScaleFunctions.SineEaseInOut,
+            Bubu);
 
         void Bubu(ITween<Vector3> t)
         {
@@ -134,7 +137,7 @@ public class UniverseController : MonoBehaviour
     {
         var startFov = mainCamera.fieldOfView;
         var endFov = 40;
-        
+
         // mainCamera.gameObject.Tween("ZoomIn", startFov, endFov, 100, TweenScaleFunctions.Linear, TweenFov);
         TweenFactory.Tween("ZoomIn", startFov, endFov, 100, TweenScaleFunctions.Linear, TweenFov);
 
@@ -146,12 +149,12 @@ public class UniverseController : MonoBehaviour
         mainCamera.fieldOfView = t.CurrentValue;
     }
 
-    
-    
+
+
 
     public static Vector3 SetVectorLength(Vector3 vector, float length)
     {
         return vector.normalized * length;
     }
-    
+
 }
