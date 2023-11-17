@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 using static UniverseController;
@@ -18,6 +19,9 @@ public class Ship : CachedMonoBehaviour
     public static Ship ActiveShip;
     [SerializeField]
     VisualEffect visualEffect;
+    List<Transform> _jetsTransforms = new();
+    List<VisualEffect> _jetsVisualEffects = new();
+    int _jetCount;
 
     void Start()
     {
@@ -28,6 +32,13 @@ public class Ship : CachedMonoBehaviour
 
         if (CompareTag("Default Ship"))
             DefaultShip = ActiveShip = this;
+
+        foreach (Transform jetTransform in transform.Find("JETS").transform)
+        {
+            _jetsTransforms.Add(jetTransform);
+            _jetsVisualEffects.Add(jetTransform.GetComponent<VisualEffect>());
+            ++_jetCount;
+        }
     }
 
     public void SetMoveVectorHorizontal(float horizontal)
@@ -55,15 +66,14 @@ public class Ship : CachedMonoBehaviour
     {
         if (moveVector is { x: 0, z: 0 })
         {
-            visualEffect.SetBool("jet enabled", false);
+            // visualEffect.SetBool("jet enabled", false);
+            DisableJets();
             return;
         }
 
-        visualEffect.SetBool("jet enabled", true);
+        UpdateJets();
 
         _rb.AddForce(SetVectorLength(moveVector, speed));
-
-        // _rb.transform.position = new(_rb.transform.position.x, 0, _rb.transform.position.z);
     }
 
     void Rotate()
@@ -80,6 +90,28 @@ public class Ship : CachedMonoBehaviour
     public void SetUserTarget(Vector3 target)
     {
         _userTarget = target;
+    }
+
+    void UpdateJets()
+    {
+        var movement = moveVector.normalized;
+
+        for (int i = 0; i < _jetCount; ++i)
+        {
+            var jetForward = _jetsTransforms[i].forward;
+            float dot = Vector3.Dot(new(movement.x, movement.z), new(jetForward.x, jetForward.z));
+
+            if (dot < -.3)  // < 0   // .5 odpovídá 60 °, čili setupu tří jetů do hvězdy
+                _jetsVisualEffects[i].SetBool("jet enabled", true);
+            else
+                _jetsVisualEffects[i].SetBool("jet enabled", false);
+        }
+    }
+
+    void DisableJets()
+    {
+        foreach (VisualEffect vfx in _jetsVisualEffects)
+            vfx.SetBool("jet enabled", false);
     }
 
 }

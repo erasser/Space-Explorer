@@ -3,6 +3,7 @@
 Přidat trysky - bude to chtít udělat relativně ke směru pohybu
 
 Chtěl bych použít 2D fyziku, ta ale funguje na XY plane.
+- Mno, radši si vymyslim způsob, jak využít 3D fyziku
 
 TODO: Projektily udělat pomocí VFX. Kód:
 (https://www.reddit.com/r/Unity3D/comments/dlyihn/controlling_the_positions_of_individual_particles)
