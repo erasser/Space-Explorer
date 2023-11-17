@@ -77,6 +77,14 @@ public class UniverseController : MonoBehaviour
                 //     BoardAstronaut();
             }
         }
+
+        if (Input.GetMouseButton(0))
+        {
+            print("lmb");
+            ActiveShip.isFiring = true;
+        }
+        else
+            ActiveShip.isFiring = false;
     }
 
     void BoardAstronaut()

@@ -17,16 +17,16 @@ public class Ship : CachedMonoBehaviour
     public Vector3 toTargetV3;
     public static Ship DefaultShip;
     public static Ship ActiveShip;
-    [SerializeField]
-    VisualEffect visualEffect;
-    List<Transform> _jetsTransforms = new();
-    List<VisualEffect> _jetsVisualEffects = new();
-    int _jetCount;
+    // [SerializeField]
+    VisualEffect _fireVfx;  // To je vlastně weapon slot
+    readonly List<Transform> _jetsTransforms = new();
+    readonly List<VisualEffect> _jetsVisualEffects = new();
+    public bool isFiring;
+    // Dictionary<int, >
 
     void Start()
     {
         ship = this;
-        visualEffect.SetBool("jet enabled", false);
         _rb = GetComponent<Rigidbody>();
         _rb.constraints = RigidbodyConstraints.FreezePositionY;
 
@@ -37,8 +37,9 @@ public class Ship : CachedMonoBehaviour
         {
             _jetsTransforms.Add(jetTransform);
             _jetsVisualEffects.Add(jetTransform.GetComponent<VisualEffect>());
-            ++_jetCount;
         }
+
+        _fireVfx = transform.Find("WEAPON_SLOTS/type 0")?.GetComponent<VisualEffect>();
     }
 
     public void SetMoveVectorHorizontal(float horizontal)
@@ -55,6 +56,7 @@ public class Ship : CachedMonoBehaviour
     {
         Move();
         Rotate();
+        UpdateWeapons();
     }
 
     void Update()
@@ -95,8 +97,9 @@ public class Ship : CachedMonoBehaviour
     void UpdateJets()
     {
         var movement = moveVector.normalized;
+        var jetCount = _jetsTransforms.Count;
 
-        for (int i = 0; i < _jetCount; ++i)
+        for (int i = 0; i < jetCount; ++i)
         {
             var jetForward = _jetsTransforms[i].forward;
             float dot = Vector3.Dot(new(movement.x, movement.z), new(jetForward.x, jetForward.z));
@@ -112,6 +115,24 @@ public class Ship : CachedMonoBehaviour
     {
         foreach (VisualEffect vfx in _jetsVisualEffects)
             vfx.SetBool("jet enabled", false);
+    }
+
+    void UpdateWeapons()
+    {
+        if (!_fireVfx)
+            return;
+
+        var forwardSpeed = Vector2.Dot(new(_rb.velocity.x, _rb.velocity.z), new(transformCached.forward.x, transformCached.forward.z));
+        _fireVfx.SetFloat("ship forward speed", forwardSpeed);
+
+        if (isFiring)
+        {
+            _fireVfx.SetBool("enabled", true);
+            // _fireVfx.SetVector3("start position", _fireVfx.transform.position);
+        }
+        else
+            _fireVfx.SetBool("enabled", false);
+            
     }
 
 }
