@@ -23,3 +23,5 @@ TODO: Projektily udělat pomocí VFX. Kód:
         _positions[1] = new(1, Time.time, 1, 0);
         texture.SetPixels(_positions);
         texture.Apply();
+        
+        

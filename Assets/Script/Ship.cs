@@ -18,11 +18,11 @@ public class Ship : CachedMonoBehaviour
     public static Ship DefaultShip;
     public static Ship ActiveShip;
     // [SerializeField]
-    VisualEffect _fireVfx;  // To je vlastně weapon slot
+    // VisualEffect _fireVfx;  // To je vlastně weapon slot
     readonly List<Transform> _jetsTransforms = new();
     readonly List<VisualEffect> _jetsVisualEffects = new();
     public bool isFiring;
-    // Dictionary<int, >
+    public float forwardSpeed;
 
     void Start()
     {
@@ -39,7 +39,7 @@ public class Ship : CachedMonoBehaviour
             _jetsVisualEffects.Add(jetTransform.GetComponent<VisualEffect>());
         }
 
-        _fireVfx = transform.Find("WEAPON_SLOTS/type 0")?.GetComponent<VisualEffect>();
+        // InitWeapons();
     }
 
     public void SetMoveVectorHorizontal(float horizontal)
@@ -54,9 +54,10 @@ public class Ship : CachedMonoBehaviour
 
     void FixedUpdate()
     {
+        forwardSpeed = Vector2.Dot(new(_rb.velocity.x, _rb.velocity.z), new(transformCached.forward.x, transformCached.forward.z));
+
         Move();
         Rotate();
-        UpdateWeapons();
     }
 
     void Update()
@@ -117,22 +118,12 @@ public class Ship : CachedMonoBehaviour
             vfx.SetBool("jet enabled", false);
     }
 
-    void UpdateWeapons()
-    {
-        if (!_fireVfx)
-            return;
-
-        var forwardSpeed = Vector2.Dot(new(_rb.velocity.x, _rb.velocity.z), new(transformCached.forward.x, transformCached.forward.z));
-        _fireVfx.SetFloat("ship forward speed", forwardSpeed);
-
-        if (isFiring)
-        {
-            _fireVfx.SetBool("enabled", true);
-            // _fireVfx.SetVector3("start position", _fireVfx.transform.position);
-        }
-        else
-            _fireVfx.SetBool("enabled", false);
-            
-    }
+    // void InitWeapons()
+    // {
+    //     foreach (Transform slotTransform in transform.Find("WEAPON_SLOTS").transform)
+    //     {
+    //         slotTransform.GetComponent<Weapon>().relativePosition = slotTransform.localPosition;
+    //     }
+    // }
 
 }

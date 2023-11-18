@@ -1,10 +1,13 @@
 using DigitalRuby.Tween;
 using UnityEngine;
+using UnityEngine.Serialization;
 using static Ship;
 
 public class UniverseController : MonoBehaviour
 {
+    public static UniverseController universeController;
     public LayerMask raycastPlane;
+    public LayerMask damageable;
     RaycastHit _mouseCursorHit;
     public Camera mainCamera;
     Transform _mainCameraTransform;
@@ -16,6 +19,7 @@ public class UniverseController : MonoBehaviour
 
     void Start()
     {
+        universeController = this;
         _mainCameraTransform = mainCamera.transform;
         _initialCameraOffset = _mainCameraTransform.position - ActiveShip.transformCached.position;
         _astronaut = Instantiate(astronautPrefab);
@@ -80,7 +84,6 @@ public class UniverseController : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            print("lmb");
             ActiveShip.isFiring = true;
         }
         else
