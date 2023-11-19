@@ -2465,7 +2465,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1321883796
 Transform:
   m_ObjectHideFlags: 0
@@ -2498,8 +2498,6 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 4698057267504606932, guid: a30b2614d539af04fa3292afeebb6408,
     type: 3}
-  shootDelay: 0.5
-  initialShootSpeed: 1
 --- !u!1 &1405392141
 GameObject:
   m_ObjectHideFlags: 0
@@ -2630,8 +2628,6 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 4698057267504606932, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
     type: 3}
-  shootDelay: 0.2
-  initialShootSpeed: 2
 --- !u!1 &1823688464
 GameObject:
   m_ObjectHideFlags: 0

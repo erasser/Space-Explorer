@@ -1,16 +1,10 @@
-﻿Dát bonus k rychlosti, když loď necouvá? Uvidíme, jak to vyplyne.
-
-Když už mám tu funkcionalitu sledování kurzoru, dalo by se tím něco označit (cizí jednotka), loď pak na ní při pohybu míří.
-
-Přidat trysky - bude to chtít udělat relativně ke směru pohybu
-
-Chtěl bych použít 2D fyziku, ta ale funguje na XY plane.
-- Mno, radši si vymyslim způsob, jak využít 3D fyziku
+﻿Když už mám tu funkcionalitu sledování kurzoru, dalo by se tím něco označit (cizí jednotka), loď pak na ní při pohybu míří.
 
 Oumuamua
 
-TODO: Projektily udělat pomocí VFX. Kód:
+Zkoušel jsem projektily udělat pomocí VFX.
 (https://www.reddit.com/r/Unity3D/comments/dlyihn/controlling_the_positions_of_individual_particles)
+Podívat se na ten Boids projekt, když už..
 
         [SerializeField]
         VisualEffect laserVfx;
@@ -27,5 +21,5 @@ TODO: Projektily udělat pomocí VFX. Kód:
         _positions[1] = new(1, Time.time, 1, 0);
         texture.SetPixels(_positions);
         texture.Apply();
-        
+       
         

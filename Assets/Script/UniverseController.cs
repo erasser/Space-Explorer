@@ -9,7 +9,7 @@ public class UniverseController : MonoBehaviour
     public static UniverseController universeController;
     public LayerMask raycastPlane;
     public LayerMask shootable;
-    RaycastHit _mouseCursorHit;
+    public static RaycastHit MouseCursorHit;
     public Camera mainCamera;
     Transform _mainCameraTransform;
     Vector3 _initialCameraOffset;
@@ -41,7 +41,7 @@ public class UniverseController : MonoBehaviour
 
         ProcessMouseMove();
 
-        ActiveShip.SetUserTarget(_mouseCursorHit.point);
+        ActiveShip.SetUserTarget(MouseCursorHit.point);
 
         UpdateCameraPosition();
     }
@@ -141,7 +141,7 @@ public class UniverseController : MonoBehaviour
 
     void ProcessMouseMove()
     {
-        Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out _mouseCursorHit, Mathf.Infinity,
+        Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out MouseCursorHit, Mathf.Infinity,
             raycastPlane);
     }
 
