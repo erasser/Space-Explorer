@@ -1,9 +1,13 @@
-﻿Když už mám tu funkcionalitu sledování kurzoru, dalo by se tím něco označit (cizí jednotka), loď pak na ní při pohybu míří.
+﻿Dát bonus k rychlosti, když loď necouvá? Uvidíme, jak to vyplyne.
+
+Když už mám tu funkcionalitu sledování kurzoru, dalo by se tím něco označit (cizí jednotka), loď pak na ní při pohybu míří.
 
 Přidat trysky - bude to chtít udělat relativně ke směru pohybu
 
 Chtěl bych použít 2D fyziku, ta ale funguje na XY plane.
 - Mno, radši si vymyslim způsob, jak využít 3D fyziku
+
+Oumuamua
 
 TODO: Projektily udělat pomocí VFX. Kód:
 (https://www.reddit.com/r/Unity3D/comments/dlyihn/controlling_the_positions_of_individual_particles)

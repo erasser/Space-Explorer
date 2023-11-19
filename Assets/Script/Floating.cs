@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Floating : MonoBehaviour
@@ -25,9 +24,10 @@ public class Floating : MonoBehaviour
         _randomSeed = Random.value * 2;
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        // print(Time.time);
+        var coef = Time.deltaTime * 60;
+        
         if (rotateAroundRandomAxis)
         {
             transform.Rotate(_randomAxis, rotationSpeed);
@@ -37,12 +37,12 @@ public class Floating : MonoBehaviour
         {
             Vector3 moveBy = new Vector3();
 
-            if (randomFloatX)  // TODO: Optimize
-                moveBy.x += Mathf.Sin((Time.time + _randomSeed) * floatSpeed) * floatAmplitude;
+            if (randomFloatX)
+                moveBy.x += Mathf.Sin((Time.time + _randomSeed) * floatSpeed) * floatAmplitude * coef;
             if (randomFloatY)
-                moveBy.y += Mathf.Sin((Time.time + _randomSeed) * floatSpeed) * floatAmplitude;
+                moveBy.y += Mathf.Sin((Time.time + _randomSeed) * floatSpeed) * floatAmplitude * coef;
             if (randomFloatZ)
-                moveBy.z += Mathf.Sin((Time.time + _randomSeed) * floatSpeed) * floatAmplitude;
+                moveBy.z += Mathf.Sin((Time.time + _randomSeed) * floatSpeed) * floatAmplitude * coef;
 
             transform.Translate(moveBy, translationSpace);
         }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using static Ship;
+// This is on weapon socket
 
 public class Weapon : CachedMonoBehaviour
 {
@@ -34,7 +35,7 @@ public class Weapon : CachedMonoBehaviour
 
         _lastShootTime = Time.time;
 
-        var newLaser = Instantiate(projectilePrefab, transformCached.position, transformCached.rotation);
+        var newLaser = Instantiate(projectilePrefab, transformCached.position, Quaternion.Euler(0, transformCached.eulerAngles.y, 0));
         Laser newLaserComponent = newLaser.GetComponent<Laser>();
         newLaserComponent.speedV3 = ActiveShip.forwardSpeed * _shootVectorCoefficient + _initialShootSpeedV3;
         newLaserComponent.sqrRaycastLength = Mathf.Pow(newLaserComponent.speedV3.z, 2);

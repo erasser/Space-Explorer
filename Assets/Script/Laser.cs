@@ -1,11 +1,9 @@
 using UnityEngine;
-using UnityEngine.VFX;
 using static UniverseController;
 using Vector3 = UnityEngine.Vector3;
 
 public class Laser : MonoBehaviour
 {
-    // public VisualEffect hitEffect;  // TODO
     static readonly float _lifeSpan = 15;
     float _selfDestructAtTime;              // Consider using distance instead of lifespan
     // public Vector3 initialSpeed;
@@ -13,17 +11,19 @@ public class Laser : MonoBehaviour
     public Vector3 speedV3;  // meters per frame
     [HideInInspector]
     public float sqrRaycastLength;
+    public GameObject tmp;
 
     void Start()
     {
         _selfDestructAtTime = Time.time + _lifeSpan;
+        tmp = GameObject.Find("Cube (1)");
     }
-
+    
     void FixedUpdate()
     {
         CheckLifeSpan();
 
-        UpdatePosition();
+        UpdateTransform();
 
         CheckIntersection();
     }
@@ -36,16 +36,17 @@ public class Laser : MonoBehaviour
         }
     }
 
-    void UpdatePosition()
+    void UpdateTransform()
     {
         transform.Translate(speedV3);
+        // transform.LookAt(universeController.mainCamera.transform);
     }
 
     void CheckIntersection()
     {
         // Debug.DrawRay(transform.position, transform.forward * speedV3.z, Color.magenta);
 
-        if (Physics.Raycast(transform.position, transform.forward, out var hit, Mathf.Infinity, universeController.damageable))
+        if (Physics.Raycast(transform.position, transform.forward, out var hit, Mathf.Infinity, universeController.shootable))
         {
             if ((hit.point - transform.position).sqrMagnitude > sqrRaycastLength)
                 return;
@@ -58,10 +59,9 @@ public class Laser : MonoBehaviour
 
     void LaunchHitEffect(Vector3 point, Vector3 normal)
     {
-        // var newHitEffect = Instantiate(hitEffect);
-        //
-        // newHitEffect.transform.position = point;
-        // newHitEffect.transform.rotation = Quaternion.LookRotation(normal);
-        // newHitEffect.Play();
+        Instantiate(universeController.explosionEffectPrefab, point, Quaternion.LookRotation(normal));
+        
+        // TODO: Je třeba ten VFX destroynout, popř. poolnout.
+        // TODO: Je to správný řešení multiple VFX?
     }
 }

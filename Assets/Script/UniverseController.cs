@@ -1,13 +1,14 @@
 using DigitalRuby.Tween;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.VFX;
 using static Ship;
 
 public class UniverseController : MonoBehaviour
 {
     public static UniverseController universeController;
     public LayerMask raycastPlane;
-    public LayerMask damageable;
+    public LayerMask shootable;
     RaycastHit _mouseCursorHit;
     public Camera mainCamera;
     Transform _mainCameraTransform;
@@ -16,12 +17,16 @@ public class UniverseController : MonoBehaviour
     GameObject _astronaut;
     Rigidbody _astronautRb;
     public Texture2D mouseCursor;
+    [SerializeField]
+    public VisualEffect explosionEffectPrefab;
+    float _initialFov;
 
     void Start()
     {
         universeController = this;
         _mainCameraTransform = mainCamera.transform;
         _initialCameraOffset = _mainCameraTransform.position - ActiveShip.transformCached.position;
+        _initialFov = mainCamera.fieldOfView;
         _astronaut = Instantiate(astronautPrefab);
         _astronautRb = _astronaut.GetComponent<Rigidbody>();
         Cursor.SetCursor(mouseCursor, new(32, 32), CursorMode.ForceSoftware);
@@ -96,7 +101,7 @@ public class UniverseController : MonoBehaviour
         ActiveShip = DefaultShip;
 
         // SetCameraHeight(1);
-        mainCamera.fieldOfView = 100;
+        mainCamera.fieldOfView = _initialFov;
     }
 
     void EjectAstronaut()

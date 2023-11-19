@@ -1754,9 +1754,10 @@ MonoBehaviour:
   moveVector: {x: 0, y: 0, z: 0}
   speed: 40000
   rotationSpeed: 250
-  maxRollAngle: 80
+  maxRollAngle: 50
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  forwardSpeed: 0
 --- !u!96 &-6931913766147552067
 TrailRenderer:
   serializedVersion: 3
