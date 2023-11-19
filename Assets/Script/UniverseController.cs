@@ -1,6 +1,6 @@
 using DigitalRuby.Tween;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.VFX;
 using static Ship;
 
@@ -19,6 +19,7 @@ public class UniverseController : MonoBehaviour
     public Texture2D mouseCursor;
     [SerializeField]
     public VisualEffect explosionEffectPrefab;
+    public VisualEffect explosionEffect;
     float _initialFov;
 
     void Start()
@@ -30,6 +31,8 @@ public class UniverseController : MonoBehaviour
         _astronaut = Instantiate(astronautPrefab);
         _astronautRb = _astronaut.GetComponent<Rigidbody>();
         Cursor.SetCursor(mouseCursor, new(32, 32), CursorMode.ForceSoftware);
+        explosionEffect = Instantiate(explosionEffectPrefab);
+        // EditorApplication.isPaused = true;
     }
 
     void Update()
@@ -93,6 +96,22 @@ public class UniverseController : MonoBehaviour
         }
         else
             ActiveShip.isFiring = false;
+        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // universeController.explosionEffect.SetVector3("position", );
+            // universeController.explosionEffect.SetVector3("direction", Vector3.up);
+            // explosionEffect.SendEvent("OnStart");
+
+            LaunchHitEffect(new(Random.Range(-20,20), 0, 0), Vector3.up);
+        }
+    }
+    
+    public void LaunchHitEffect(Vector3 point, Vector3 normal)
+    {
+        explosionEffect.SetVector3("position", point);
+        explosionEffect.SetVector3("direction", normal);
+        explosionEffect.SendEvent("OnStart");
     }
 
     void BoardAstronaut()

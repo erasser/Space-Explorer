@@ -51,17 +51,11 @@ public class Laser : MonoBehaviour
             if ((hit.point - transform.position).sqrMagnitude > sqrRaycastLength)
                 return;
 
-            Destroy(gameObject);
-            LaunchHitEffect(hit.point, hit.normal);
-            hit.collider.gameObject.GetComponent<Damageable>()?.TakeDamage(10);
-        }
-    }
+            universeController.LaunchHitEffect(hit.point, hit.normal);
 
-    void LaunchHitEffect(Vector3 point, Vector3 normal)
-    {
-        Instantiate(universeController.explosionEffectPrefab, point, Quaternion.LookRotation(normal));
-        
-        // TODO: Je třeba ten VFX destroynout, popř. poolnout.
-        // TODO: Je to správný řešení multiple VFX?
+            hit.collider.gameObject.GetComponent<Damageable>()?.TakeDamage(10);
+
+            Destroy(gameObject);
+        }
     }
 }

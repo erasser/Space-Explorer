@@ -105,7 +105,7 @@ public class Ship : CachedMonoBehaviour
             var jetForward = _jetsTransforms[i].forward;
             float dot = Vector3.Dot(new(movement.x, movement.z), new(jetForward.x, jetForward.z));
 
-            if (dot < -.3)  // < 0   // .5 odpovídá 60 °, čili setupu tří jetů do hvězdy
+            if (dot < 0)  // -.5 odpovídá 60 °, čili setupu tří jetů do hvězdy
                 _jetsVisualEffects[i].SetBool("jet enabled", true);
             else
                 _jetsVisualEffects[i].SetBool("jet enabled", false);
