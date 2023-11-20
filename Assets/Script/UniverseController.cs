@@ -1,5 +1,4 @@
 using DigitalRuby.Tween;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.VFX;
 using static Ship;
@@ -29,10 +28,10 @@ public class UniverseController : MonoBehaviour
         _initialCameraOffset = _mainCameraTransform.position - ActiveShip.transformCached.position;
         _initialFov = mainCamera.fieldOfView;
         _astronaut = Instantiate(astronautPrefab);
+        _astronaut.SetActive(false);
         _astronautRb = _astronaut.GetComponent<Rigidbody>();
         Cursor.SetCursor(mouseCursor, new(32, 32), CursorMode.ForceSoftware);
         explosionEffect = Instantiate(explosionEffectPrefab);
-        // EditorApplication.isPaused = true;
     }
 
     void Update()
@@ -48,6 +47,8 @@ public class UniverseController : MonoBehaviour
 
     void ProcessKeys()
     {
+        ActiveShip.isFiring = Input.GetMouseButton(0);
+
         if (Input.GetKey(KeyCode.W))
             ActiveShip.SetMoveVectorVertical(1);
         else if (Input.GetKey(KeyCode.S))
@@ -68,7 +69,7 @@ public class UniverseController : MonoBehaviour
         {
             wasQPressedThisFrame = true;
 
-            if (!_astronaut.activeSelf)
+            if (!_astronaut.activeSelf && !ActiveShip.isFiring)
                 EjectAstronaut();
             else
             {
@@ -88,22 +89,6 @@ public class UniverseController : MonoBehaviour
                 // else
                 //     BoardAstronaut();
             }
-        }
-
-        if (Input.GetMouseButton(0))
-        {
-            ActiveShip.isFiring = true;
-        }
-        else
-            ActiveShip.isFiring = false;
-        
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // universeController.explosionEffect.SetVector3("position", );
-            // universeController.explosionEffect.SetVector3("direction", Vector3.up);
-            // explosionEffect.SendEvent("OnStart");
-
-            LaunchHitEffect(new(Random.Range(-20,20), 0, 0), Vector3.up);
         }
     }
     

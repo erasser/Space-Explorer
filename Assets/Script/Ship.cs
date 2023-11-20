@@ -11,6 +11,9 @@ public class Ship : CachedMonoBehaviour
     public float rotationSpeed = 300;
     [Range(0, 90)]
     public float maxRollAngle = 80;
+    [Tooltip("Jet to ship angle in degrees.\nIt affects individual jet activation condition.\n\nLower value => less jet")]
+    [Range(0, 90)]      // -.5 odpovídá 60 °, čili setupu tří jetů do hvězdy
+    public float jetAngle = 45;
     Vector3 _userTarget;
     Rigidbody _rb;
     [HideInInspector]
@@ -39,9 +42,8 @@ public class Ship : CachedMonoBehaviour
             _jetsVisualEffects.Add(jetTransform.GetComponent<VisualEffect>());
         }
 
-        // InitWeapons();
+        jetAngle = - Mathf.Cos(jetAngle * Mathf.Deg2Rad);
     }
-
     public void SetMoveVectorHorizontal(float horizontal)
     {
         moveVector.x = horizontal;
@@ -105,7 +107,7 @@ public class Ship : CachedMonoBehaviour
             var jetForward = _jetsTransforms[i].forward;
             float dot = Vector3.Dot(new(movement.x, movement.z), new(jetForward.x, jetForward.z));
 
-            if (dot < 0)  // -.5 odpovídá 60 °, čili setupu tří jetů do hvězdy
+            if (dot < jetAngle)
                 _jetsVisualEffects[i].SetBool("jet enabled", true);
             else
                 _jetsVisualEffects[i].SetBool("jet enabled", false);
@@ -117,13 +119,5 @@ public class Ship : CachedMonoBehaviour
         foreach (VisualEffect vfx in _jetsVisualEffects)
             vfx.SetBool("jet enabled", false);
     }
-
-    // void InitWeapons()
-    // {
-    //     foreach (Transform slotTransform in transform.Find("WEAPON_SLOTS").transform)
-    //     {
-    //         slotTransform.GetComponent<Weapon>().relativePosition = slotTransform.localPosition;
-    //     }
-    // }
 
 }

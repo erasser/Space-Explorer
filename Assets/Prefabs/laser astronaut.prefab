@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 795871129129536821}
   - component: {fileID: 4698057267504606932}
   m_Layer: 0
-  m_Name: laser 1
+  m_Name: laser astronaut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 8219408188620219722}
   m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.09968427, y: 0, z: -0.04}
-  m_LocalScale: {x: 0.3, y: 1, z: 1.8}
+  m_LocalScale: {x: 0.15, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b2608f3fc77a3964e84f486f5f8d532c, type: 2}
+  - {fileID: 2100000, guid: 445d5a3e871002e48a348ccb25210cc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,7 +99,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  autoAim: 0
-  range: 50
-  initialShootSpeed: 20
-  shootDelay: 0.6
+  autoAim: 1
+  range: 10
+  initialShootSpeed: 0.8
+  shootDelay: 0.8

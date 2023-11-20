@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using static UniverseController;
 using Vector3 = UnityEngine.Vector3;
@@ -5,14 +6,21 @@ using Vector3 = UnityEngine.Vector3;
 public class Laser : CachedMonoBehaviour
 {
     public bool autoAim;
+    [Tooltip("m")]
     public float range = 500;
-    [Tooltip("units: m / frame (1/60 of m/s)")]
+    [Tooltip("m/s")]
     public float initialShootSpeed = 1.1f;
     public float shootDelay = .3f; // Po změně ve WeaponSystem nevim, jestli jsem nerozbil rychlost
     float _selfDestructAtTime;              // Consider using distance instead of lifespan
-    // public Vector3 initialSpeed;
     Vector3 _speedV3;  // meters per frame
     float _sqrRaycastLength;
+    float tmp_distance;
+    Vector3 tmp_lastPosition;
+
+    void Start()
+    {
+        tmp_lastPosition = transformCached.position;
+    }
 
     void FixedUpdate()
     {
@@ -21,13 +29,16 @@ public class Laser : CachedMonoBehaviour
         UpdateTransform();
 
         CheckIntersection();
+
+        tmp_distance += (transformCached.position - tmp_lastPosition).magnitude;
+        tmp_lastPosition = transformCached.position;
     }
 
     public void Setup(Vector3 position, Vector3 rotation, Vector3 speed)
     {
         _speedV3 = speed;
         _sqrRaycastLength = Mathf.Pow(_speedV3.z, 2);  // TODO !!
-        _selfDestructAtTime = Time.time + range / _speedV3.z;
+        _selfDestructAtTime = Time.time + range / (_speedV3.z / Time.fixedDeltaTime);
         transform.position = position;
 
         if (autoAim)
@@ -40,6 +51,7 @@ public class Laser : CachedMonoBehaviour
     {
         if (Time.time > _selfDestructAtTime)
         {
+            print("• distance: " + tmp_distance);
             Destroy(gameObject);
         }
     }
@@ -63,10 +75,4 @@ public class Laser : CachedMonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    // void RotateWeaponSlot()
-    // {
-    //     if (autoAim)
-    //         transformCached.LookAt(MouseCursorHit.point);
-    // }
 }
