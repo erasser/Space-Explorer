@@ -100,6 +100,6 @@ MonoBehaviour:
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
   autoAim: 0
-  range: 50
-  initialShootSpeed: 20
-  shootDelay: 0.6
+  range: 100
+  initialShootSpeed: 50
+  shootDelay: 0.4

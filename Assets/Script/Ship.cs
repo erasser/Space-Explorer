@@ -25,7 +25,6 @@ public class Ship : CachedMonoBehaviour
     readonly List<Transform> _jetsTransforms = new();
     readonly List<VisualEffect> _jetsVisualEffects = new();
     public bool isFiring;
-    public float forwardSpeed;
 
     void Start()
     {
@@ -56,10 +55,13 @@ public class Ship : CachedMonoBehaviour
 
     void FixedUpdate()
     {
-        forwardSpeed = Vector2.Dot(new(_rb.velocity.x, _rb.velocity.z), new(transformCached.forward.x, transformCached.forward.z));
-
         Move();
         Rotate();
+    }
+
+    public float GetForwardSpeed()  // m / s
+    {
+        return Vector2.Dot(new(_rb.velocity.x, _rb.velocity.z), new(transformCached.forward.x, transformCached.forward.z));
     }
 
     void Update()

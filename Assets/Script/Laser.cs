@@ -51,7 +51,6 @@ public class Laser : CachedMonoBehaviour
     {
         if (Time.time > _selfDestructAtTime)
         {
-            print("• distance: " + tmp_distance);
             Destroy(gameObject);
         }
     }
