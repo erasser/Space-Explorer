@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using static UniverseController;
 using Vector3 = UnityEngine.Vector3;
@@ -10,17 +9,10 @@ public class Laser : CachedMonoBehaviour
     public float range = 500;
     [Tooltip("m/s")]
     public float initialShootSpeed = 1.1f;
-    public float shootDelay = .3f; // Po změně ve WeaponSystem nevim, jestli jsem nerozbil rychlost
-    float _selfDestructAtTime;              // Consider using distance instead of lifespan
-    Vector3 _speedV3;  // meters per frame
+    public float shootDelay = .3f;
+    float _selfDestructAtTime;
+    Vector3 _speedV3;  // m / frame
     float _sqrRaycastLength;
-    float tmp_distance;
-    Vector3 tmp_lastPosition;
-
-    void Start()
-    {
-        tmp_lastPosition = transformCached.position;
-    }
 
     void FixedUpdate()
     {
@@ -29,9 +21,6 @@ public class Laser : CachedMonoBehaviour
         UpdateTransform();
 
         CheckIntersection();
-
-        tmp_distance += (transformCached.position - tmp_lastPosition).magnitude;
-        tmp_lastPosition = transformCached.position;
     }
 
     public void Setup(Vector3 position, Vector3 rotation, Vector3 speed)

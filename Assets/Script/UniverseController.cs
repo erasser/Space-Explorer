@@ -1,5 +1,7 @@
 using DigitalRuby.Tween;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 using UnityEngine.VFX;
 using static Ship;
 
@@ -13,13 +15,14 @@ public class UniverseController : MonoBehaviour
     Transform _mainCameraTransform;
     Vector3 _initialCameraOffset;
     public GameObject astronautPrefab;
-    GameObject _astronaut;
+    public static Ship Astronaut;
     Rigidbody _astronautRb;
     public Texture2D mouseCursor;
     [SerializeField]
     public VisualEffect explosionEffectPrefab;
     public VisualEffect explosionEffect;
     float _initialFov;
+    public static Text InfoText;
 
     void Start()
     {
@@ -27,11 +30,12 @@ public class UniverseController : MonoBehaviour
         _mainCameraTransform = mainCamera.transform;
         _initialCameraOffset = _mainCameraTransform.position - ActiveShip.transformCached.position;
         _initialFov = mainCamera.fieldOfView;
-        _astronaut = Instantiate(astronautPrefab);
-        _astronaut.SetActive(false);
-        _astronautRb = _astronaut.GetComponent<Rigidbody>();
+        Astronaut = Instantiate(astronautPrefab).GetComponent<Ship>();
+        Astronaut.gameObject.SetActive(false);
+        _astronautRb = Astronaut.GetComponent<Rigidbody>();
         Cursor.SetCursor(mouseCursor, new(32, 32), CursorMode.ForceSoftware);
         explosionEffect = Instantiate(explosionEffectPrefab);
+        InfoText = GameObject.Find("infoText").GetComponent<Text>();
     }
 
     void Update()
@@ -67,31 +71,34 @@ public class UniverseController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
+            print("KEY DOWN: Q");
+            
             wasQPressedThisFrame = true;
 
-            if (!_astronaut.activeSelf && !ActiveShip.isFiring)
+            if (!IsAstronautActive() && !ActiveShip.isFiring)
                 EjectAstronaut();
             else
             {
-                if ((DefaultShip.transformCached.position - _astronaut.transform.position).sqrMagnitude <= 15)
-                    BoardAstronaut();
+                var s = ActiveShip.GetClosestShipInRange(4);
+                print("ship to board: " + s);
+                BoardAstronaut(s);
             }
         }
 
         if (Input.GetKey(KeyCode.Q))
         {
-            if (!wasQPressedThisFrame && _astronaut.activeSelf)
+            if (!wasQPressedThisFrame && IsAstronautActive())
             {
-                var shipToAstronautV3 = DefaultShip.transformCached.position - _astronaut.transform.position;
+                var shipToAstronautV3 = DefaultShip.transformCached.position - Astronaut.transformCached.position;
 
-                if (shipToAstronautV3.sqrMagnitude > 15)
+                if (shipToAstronautV3.sqrMagnitude > 16)
                     _astronautRb.AddForce(60 * shipToAstronautV3.normalized, ForceMode.Impulse);
                 // else
                 //     BoardAstronaut();
             }
         }
     }
-    
+
     public void LaunchHitEffect(Vector3 point, Vector3 normal)
     {
         explosionEffect.SetVector3("position", point);
@@ -99,29 +106,29 @@ public class UniverseController : MonoBehaviour
         explosionEffect.SendEvent("OnStart");
     }
 
-    void BoardAstronaut()
+    void BoardAstronaut(Ship ship)
     {
-        _astronaut.SetActive(false);
-        ActiveShip = DefaultShip;
+        if (!ship)
+            return;
 
-        // SetCameraHeight(1);
+        Astronaut.gameObject.SetActive(false);
+        ActiveShip = ship;
+
         mainCamera.fieldOfView = _initialFov;
     }
 
     void EjectAstronaut()
     {
-        _astronaut.SetActive(true);
-        _astronaut.transform.position = ActiveShip.transformCached.position;
-        _astronaut.transform.rotation = ActiveShip.transformCached.rotation;
+        Astronaut.gameObject.SetActive(true);
+        Astronaut.transformCached.position = ActiveShip.transformCached.position;
+        Astronaut.transformCached.rotation = ActiveShip.transformCached.rotation;
 
-        _astronaut.GetComponent<Rigidbody>()
+        Astronaut.GetComponent<Rigidbody>()
             .AddForce(-10000 * ActiveShip.transformCached.forward, ForceMode.Impulse);
         ActiveShip.moveVector.x = ActiveShip.moveVector.z = 0;
-        ActiveShip = _astronaut.GetComponent<Ship>();
+        ActiveShip = Astronaut.GetComponent<Ship>();
 
-        // SetCameraHeight(.4f);
-        mainCamera.fieldOfView = 40;
-        // ZoomIn();
+        mainCamera.fieldOfView = 35;
     }
 
     void ProcessMouseMove()
@@ -169,12 +176,11 @@ public class UniverseController : MonoBehaviour
         mainCamera.fieldOfView = t.CurrentValue;
     }
 
-
-
-
     public static Vector3 SetVectorLength(Vector3 vector, float length)
     {
         return vector.normalized * length;
     }
+
+
 
 }
