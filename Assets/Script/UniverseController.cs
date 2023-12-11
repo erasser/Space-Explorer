@@ -1,6 +1,5 @@
 using DigitalRuby.Tween;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.VFX;
 using static Ship;
@@ -8,8 +7,8 @@ using static Ship;
 public class UniverseController : MonoBehaviour
 {
     public static UniverseController universeController;
-    public LayerMask raycastPlane;
-    public LayerMask shootable;
+    public LayerMask raycastPlaneLayer;
+    public LayerMask shootableLayer;
     public static RaycastHit MouseCursorHit;
     public Camera mainCamera;
     Transform _mainCameraTransform;
@@ -133,8 +132,7 @@ public class UniverseController : MonoBehaviour
 
     void ProcessMouseMove()
     {
-        Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out MouseCursorHit, Mathf.Infinity,
-            raycastPlane);
+        Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out MouseCursorHit, Mathf.Infinity, raycastPlaneLayer);
     }
 
     void UpdateCameraPosition()

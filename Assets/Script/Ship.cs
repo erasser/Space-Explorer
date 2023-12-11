@@ -7,14 +7,16 @@ public class Ship : CachedMonoBehaviour
 {
     // public static Ship ship;  // 'ship' jsem už použil, přejmenovat
     public static readonly List<Ship> ShipList = new();
+    [HideInInspector]
     public Vector3 moveVector;
     public float speed = 40000;
     public float rotationSpeed = 300;
     [Range(0, 90)]
     public float maxRollAngle = 80;
-    [Tooltip("Jet to ship angle in degrees.\nIt affects individual jet activation condition.\n\nLower value => less jet")]
+    [Tooltip("Jet to ship angle in degrees.\nIt affects individual jet activation condition.\n\\Higher value => more jets")]
     [Range(0, 90)]      // -.5 odpovídá 60 °, čili setupu tří jetů do hvězdy
     public float jetAngle = 45;
+    float _jetAngleCos;
     Vector3 _userTarget;
     Rigidbody _rb;
     Collider _collider;
@@ -42,11 +44,11 @@ public class Ship : CachedMonoBehaviour
             _jetsVisualEffects.Add(jetTransform.GetComponent<VisualEffect>());
         }
 
-        jetAngle = - Mathf.Cos(jetAngle * Mathf.Deg2Rad);
+        _jetAngleCos = - Mathf.Cos(jetAngle * Mathf.Deg2Rad);
 
-        foreach (Ship ship in FindObjectsByType<Ship>(FindObjectsSortMode.None))
-            ShipList.Add(ship);
+        ShipList.Add(this);
     }
+
     public void SetMoveVectorHorizontal(float horizontal)
     {
         moveVector.x = horizontal;
@@ -70,7 +72,7 @@ public class Ship : CachedMonoBehaviour
 
     void Update()
     {
-        // visualEffect.SetFloat("Player speed", ActiveShip.rigidBody.velocity.magnitude);
+        toTargetV3 = _userTarget - transformCached.position;
     }
 
     void Move()
@@ -84,13 +86,14 @@ public class Ship : CachedMonoBehaviour
 
         UpdateJets();
 
+        if (Input.GetKey(KeyCode.LeftShift))
+            moveVector *= 2;
+
         _rb.AddForce(SetVectorLength(moveVector, speed));
     }
 
     void Rotate()
     {
-        toTargetV3 = _userTarget - transformCached.position;
-
         // yaw
         _rb.AddTorque(- Vector2.SignedAngle(new(transformCached.forward.x, transformCached.forward.z), new(toTargetV3.x, toTargetV3.z)) * rotationSpeed * Vector3.up);
 
@@ -110,10 +113,12 @@ public class Ship : CachedMonoBehaviour
 
         for (int i = 0; i < jetCount; ++i)
         {
+            // _jetsVisualEffects[i].SetBool("jet enabled", true);
+            // continue;
             var jetForward = _jetsTransforms[i].forward;
             float dot = Vector3.Dot(new(movement.x, movement.z), new(jetForward.x, jetForward.z));
 
-            if (dot < jetAngle)
+            if (dot < _jetAngleCos)
                 _jetsVisualEffects[i].SetBool("jet enabled", true);
             else
                 _jetsVisualEffects[i].SetBool("jet enabled", false);

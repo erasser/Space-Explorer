@@ -54,7 +54,7 @@ public class Laser : CachedMonoBehaviour
     {
         // Debug.DrawRay(transform.position, transform.forward * speedV3.z, Color.magenta);
 
-        if (Physics.Raycast(transform.position, transform.forward, out var hit, _sqrRaycastLength, universeController.shootable))
+        if (Physics.Raycast(transform.position, transform.forward, out var hit, _sqrRaycastLength, universeController.shootableLayer))
         {
             universeController.LaunchHitEffect(hit.point, hit.normal);
 
