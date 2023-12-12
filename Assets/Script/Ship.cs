@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.VFX;
 using static UniverseController;
 
+// Ship requirements: This script,  Rigidbody, Collider, "ship" layer
+
 public class Ship : CachedMonoBehaviour
 {
     // public static Ship ship;  // 'ship' jsem už použil, přejmenovat
@@ -13,7 +15,7 @@ public class Ship : CachedMonoBehaviour
     public float rotationSpeed = 300;
     [Range(0, 90)]
     public float maxRollAngle = 80;
-    [Tooltip("Jet to ship angle in degrees.\nIt affects individual jet activation condition.\n\\Higher value => more jets")]
+    [Tooltip("Jet to ship angle in degrees.\nIt affects individual jet activation condition.\nHigher value => more jets\n\nDO NOT change in playmode!")]
     [Range(0, 90)]      // -.5 odpovídá 60 °, čili setupu tří jetů do hvězdy
     public float jetAngle = 45;
     float _jetAngleCos;
@@ -86,10 +88,7 @@ public class Ship : CachedMonoBehaviour
 
         UpdateJets();
 
-        if (Input.GetKey(KeyCode.LeftShift))
-            moveVector *= 2;
-
-        _rb.AddForce(SetVectorLength(moveVector, speed));
+        _rb.AddForce(SetVectorLength(moveVector, speed * (Input.GetKey(KeyCode.LeftShift) ? 2 : 1)));
     }
 
     void Rotate()
@@ -131,11 +130,8 @@ public class Ship : CachedMonoBehaviour
             vfx.SetBool("jet enabled", false);
     }
 
-    public Ship GetClosestShipInRange(float range)
+    public Ship GetClosestShipInRange(float range = Mathf.Infinity)
     {
-        if (!IsAstronautActive())
-            return null;
-
         Ship closestShip = null;
         var closestSqrRange = range * range;
 
@@ -144,33 +140,26 @@ public class Ship : CachedMonoBehaviour
             if (ActiveShip == ship)
                 continue;
 
-            var r = ActiveShip.GetSqrDistanceFromShip(ship);
+            var sqrDistance = ActiveShip.GetSqrDistanceFromShip(ship);
 
-            if (r < closestSqrRange)
+            if (sqrDistance < closestSqrRange)
             {
                 closestShip = ship;
-                closestSqrRange = r;
+                closestSqrRange = sqrDistance;
             }
         }
-        // print("closest ship: " + closestShip);
+
         return closestShip;
     }
 
-    public float GetSqrDistanceFromShip(Ship ship)
+    public float GetSqrDistanceFromShip(Ship otherShip, float range = Mathf.Infinity)
     {
         RaycastHit hit;
-        var pos = transformCached.position;
+        var thisShipPosition = transformCached.position;
 
-        Physics.Raycast(new(pos, ship.transformCached.position - pos), out hit);
+        Physics.Raycast(thisShipPosition, otherShip.transformCached.position - thisShipPosition, out hit, range, universeController.closestShipColliderLayer);
 
-        InfoText.text = ship.name + ": " + Mathf.Round((hit.point - pos).sqrMagnitude);
-
-        // if (ship)
-        //     print("• ship name: " + ship.name + " • sqrDistance: " + (hit.point - pos).sqrMagnitude);
-
-        // GameObject.Find("Sphere").transform.position = hit.point;
-        
-        return (hit.point - pos).sqrMagnitude;
+        return (hit.point - thisShipPosition).sqrMagnitude;
     }
 
     public static bool IsAstronautActive()
@@ -188,15 +177,10 @@ public class Ship : CachedMonoBehaviour
         ShipList.Remove(this);
     }
 
-
-
-
-
-
-
-
-
-
+    // void Highlight()
+    // {
+    //     universeController.selectionSprite.transform.position = transformCached.position;
+    // }
 
 
 }

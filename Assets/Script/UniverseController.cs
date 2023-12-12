@@ -9,6 +9,7 @@ public class UniverseController : MonoBehaviour
     public static UniverseController universeController;
     public LayerMask raycastPlaneLayer;
     public LayerMask shootableLayer;
+    public LayerMask closestShipColliderLayer;  // all ships (my solution for multiple gameObject layers)
     public static RaycastHit MouseCursorHit;
     public Camera mainCamera;
     Transform _mainCameraTransform;
@@ -17,11 +18,15 @@ public class UniverseController : MonoBehaviour
     public static Ship Astronaut;
     Rigidbody _astronautRb;
     public Texture2D mouseCursor;
+    // public GameObject selectionSpritePrefab;
+    // public GameObject selectionSprite;
     [SerializeField]
     public VisualEffect explosionEffectPrefab;
     public VisualEffect explosionEffect;
     float _initialFov;
     public static Text InfoText;
+    const float AstronautBoardingDistanceLimit = 4;
+    static readonly float AstronautBoardingSqrDistanceLimit = Mathf.Pow(AstronautBoardingDistanceLimit, 2);
 
     void Start()
     {
@@ -35,6 +40,7 @@ public class UniverseController : MonoBehaviour
         Cursor.SetCursor(mouseCursor, new(32, 32), CursorMode.ForceSoftware);
         explosionEffect = Instantiate(explosionEffectPrefab);
         InfoText = GameObject.Find("infoText").GetComponent<Text>();
+        // selectionSprite = Instantiate(selectionSpritePrefab);
     }
 
     void Update()
@@ -70,17 +76,13 @@ public class UniverseController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            print("KEY DOWN: Q");
-            
             wasQPressedThisFrame = true;
 
             if (!IsAstronautActive() && !ActiveShip.isFiring)
                 EjectAstronaut();
             else
             {
-                var s = ActiveShip.GetClosestShipInRange(4);
-                print("ship to board: " + s);
-                BoardAstronaut(s);
+                BoardAstronaut(ActiveShip.GetClosestShipInRange(AstronautBoardingDistanceLimit));
             }
         }
 
@@ -88,12 +90,15 @@ public class UniverseController : MonoBehaviour
         {
             if (!wasQPressedThisFrame && IsAstronautActive())
             {
-                var shipToAstronautV3 = DefaultShip.transformCached.position - Astronaut.transformCached.position;
+                var closestShip = ActiveShip.GetClosestShipInRange();
+// InfoText.text = closestShip.name;
+                if (closestShip)
+                {
+                    var shipToAstronautV3 = closestShip.transformCached.position - Astronaut.transformCached.position;
 
-                if (shipToAstronautV3.sqrMagnitude > 16)
-                    _astronautRb.AddForce(60 * shipToAstronautV3.normalized, ForceMode.Impulse);
-                // else
-                //     BoardAstronaut();
+                    if (shipToAstronautV3.sqrMagnitude > AstronautBoardingSqrDistanceLimit)
+                        _astronautRb.AddForce(60 * shipToAstronautV3.normalized, ForceMode.Impulse);
+                }
             }
         }
     }
@@ -122,8 +127,7 @@ public class UniverseController : MonoBehaviour
         Astronaut.transformCached.position = ActiveShip.transformCached.position;
         Astronaut.transformCached.rotation = ActiveShip.transformCached.rotation;
 
-        Astronaut.GetComponent<Rigidbody>()
-            .AddForce(-10000 * ActiveShip.transformCached.forward, ForceMode.Impulse);
+        Astronaut.GetComponent<Rigidbody>().AddForce(-10000 * ActiveShip.transformCached.forward, ForceMode.Impulse);
         ActiveShip.moveVector.x = ActiveShip.moveVector.z = 0;
         ActiveShip = Astronaut.GetComponent<Ship>();
 
