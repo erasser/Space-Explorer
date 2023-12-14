@@ -91,7 +91,7 @@ public class UniverseController : MonoBehaviour
             if (!wasQPressedThisFrame && IsAstronautActive())
             {
                 var closestShip = ActiveShip.GetClosestShipInRange();
-// InfoText.text = closestShip.name;
+
                 if (closestShip)
                 {
                     var shipToAstronautV3 = closestShip.transformCached.position - Astronaut.transformCached.position;

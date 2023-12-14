@@ -101,5 +101,5 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   autoAim: 1
   range: 100
-  initialShootSpeed: 80
+  initialShootSpeed: 120
   shootDelay: 0.15

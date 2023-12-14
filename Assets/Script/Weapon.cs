@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using static Ship;
-// This is on weapon socket
+// This is a weapon socket
 
 public class Weapon : CachedMonoBehaviour
 {

@@ -15,7 +15,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     Ship _ship;
     // Rigidbody _rb;
     NavMeshPath _navMeshPath;
-    List<Vector3> _pathPoints = new();
+    readonly List<Vector3> _pathPoints = new();
     int _actualPathPointIndex;
     float _targetSqrMinDistance;
     LineRenderer _lineRenderer;
@@ -52,6 +52,10 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         if (_state == State.Going)
         {
             // transform.LookAt(_pathPoints[_actualPathPointIndex]);
+            
+            // transform.rotation = Quaternion.RotateTowards(transform.rotation, currentRotateTo, Time.deltaTime * turningSpeed);
+
+            
             _toActualPathPointDirection = _pathPoints[_actualPathPointIndex] - transformCached.position;
             _ship.SetMoveVectorHorizontal(_toActualPathPointDirection.x);
             _ship.SetMoveVectorVertical(_toActualPathPointDirection.z);
@@ -87,7 +91,9 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     bool IsPathPointReached()
     {
-        return _toActualPathPointDirection.sqrMagnitude <= _targetSqrMinDistance;
+        var distance = _actualPathPointIndex == _pathPoints.Count - 1 ? _targetSqrMinDistance * 1.5f : _targetSqrMinDistance;  // Break sooner before last path point
+
+        return _toActualPathPointDirection.sqrMagnitude <= distance;
     }
 
     void GeneratePathTo(Vector3 targetLocation)
