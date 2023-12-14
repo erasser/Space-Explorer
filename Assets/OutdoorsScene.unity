@@ -389,7 +389,7 @@ PrefabInstance:
     - target: {fileID: 9148328567788902429, guid: d0ee9ecd775e34846983a62b384b28da,
         type: 3}
       propertyPath: m_Name
-      value: StarSparrow11
+      value: ship_StarSparrow11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -2686,7 +2686,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f95227d278f3a8f4a83459cab408546c,
         type: 3}
       propertyPath: m_Name
-      value: UFO
+      value: ship_UFO
       objectReference: {fileID: 0}
     - target: {fileID: 3739539385507629309, guid: f95227d278f3a8f4a83459cab408546c,
         type: 3}
@@ -3434,8 +3434,8 @@ MonoBehaviour:
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
   moveVector: {x: 0, y: 0, z: 0}
-  speed: 100000
-  rotationSpeed: 1000
+  speed: 100
+  rotationSpeed: 0.1
   maxRollAngle: 0
   jetAngle: 45
   toTargetV3: {x: 0, y: 0, z: 0}
@@ -4588,8 +4588,8 @@ MonoBehaviour:
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
   moveVector: {x: 0, y: 0, z: 0}
-  speed: 50000
-  rotationSpeed: 1600
+  speed: 150
+  rotationSpeed: 0.25
   maxRollAngle: 70
   jetAngle: 50
   toTargetV3: {x: 0, y: 0, z: 0}
@@ -5490,8 +5490,8 @@ MonoBehaviour:
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
   moveVector: {x: 0, y: 0, z: 0}
-  speed: 40000
-  rotationSpeed: 500
+  speed: 200
+  rotationSpeed: 0.4
   maxRollAngle: 80
   jetAngle: 70
   toTargetV3: {x: 0, y: 0, z: 0}

@@ -1,4 +1,6 @@
-﻿TODO: projectile pooling
+﻿Kde je Time.fixedDeltaTime ve Start(), tam asi bude problém se slow-motion
+
+TODO: projectile pooling
 
 Unity hierarchia: - doporučoval by som dodržovať nejaké "naming conventions" - každý objekt v scéne je nazvaný inak a vytvára to zbytočný chaos
 

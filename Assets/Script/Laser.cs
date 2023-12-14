@@ -11,7 +11,7 @@ public class Laser : CachedMonoBehaviour
     public float initialShootSpeed = 1.1f;
     public float shootDelay = .3f;
     float _selfDestructAtTime;
-    Vector3 _speedV3;  // m / frame
+    Vector3 _speedV3;  // m / s
     float _sqrRaycastLength;
 
     void FixedUpdate()
@@ -26,7 +26,7 @@ public class Laser : CachedMonoBehaviour
     public void Setup(Vector3 position, Vector3 rotation, Vector3 speed)
     {
         _speedV3 = speed;
-        _sqrRaycastLength = Mathf.Pow(_speedV3.z, 2);  // TODO !!
+        _sqrRaycastLength = Mathf.Pow(_speedV3.z, 2);  // TODO !! (Myslet na slow-motion, mělo by obsahovat Time.fixedDeltaTime a po přechodu do slow-mo updatovat)  
         _selfDestructAtTime = Time.time + range / (_speedV3.z / Time.fixedDeltaTime);
         transform.position = position;
 
@@ -46,7 +46,7 @@ public class Laser : CachedMonoBehaviour
 
     void UpdateTransform()
     {
-        transform.Translate(_speedV3);
+        transform.Translate(Time.fixedDeltaTime * 100 * _speedV3);  // TODO: Z (Time.fixedDeltaTime * 100) udělat proměnnou měnící se po přechodu do slow-motion
         // transform.LookAt(universeController.mainCamera.transform);
     }
 

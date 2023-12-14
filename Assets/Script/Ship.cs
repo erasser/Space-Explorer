@@ -11,8 +11,8 @@ public class Ship : CachedMonoBehaviour
     public static readonly List<Ship> ShipList = new();
     [HideInInspector]
     public Vector3 moveVector;
-    public float speed = 40000;
-    public float rotationSpeed = 300;
+    public float speed = 200;
+    public float rotationSpeed = 3;
     [Range(0, 90)]
     public float maxRollAngle = 80;
     [Tooltip("Jet to ship angle in degrees.\nIt affects individual jet activation condition.\nHigher value => more jets\n\nDO NOT change in playmode!")]
@@ -92,13 +92,13 @@ public class Ship : CachedMonoBehaviour
 
         UpdateJets();
 
-        _rb.AddForce(SetVectorLength(moveVector, speed * (Input.GetKey(KeyCode.LeftShift) ? 2 : 1)));
+        _rb.AddForce(SetVectorLength(moveVector, speed * (Input.GetKey(KeyCode.LeftShift) ? 2 : 1)), ForceMode.Acceleration);
     }
 
     void Rotate()
     {
         // yaw
-        _rb.AddTorque(- Vector2.SignedAngle(new(transformCached.forward.x, transformCached.forward.z), new(toTargetV3.x, toTargetV3.z)) * rotationSpeed * Vector3.up);
+        _rb.AddTorque(- Vector2.SignedAngle(new(transformCached.forward.x, transformCached.forward.z), new(toTargetV3.x, toTargetV3.z)) * rotationSpeed * Vector3.up, ForceMode.Acceleration);
 
         // roll
         _rb.transform.localEulerAngles = new(0, _rb.transform.localEulerAngles.y, Mathf.Clamp(- 20 * _rb.angularVelocity.y, - maxRollAngle, maxRollAngle));

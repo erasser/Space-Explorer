@@ -2310,8 +2310,8 @@ MonoBehaviour:
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
   moveVector: {x: 0, y: 0, z: 0}
-  speed: 40000
-  rotationSpeed: 250
+  speed: 250
+  rotationSpeed: 4
   maxRollAngle: 50
   jetAngle: 70
   toTargetV3: {x: 0, y: 0, z: 0}
