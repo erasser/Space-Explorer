@@ -21,24 +21,28 @@ public class Ship : CachedMonoBehaviour
     float _jetAngleCos;
     Vector3 _userTarget;
     Rigidbody _rb;
-    Collider _collider;
     [HideInInspector]
     public Vector3 toTargetV3;
-    public static Ship DefaultShip;
+    // public static Ship DefaultShip;
     public static Ship ActiveShip;
     readonly List<Transform> _jetsTransforms = new();
     readonly List<VisualEffect> _jetsVisualEffects = new();
     public bool isFiring;
+    Collider _closestShipCollider;
 
     void Start()
     {
-        // ship = this;
         _rb = GetComponent<Rigidbody>();
         _rb.constraints = RigidbodyConstraints.FreezePositionY;
-        _collider = GetComponent<Collider>();  // TODO: To bude problém, když objekt bude mít více colliderů
+        var cscGameObject = transformCached.Find("closest ship collider");
+        if (cscGameObject)
+        {
+            _closestShipCollider = cscGameObject.GetComponent<Collider>();
+            _closestShipCollider.enabled = false;
+        }
 
         if (CompareTag("Default Ship"))
-            DefaultShip = ActiveShip = this;
+            /*DefaultShip =*/ ActiveShip = this;
 
         foreach (Transform jetTransform in transform.Find("JETS").transform)
         {
@@ -154,11 +158,12 @@ public class Ship : CachedMonoBehaviour
 
     public float GetSqrDistanceFromShip(Ship otherShip, float range = Mathf.Infinity)
     {
-        RaycastHit hit;
         var thisShipPosition = transformCached.position;
+        otherShip._closestShipCollider.enabled = true;
 
-        Physics.Raycast(thisShipPosition, otherShip.transformCached.position - thisShipPosition, out hit, range, universeController.closestShipColliderLayer);
+        Physics.Raycast(thisShipPosition, otherShip.transformCached.position - thisShipPosition, out var hit, range, universeController.closestShipColliderLayer);
 
+        otherShip._closestShipCollider.enabled = false;
         return (hit.point - thisShipPosition).sqrMagnitude;
     }
 

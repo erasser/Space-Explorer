@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a514b444dba54df418424449041a3aa6
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 1807
+  packageName: Space Ship Shooter
+  packageVersion: 1.0
+  assetPath: Assets/Space Shooter/Materials/Space_Shooter_Material.mat
+  uploadId: 0

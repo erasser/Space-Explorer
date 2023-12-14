@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 4878d6f49735f5d4988d37b89b7e9068
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 1807
+  packageName: Space Ship Shooter
+  packageVersion: 1.0
+  assetPath: Assets/Space Shooter/Info.txt
+  uploadId: 0
