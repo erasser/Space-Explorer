@@ -6,10 +6,10 @@ using static UniverseController;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(LineRenderer))]
-public class MyNavmeshAgent : CachedMonoBehaviour
+public class MyNavMeshAgent : CachedMonoBehaviour
 {
     public bool showPath = true;
-    public float targetMinDistance = 1f;
+    public float targetMinDistance = 2f;
     public float agentFixedUpdateDeltaTime = .2f;
     float _lastAgentFixedUpdate;
     Ship _ship;
@@ -38,12 +38,13 @@ public class MyNavmeshAgent : CachedMonoBehaviour
         _navMeshPath = new();
         _lastAgentFixedUpdate = Time.time;
         _targetSqrMinDistance = Mathf.Pow(targetMinDistance, 2);
-
-        GeneratePathTo(new (-180, 0, 0));
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Return))
+            GeneratePathTo(new (-180, 0, 0));
+
         // if (Time.time > _lastAgentFixedUpdate + agentFixedUpdateDeltaTime)
         //     AgentFixedUpdate();
 
@@ -66,8 +67,6 @@ public class MyNavmeshAgent : CachedMonoBehaviour
                     Stop();
             }
         }
-
-        
     }
 
     void AgentFixedUpdate()
@@ -88,8 +87,6 @@ public class MyNavmeshAgent : CachedMonoBehaviour
 
     bool IsPathPointReached()
     {
-        // InfoText.text = _toActualPathPointDirection.sqrMagnitude.ToString();
-        InfoText.text = _toActualPathPointDirection.sqrMagnitude + "\n" + _targetSqrMinDistance; 
         return _toActualPathPointDirection.sqrMagnitude <= _targetSqrMinDistance;
     }
 
@@ -139,7 +136,8 @@ public class MyNavmeshAgent : CachedMonoBehaviour
     public void Stop()
     {
         _state = State.StandingStill;
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        _ship.SetMoveVectorHorizontal(0);
+        _ship.SetMoveVectorVertical(0);
     }
 
     public void PauseMotion()

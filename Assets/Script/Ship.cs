@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.VFX;
 using static UniverseController;
 
@@ -20,7 +21,7 @@ public class Ship : CachedMonoBehaviour
     public float jetAngle = 45;
     float _jetAngleCos;
     Vector3 _userTarget;
-    Rigidbody _rb;
+    public Rigidbody rb;
     [HideInInspector]
     public Vector3 toTargetV3;
     // public static Ship DefaultShip;
@@ -32,8 +33,8 @@ public class Ship : CachedMonoBehaviour
 
     void Start()
     {
-        _rb = GetComponent<Rigidbody>();
-        _rb.constraints = RigidbodyConstraints.FreezePositionY;
+        rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.FreezePositionY;
         var cscGameObject = transformCached.Find("closest ship collider");
         if (cscGameObject)
         {
@@ -44,11 +45,13 @@ public class Ship : CachedMonoBehaviour
         if (CompareTag("Default Ship"))
             /*DefaultShip =*/ ActiveShip = this;
 
-        foreach (Transform jetTransform in transform.Find("JETS").transform)
-        {
-            _jetsTransforms.Add(jetTransform);
-            _jetsVisualEffects.Add(jetTransform.GetComponent<VisualEffect>());
-        }
+        var jets = transform.Find("JETS");
+        if (jets)
+            foreach (Transform jetTransform in jets.transform)
+            {
+                _jetsTransforms.Add(jetTransform);
+                _jetsVisualEffects.Add(jetTransform.GetComponent<VisualEffect>());
+            }
 
         _jetAngleCos = - Mathf.Cos(jetAngle * Mathf.Deg2Rad);
 
@@ -73,12 +76,15 @@ public class Ship : CachedMonoBehaviour
 
     public float GetForwardSpeed()  // m / s
     {
-        return Vector2.Dot(new(_rb.velocity.x, _rb.velocity.z), new(transformCached.forward.x, transformCached.forward.z));
+        return Vector2.Dot(new(rb.velocity.x, rb.velocity.z), new(transformCached.forward.x, transformCached.forward.z));
     }
 
     void Update()
     {
-        toTargetV3 = _userTarget - transformCached.position;
+        if (ActiveShip == this)
+            toTargetV3 = (_userTarget - transformCached.position).normalized; // TODO: To by asi mělo mít pokaždé stejnou velikost, ne? 
+        else
+            toTargetV3 = rb.velocity.normalized;
     }
 
     void Move()
@@ -92,16 +98,16 @@ public class Ship : CachedMonoBehaviour
 
         UpdateJets();
 
-        _rb.AddForce(SetVectorLength(moveVector, speed * (Input.GetKey(KeyCode.LeftShift) ? 2 : 1)), ForceMode.Acceleration);
+        rb.AddForce(SetVectorLength(moveVector, speed * (Input.GetKey(KeyCode.LeftShift) ? 2 : 1)), ForceMode.Acceleration);
     }
 
     void Rotate()
     {
         // yaw
-        _rb.AddTorque(- Vector2.SignedAngle(new(transformCached.forward.x, transformCached.forward.z), new(toTargetV3.x, toTargetV3.z)) * rotationSpeed * Vector3.up, ForceMode.Acceleration);
+        rb.AddTorque(- Vector2.SignedAngle(new(transformCached.forward.x, transformCached.forward.z), new(toTargetV3.x, toTargetV3.z)) * rotationSpeed * Vector3.up, ForceMode.Acceleration);
 
         // roll
-        _rb.transform.localEulerAngles = new(0, _rb.transform.localEulerAngles.y, Mathf.Clamp(- 20 * _rb.angularVelocity.y, - maxRollAngle, maxRollAngle));
+        rb.transform.localEulerAngles = new(0, rb.transform.localEulerAngles.y, Mathf.Clamp(- 20 * rb.angularVelocity.y, - maxRollAngle, maxRollAngle));
     }
 
     public void SetUserTarget(Vector3 target)
