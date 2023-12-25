@@ -23,7 +23,7 @@ public class Laser : CachedMonoBehaviour
         CheckIntersection();
     }
 
-    public void Setup(Vector3 position, Vector3 rotation, Vector3 speed)
+    public void Setup(Vector3 position, float rotationY, Vector3 speed)
     {
         _speedV3 = speed;
         _sqrRaycastLength = speed.z;  // TODO: Myslet na slow-motion, mělo by obsahovat Time.fixedDeltaTime a po přechodu do slow-mo updatovat - to se asi týká jen už vystřelených projektilů  
@@ -33,7 +33,7 @@ public class Laser : CachedMonoBehaviour
         if (autoAim)
             transform.LookAt(MouseCursorHit.point);
         else
-            transform.rotation = Quaternion.Euler(rotation);
+            transform.rotation = Quaternion.Euler(new(0, rotationY, 0));  // TODO: Nedalo by se to nějak zjednodušit? :D
     }
 
     void CheckLifeSpan()

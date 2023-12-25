@@ -3,12 +3,12 @@ using UnityEngine;
 using UnityEngine.VFX;
 using static UniverseController;
 
-// Ship requirements: This script,  Rigidbody, Collider, "ship" layer
+// Ship requirements: This script, "ship" layer (to můžu asi udělat dynamicky)
 
+[RequireComponent(typeof(Rigidbody), typeof(Collider))]
 public class Ship : CachedMonoBehaviour
 {
-    // public static Ship ship;  // 'ship' jsem už použil, přejmenovat
-    public static readonly List<Ship> ShipList = new();
+    static readonly List<Ship> ShipList = new();
     [HideInInspector]
     public Vector3 moveVector;
     public float speed = 200;
@@ -20,6 +20,7 @@ public class Ship : CachedMonoBehaviour
     public float jetAngle = 45;
     float _jetAngleCos;
     Vector3 _userTarget;
+    [HideInInspector]
     public Rigidbody rb;
     [HideInInspector]
     public Vector3 toTargetV3;
@@ -27,14 +28,20 @@ public class Ship : CachedMonoBehaviour
     public static Ship ActiveShip;
     readonly List<Transform> _jetsTransforms = new();
     readonly List<VisualEffect> _jetsVisualEffects = new();
+    [HideInInspector]
     public bool isFiring;
     Collider _closestShipCollider;
     int _jetCount;
+    List<Weapon> _weapons = new();
+    public static float ShootingRange = 40;
+    public static float ShootingSqrRange;
 
     void Start()
     {
+        ShipList.Add(this);
         rb = GetComponent<Rigidbody>();
-        rb.constraints = RigidbodyConstraints.FreezePositionY;
+        // rb.constraints = RigidbodyConstraints.FreezePositionY;
+        ShootingSqrRange = Mathf.Pow(ShootingRange, 2);
 
         var cscGameObject = transformCached.Find("closest ship collider");
         if (cscGameObject)
@@ -57,7 +64,11 @@ public class Ship : CachedMonoBehaviour
             _jetCount = _jetsTransforms.Count;
             _jetAngleCos = - Mathf.Cos(jetAngle * Mathf.Deg2Rad);
         }
-        ShipList.Add(this);
+
+        var weapons = transform.Find("WEAPON_SLOTS");
+        if (weapons)
+            foreach (Transform weapon in weapons)
+                _weapons.Add(weapon.GetComponent<Weapon>());
     }
 
     public void SetMoveVectorHorizontal(float horizontal)

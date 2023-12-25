@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CachedMonoBehaviour : MonoBehaviour
+public abstract class CachedMonoBehaviour : MonoBehaviour
 {
     [HideInInspector]
     public Transform transformCached;

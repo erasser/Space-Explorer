@@ -1,4 +1,5 @@
 ﻿Kde je Time.fixedDeltaTime ve Start(), tam asi bude problém se slow-motion
+daly by se traily renderovat pod lodí? Možná pomocí sorting layers u trail rendereru?
 
 TODO: projectile pooling
 

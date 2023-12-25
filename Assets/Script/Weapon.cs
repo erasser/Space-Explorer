@@ -31,9 +31,13 @@ public class Weapon : CachedMonoBehaviour
         _lastShootTime = Time.time;
 
         var newLaser = Instantiate(projectilePrefab);
+        // newLaser.GetComponent<Laser>().Setup(
+        //     transformCached.position,
+        //     new(0, transformCached.eulerAngles.y, 0),  // TODO: stačilo by předávat jen float
+        //     _ship.GetForwardSpeed() * _shootVectorCoefficient + _initialShootSpeedV3);  // TODO: stačilo by předávat jen float
         newLaser.GetComponent<Laser>().Setup(
             transformCached.position,
-            new(0, transformCached.eulerAngles.y, 0),
-            _ship.GetForwardSpeed() * _shootVectorCoefficient + _initialShootSpeedV3);
+            transformCached.eulerAngles.y,
+            _ship.GetForwardSpeed() * _shootVectorCoefficient + _initialShootSpeedV3);  // TODO: stačilo by předávat jen float
     }
 }
