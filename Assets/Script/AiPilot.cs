@@ -33,14 +33,18 @@ public class AiPilot : CachedMonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            var randomDestination = new Vector3(Random.Range(-200, 0), 0, Random.Range(-200, 100));
-
-            var dummy = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            dummy.transform.position = randomDestination;
-            dummy.transform.localScale = new(4, 4, 4);
-
-            IWantToGoTo(randomDestination);
+            GoToRandomLocation();
         }
+    }
+
+    public void GoToRandomLocation()
+    {
+        var randomDestination = new Vector3(Random.Range(-300, 300), 0, Random.Range(-300, 300));
+        IWantToGoTo(randomDestination);
+        
+        // var dummy = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        // dummy.transform.position = randomDestination;
+        // dummy.GetComponent<Collider>().isTrigger = true;
     }
 
     void IWantToStandStill()

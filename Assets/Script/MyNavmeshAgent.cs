@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.Net;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using static Ship;
+using static UniverseController;
 
 // TODO: Patrol
 // TODO: Zajistit, aby byla cesta korektní po kolizi (tj. změny pozice) objektu.
@@ -19,17 +18,21 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     float _lastAgentFixedUpdate;
     Ship _ship;
     NavMeshPath _navMeshPath;
-    readonly List<Vector3> _pathPoints = new();
-    int _actualPathPointIndex;
+    // readonly List<Vector3> _pathPoints = new();
+    // int _actualPathPointIndex;
     float _targetSqrMinDistance;
     LineRenderer _lineRenderer;
     GameObject _pointVisualizer;
+    Vector3 _actualPathPoint;
     Vector3 _toActualPathPointDirection;
     State _state;
+    AiPilot _aiPilot;
     // TARGETS and DESTINATIONS  (helper class to be created)
     Ship _target;
-    readonly List<Vector3> _destinations = new(new Vector3[2]);  // TODO: Just two for now
-    int _actualDestinationIndex;
+    Vector3 _destination;
+    // readonly List<Vector3> _destinations = new(new Vector3[2]);  // TODO: Just two for now
+    int _remainingPathPoints;
+    // int _actualDestinationIndex;
 
     // public ReportedEvent reportedEvent; 
 
@@ -54,19 +57,31 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         _navMeshPath = new();
         _lastAgentFixedUpdate = Time.time;
         _targetSqrMinDistance = Mathf.Pow(targetMinDistance, 2);
-        // _aiPilot = GetComponent<AiPilot>();
+        _aiPilot = GetComponent<AiPilot>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (Time.time > _lastAgentFixedUpdate + agentFixedUpdateDeltaTime)
         {
             AgentFixedUpdate();
             _lastAgentFixedUpdate = Time.time;
         }
+        // InfoText.text = "state: " + _state;
+        
+        
+        _toActualPathPointDirection = _actualPathPoint - transformCached.position;
+        InfoText.text = (Mathf.Round(_toActualPathPointDirection.magnitude * 10)/10).ToString();
 
+        
         if (_state == State.GoingToDestination)
         {
+            CheckPathPointReached();
+            
+            if (_state == State.StandingStill)
+                return;
+
+            // _toActualPathPointDirection = _actualPathPoint - transformCached.position;
             _ship.SetMoveVectorHorizontal(_toActualPathPointDirection.x);
             _ship.SetMoveVectorVertical(_toActualPathPointDirection.z);
         }
@@ -74,21 +89,18 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     void AgentFixedUpdate()
     {
-        CheckPathPoints();
+        if (_state == State.StandingStill)
+            return;
 
         if (_state == State.GoingToDestination)
         {
-            if (!GeneratePathTo(_destinations[0]))
+            if (!GeneratePathTo(_destination))
             {
                 Debug.LogWarning("◘ NO VALID PATH FOUND! "); // TODO: Najednou se nejde dostat do cíle
                 return;
             }
             
-            // TODO: Může to najít jen partial
-            
-            
         }
-
         return;
         
         /*// if (_state == State.GoingToDestination)
@@ -130,7 +142,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     //     }
     // }
 
-    void CheckPathPoints()
+    /*void CheckPathPoints()
     {
         if (_actualPathPointIndex >= _pathPoints.Count)
         {
@@ -138,6 +150,12 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             return;
         }
 
+        if (_actualPathPointIndex == -1)
+        {
+            print("☻ Key is -1");
+            return;
+        }
+// print("count: " + _pathPoints.Count + ", index: " + _actualDestinationIndex);
         _toActualPathPointDirection = _pathPoints[_actualPathPointIndex] - transformCached.position;
         var distance = _actualPathPointIndex == _pathPoints.Count - 1 ? _targetSqrMinDistance * 1.5f : _targetSqrMinDistance;  // Break sooner before last path point
         var reached = _toActualPathPointDirection.sqrMagnitude <= distance;
@@ -154,17 +172,46 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             if (_actualPathPointIndex == _pathPoints.Count) // last point
                 Stop();
         }
-    }
+    }*/
 
+    bool CheckPathPointReached()
+    {
+        // _toActualPathPointDirection = _actualPathPoint - transformCached.position;
+        // InfoText.text = (Mathf.Round(_toActualPathPointDirection.magnitude * 10)/10).ToString();
+        
+        // var distance = _actualPathPointIndex == _pathPoints.Count - 1 ? _targetSqrMinDistance * 1.5f : _targetSqrMinDistance;  // Break sooner before last path point
+        var reached = _toActualPathPointDirection.sqrMagnitude <= 16;  // TODO...
+
+        if (reached)
+        {
+            print("checkpoint reached!");
+
+            if (_remainingPathPoints == 0)
+            {
+                print("That was last checkpoint!");
+                // _state = State.StandingStill;
+                
+                // Stop();
+                _aiPilot.GoToRandomLocation();
+
+            }
+            // else
+            //     GeneratePathTo();
+            return true;
+        }
+
+        return false;
+    }
+    
     bool GeneratePathTo(Vector3 targetLocation)
     {
-        CheckPathPoints();
-
-        if (_actualPathPointIndex == -1)
-        {
-            print("• _actualPathPointIndex = -1");
-            return false;
-        }
+        // CheckPathPoint();
+        //
+        // if (_actualPathPointIndex == -1)
+        // {
+        //     print("• _actualPathPointIndex = -1");
+        //     return false;
+        // }
 
         var position = transformCached.position;
         var result = NavMesh.CalculatePath(new(position.x, 0, position.z), targetLocation, NavMesh.AllAreas, _navMeshPath);
@@ -172,43 +219,29 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         if (!result)
             return false;
 
-        _actualPathPointIndex = 0;
-        _pathPoints.Clear();
+        // _actualPathPointIndex = 0;
+        // _pathPoints.Clear();
 
-        var count = _navMeshPath.corners.Length;        
-        for (var i = 1; i < count; ++i)
-            _pathPoints.Add(_navMeshPath.corners[i]);
+        // var count = _navMeshPath.corners.Length;        
+        // for (var i = 1; i < count; ++i)
+        //     _pathPoints.Add(_navMeshPath.corners[i]);
 
-        _state = State.GoingToDestination;
+        _actualPathPoint = _navMeshPath.corners[1];
+        _remainingPathPoints = _navMeshPath.corners.Length - 2;
 
         ShowPath();
 
         return true;
     }
 
-    void ShowPath()
-    {
-        if (!showPath)
-            return;
-
-        _lineRenderer.positionCount = _navMeshPath.corners.Length;
-        _lineRenderer.SetPositions(_navMeshPath.corners);
-
-        // foreach (var point in _navMeshPath.corners)
-        // {
-        //     _pointVisualizer = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        //     _pointVisualizer.transform.position = point;
-        //     _pointVisualizer.name = $"{name}_path_point";
-        // }
-    }
-
     public bool SetDestination(Vector3 target /*, TravelStance travelStance = TravelStance.PreferDestination*/)
     {
         if (!GeneratePathTo(target))
             return false;
-print("_destinations capacity: " + _destinations.Capacity);
-print("_destinations count: " + _destinations.Count);
-        _destinations[0] = target;
+
+        // _destinations[0] = target;
+        // _actualPathPoint = target;
+        _destination = target;
         _state = State.GoingToDestination;
 
         return true;
@@ -240,11 +273,27 @@ print("_destinations count: " + _destinations.Count);
     {
         // TODO: Checknout situaci, kdy 2. bod je už nadosah
 
-        _destinations[0] = transformCached.position;
-        _destinations[1] = destinationPoint;
+        // _destinations[0] = transformCached.position;
+        // _destinations[1] = destinationPoint;
         
         // ...        
 
+    }
+
+    void ShowPath()
+    {
+        if (!showPath)
+            return;
+
+        _lineRenderer.positionCount = _navMeshPath.corners.Length;
+        _lineRenderer.SetPositions(_navMeshPath.corners);
+
+        // foreach (var point in _navMeshPath.corners)
+        // {
+        //     _pointVisualizer = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        //     _pointVisualizer.transform.position = point;
+        //     _pointVisualizer.name = $"{name}_path_point";
+        // }
     }
 
     public void PauseMotion()

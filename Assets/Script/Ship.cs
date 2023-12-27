@@ -11,7 +11,7 @@ public class Ship : CachedMonoBehaviour
     static readonly List<Ship> ShipList = new();
     [HideInInspector]
     public Vector3 moveVector;
-    public float speed = 200;
+    public float speed = 10;
     public float rotationSpeed = 3;
     [Range(0, 90)]
     public float maxRollAngle = 80;
@@ -96,7 +96,7 @@ public class Ship : CachedMonoBehaviour
 
     void Update()
     {
-        toTargetV3 = ActiveShip == this ? _userTarget - transformCached.position : rb.velocity; 
+        toTargetV3 = ActiveShip == this ? _userTarget - transformCached.position : rb.velocity;
     }
 
     void Move()
@@ -108,6 +108,12 @@ public class Ship : CachedMonoBehaviour
         }
 
         UpdateJets();
+
+        // if (name == "ship_Space_Shooter")
+        // {
+        //     InfoText.text = SetVectorLength(moveVector, speed) .ToString();
+        //     InfoText.text += "\n" + rb.velocity.magnitude;
+        // }
 
         rb.AddForce(SetVectorLength(moveVector, speed * (Input.GetKey(KeyCode.LeftShift) ? 2 : 1)), ForceMode.Acceleration);
     }
@@ -171,7 +177,7 @@ public class Ship : CachedMonoBehaviour
     public float GetSqrDistanceFromShip(Ship otherShip, float range = Mathf.Infinity)
     {
         var thisShipPosition = transformCached.position;
-        otherShip._closestShipCollider.enabled = true;
+        otherShip._closestShipCollider.enabled = true;  // TODO: Vyřešit nenaloďovatelný lodě
 
         Physics.Raycast(thisShipPosition, otherShip.transformCached.position - thisShipPosition, out var hit, range, universeController.closestShipColliderLayer);
 
