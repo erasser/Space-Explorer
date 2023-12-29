@@ -1056,6 +1056,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9148328567788902429, guid: d0ee9ecd775e34846983a62b384b28da,
         type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9148328567788902429, guid: d0ee9ecd775e34846983a62b384b28da,
+        type: 3}
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
@@ -1569,7 +1574,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 135760966}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -2409,6 +2414,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  afterburnerCoefficient: 1
 --- !u!120 &165339969
 LineRenderer:
   serializedVersion: 2
@@ -2761,7 +2767,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 177015484}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -4493,7 +4499,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 327933201}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -5001,6 +5007,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  afterburnerCoefficient: 1
 --- !u!120 &357448181
 LineRenderer:
   serializedVersion: 2
@@ -5433,7 +5440,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 396174942}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -6403,7 +6410,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 499222330}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -6670,7 +6677,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 504307196}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -6977,6 +6984,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  afterburnerCoefficient: 1
 --- !u!120 &509910990
 LineRenderer:
   serializedVersion: 2
@@ -7919,7 +7927,7 @@ Transform:
   - {fileID: 554296570}
   - {fileID: 2009251648}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &603450651
 GameObject:
@@ -8088,7 +8096,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 613431440}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -8395,6 +8403,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  afterburnerCoefficient: 1
 --- !u!120 &617022004
 LineRenderer:
   serializedVersion: 2
@@ -8602,7 +8611,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 629165800}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -9377,7 +9386,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 716295561}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -9642,6 +9651,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  afterburnerCoefficient: 1
 --- !u!135 &737138319
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10034,7 +10044,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 770830864}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -10181,7 +10191,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 803427702}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -10439,7 +10449,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 832756107}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -10607,6 +10617,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  afterburnerCoefficient: 1
 --- !u!120 &849511018
 LineRenderer:
   serializedVersion: 2
@@ -10854,7 +10865,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 862218302}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -11244,6 +11255,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  afterburnerCoefficient: 1
 --- !u!120 &881753001
 LineRenderer:
   serializedVersion: 2
@@ -11831,7 +11843,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -160.8
+      value: -138.22
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
@@ -11896,7 +11908,7 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -5716681864270162303, guid: 564c86c1543c6eb4e8525374599f15cc, type: 3}
@@ -13002,7 +13014,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1084106500}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -13128,7 +13140,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1097067850}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -13248,6 +13260,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  afterburnerCoefficient: 1
 --- !u!54 &1111573720
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -13476,7 +13489,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1116165078}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -14715,7 +14728,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1213669167}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -14857,11 +14870,12 @@ MonoBehaviour:
   speed: 200
   rotationSpeed: 0.4
   maxRollAngle: 80
-  jetAngle: 70
+  jetAngle: 80
   moveVector: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  afterburnerCoefficient: 1
 --- !u!135 &1223899197
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -15657,7 +15671,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -15869,7 +15883,7 @@ RectTransform:
   - {fileID: 1327272378}
   - {fileID: 182422015}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -17853,6 +17867,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  afterburnerCoefficient: 1
 --- !u!120 &1561499887
 LineRenderer:
   serializedVersion: 2
@@ -18866,6 +18881,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  afterburnerCoefficient: 1
 --- !u!120 &1666397820
 LineRenderer:
   serializedVersion: 2
@@ -19671,7 +19687,7 @@ Rigidbody:
   m_GameObject: {fileID: 1731987671}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 3
+  m_Drag: 5
   m_AngularDrag: 8
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -19722,7 +19738,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  speed: 120
+  speed: 70
   rotationSpeed: 0.3
   maxRollAngle: 80
   jetAngle: 60
@@ -19730,6 +19746,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  afterburnerCoefficient: 1
 --- !u!135 &1731987680
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -21377,7 +21394,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1928567872}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -21750,7 +21767,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1963238762}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -22011,7 +22028,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2016734296
 GameObject:
@@ -22745,6 +22762,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  afterburnerCoefficient: 1
 --- !u!120 &2098569848
 LineRenderer:
   serializedVersion: 2
@@ -22985,6 +23003,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  afterburnerCoefficient: 1
 --- !u!120 &2100928888
 LineRenderer:
   serializedVersion: 2
@@ -23522,7 +23541,7 @@ Transform:
   - {fileID: 391682375}
   - {fileID: 9953531}
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &222533453349973134
 MeshFilter:
@@ -23687,7 +23706,7 @@ Transform:
   - {fileID: 723596552}
   - {fileID: 908515075}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &592535930069546760
 MeshRenderer:
@@ -24935,12 +24954,12 @@ GameObject:
   - component: {fileID: 2388053579360366956}
   - component: {fileID: 2388053579360366959}
   m_Layer: 0
-  m_Name: space_ship_Torb
+  m_Name: ship_Torb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2388053579360366956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24964,6 +24983,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  afterburnerCoefficient: 1
 --- !u!54 &2388053579360366958
 Rigidbody:
   m_ObjectHideFlags: 0

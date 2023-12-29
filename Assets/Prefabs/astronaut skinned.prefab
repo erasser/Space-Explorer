@@ -82,18 +82,18 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 4
+      - m_Value: 2
         m_Name: x-velocity (ie. spread)
         m_Overridden: 1
-      - m_Value: 7
+      - m_Value: 9
         m_Name: speed min
         m_Overridden: 1
-      - m_Value: 12
+      - m_Value: 15
         m_Name: speed max
         m_Overridden: 1
-      - m_Value: 1
+      - m_Value: 0.3
         m_Name: size multiplier
-        m_Overridden: 0
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -810,18 +810,18 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 4
+      - m_Value: 2
         m_Name: x-velocity (ie. spread)
         m_Overridden: 1
-      - m_Value: 7
+      - m_Value: 9
         m_Name: speed min
         m_Overridden: 1
-      - m_Value: 12
+      - m_Value: 15
         m_Name: speed max
         m_Overridden: 1
-      - m_Value: 1
+      - m_Value: 0.3
         m_Name: size multiplier
-        m_Overridden: 0
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -968,18 +968,18 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 4
+      - m_Value: 2
         m_Name: x-velocity (ie. spread)
         m_Overridden: 1
-      - m_Value: 7
+      - m_Value: 9
         m_Name: speed min
         m_Overridden: 1
-      - m_Value: 12
+      - m_Value: 15
         m_Name: speed max
         m_Overridden: 1
-      - m_Value: 1
+      - m_Value: 0.3
         m_Name: size multiplier
-        m_Overridden: 0
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -2019,18 +2019,18 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 4
+      - m_Value: 2
         m_Name: x-velocity (ie. spread)
         m_Overridden: 1
-      - m_Value: 7
+      - m_Value: 9
         m_Name: speed min
         m_Overridden: 1
-      - m_Value: 12
+      - m_Value: 15
         m_Name: speed max
         m_Overridden: 1
-      - m_Value: 1
+      - m_Value: 0.3
         m_Name: size multiplier
-        m_Overridden: 0
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -2318,6 +2318,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  afterburnerCoefficient: 1
 --- !u!96 &-6931913766147552067
 TrailRenderer:
   serializedVersion: 3

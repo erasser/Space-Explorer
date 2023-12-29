@@ -45,8 +45,8 @@ public class UniverseController : MonoBehaviour
         Cursor.SetCursor(mouseCursor, new(mouseCursor.width / 2f, mouseCursor.height / 2f), CursorMode.ForceSoftware);
         explosionEffect = Instantiate(explosionEffectPrefab);
         InfoText = GameObject.Find("infoText").GetComponent<Text>();
+        canBeBoardedList.RemoveAll(ship => !ship.gameObject.activeSelf);
         // selectionSprite = Instantiate(selectionSpritePrefab);
-
         // _rangeSprite = Instantiate(rangeSpritePrefab);
         // _rangeSprite.transform.localScale = Vector3.one * AstronautBoardingDistanceLimit * 2;
     }
@@ -81,6 +81,11 @@ public class UniverseController : MonoBehaviour
             ActiveShip.SetMoveVectorHorizontal(1);
         else
             ActiveShip.SetMoveVectorHorizontal(0);
+
+        if (Input.GetKey(KeyCode.LeftShift))
+            ActiveShip.afterburnerCoefficient = 2;
+        else
+            ActiveShip.afterburnerCoefficient = 1;
 
         bool wasQPressedThisFrame = false;
 

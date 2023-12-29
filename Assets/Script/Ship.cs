@@ -36,6 +36,8 @@ public class Ship : CachedMonoBehaviour
     List<Weapon> _weapons = new();
     public static float ShootingRange = 40;
     public static float ShootingSqrRange;
+    [HideInInspector]
+    public float afterburnerCoefficient = 1;
 
     void Start()
     {
@@ -122,7 +124,7 @@ public class Ship : CachedMonoBehaviour
         //     InfoText.text += "\n" + rb.velocity.magnitude;
         // }
 
-        rb.AddForce(SetVectorLength(moveVector, speed * (Input.GetKey(KeyCode.LeftShift) ? 2 : 1)), ForceMode.Acceleration);
+        rb.AddForce(SetVectorLength(moveVector, speed * afterburnerCoefficient), ForceMode.Acceleration);
     }
 
     void Rotate()
