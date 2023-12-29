@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DigitalRuby.Tween;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,17 +17,22 @@ public class UniverseController : MonoBehaviour
     Vector3 _initialCameraOffset;
     public GameObject astronautPrefab;
     public static Ship Astronaut;
-    Rigidbody _astronautRb;
     public Texture2D mouseCursor;
     // public GameObject selectionSpritePrefab;
+    // public GameObject rangeSpritePrefab;
+    GameObject _rangeSprite;
+    // [HideInInspector]
     // public GameObject selectionSprite;
     [SerializeField]
     public VisualEffect explosionEffectPrefab;
+    [HideInInspector]
     public VisualEffect explosionEffect;
     float _initialFov;
     public static Text InfoText;
     const float AstronautBoardingDistanceLimit = 4;
     static readonly float AstronautBoardingSqrDistanceLimit = Mathf.Pow(AstronautBoardingDistanceLimit, 2);
+    public List<Ship> canBeBoardedList = new();
+    // Transform _astronautRangeTransform;
 
     void Start()
     {
@@ -36,11 +42,13 @@ public class UniverseController : MonoBehaviour
         _initialFov = mainCamera.fieldOfView;
         Astronaut = Instantiate(astronautPrefab).GetComponent<Ship>();
         Astronaut.gameObject.SetActive(false);
-        _astronautRb = Astronaut.GetComponent<Rigidbody>();
-        Cursor.SetCursor(mouseCursor, new(32, 32), CursorMode.ForceSoftware);
+        Cursor.SetCursor(mouseCursor, new(mouseCursor.width / 2f, mouseCursor.height / 2f), CursorMode.ForceSoftware);
         explosionEffect = Instantiate(explosionEffectPrefab);
         InfoText = GameObject.Find("infoText").GetComponent<Text>();
         // selectionSprite = Instantiate(selectionSpritePrefab);
+
+        // _rangeSprite = Instantiate(rangeSpritePrefab);
+        // _rangeSprite.transform.localScale = Vector3.one * AstronautBoardingDistanceLimit * 2;
     }
 
     void Update()
@@ -52,6 +60,8 @@ public class UniverseController : MonoBehaviour
         ActiveShip.SetUserTarget(MouseCursorHit.point);
 
         UpdateCameraPosition();
+
+        // _rangeSprite.transform.position = Astronaut.transformCached.position;
     }
 
     void ProcessKeys()
@@ -81,23 +91,25 @@ public class UniverseController : MonoBehaviour
             if (!IsAstronautActive() && !ActiveShip.isFiring)
                 EjectAstronaut();
             else
-            {
-                BoardAstronaut(ActiveShip.GetClosestShipInRange(AstronautBoardingDistanceLimit));
-            }
+                BoardAstronaut(ActiveShip.GetClosestShipInRange(AstronautBoardingDistanceLimit).ship);
         }
 
         if (Input.GetKey(KeyCode.Q))
         {
             if (!wasQPressedThisFrame && IsAstronautActive())
             {
-                var closestShip = ActiveShip.GetClosestShipInRange();
+                var closestShip = Astronaut.GetClosestShipInRange();
 
-                if (closestShip)
+                if (closestShip.ship)
                 {
-                    var shipToAstronautV3 = closestShip.transformCached.position - Astronaut.transformCached.position;
-
+                    // var shipToAstronautV3 = closestShip.transformCached.position - Astronaut.transformCached.position;
+                    // var shipToAstronautV3 =  closestShip.GetComponent<Collider>().ClosestPoint(Astronaut.transformCached.position) - Astronaut.transformCached.position;
+                    var shipToAstronautV3 = closestShip.toClosestPointV3;
+Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Color.cyan);
                     if (shipToAstronautV3.sqrMagnitude > AstronautBoardingSqrDistanceLimit)
-                        _astronautRb.AddForce(60 * shipToAstronautV3.normalized, ForceMode.Impulse);
+                        Astronaut.rb.AddForce(60 * shipToAstronautV3.normalized, ForceMode.Impulse);  // TODO: Je to uvnitř Update()
+                    // else
+                    //     closestShip.ship.Highlight();
                 }
             }
         }
@@ -112,6 +124,7 @@ public class UniverseController : MonoBehaviour
 
     void BoardAstronaut(Ship ship)
     {
+        // return;
         if (!ship)
             return;
 
@@ -127,11 +140,11 @@ public class UniverseController : MonoBehaviour
         Astronaut.transformCached.position = ActiveShip.transformCached.position;
         Astronaut.transformCached.rotation = ActiveShip.transformCached.rotation;
 
-        Astronaut.GetComponent<Rigidbody>().AddForce(-10000 * ActiveShip.transformCached.forward, ForceMode.Impulse);
+        Astronaut.rb.AddForce(-10000 * ActiveShip.transformCached.forward, ForceMode.Impulse);
         ActiveShip.moveVector.x = ActiveShip.moveVector.z = 0;
-        ActiveShip = Astronaut.GetComponent<Ship>();
+        ActiveShip = Astronaut;
 
-        mainCamera.fieldOfView = 35;
+        mainCamera.fieldOfView = _initialFov / 2;
     }
 
     void ProcessMouseMove()

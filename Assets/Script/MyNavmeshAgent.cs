@@ -9,7 +9,7 @@ using static UniverseController;
 // ↑ Funguje to, ale asi jen do chvíle, než objekt dotrkám k dalšímu checkpoinu a on se bude snažit vrátit k tomu aktuálnímu.
 // ↑ Asi by to v případě kolize chtělo najít nejbližší checkpoint. TODO 
 
-[RequireComponent(typeof(Rigidbody), typeof(LineRenderer), typeof(AiPilot))]
+[RequireComponent(typeof(Rigidbody), typeof(LineRenderer))]
 public class MyNavMeshAgent : CachedMonoBehaviour
 {
     public bool showPath = true;
@@ -67,13 +67,9 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             AgentFixedUpdate();
             _lastAgentFixedUpdate = Time.time;
         }
-        // InfoText.text = "state: " + _state;
-        
-        
-        _toActualPathPointDirection = _actualPathPoint - transformCached.position;
-        InfoText.text = (Mathf.Round(_toActualPathPointDirection.magnitude * 10)/10).ToString();
 
-        
+        _toActualPathPointDirection = _actualPathPoint - transformCached.position;
+
         if (_state == State.GoingToDestination)
         {
             CheckPathPointReached();
@@ -184,13 +180,12 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
         if (reached)
         {
-            print("checkpoint reached!");
+            // print("checkpoint reached!");
 
             if (_remainingPathPoints == 0)
             {
-                print("That was last checkpoint!");
-                // _state = State.StandingStill;
-                
+                // print("That was last checkpoint!");
+
                 // Stop();
                 _aiPilot.GoToRandomLocation();
 
