@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.VFX;
 using static UniverseController;
 
@@ -16,7 +17,7 @@ public class Ship : CachedMonoBehaviour
     [Tooltip("Jet to ship angle in degrees.\nIt affects individual jet activation condition.\nHigher value => more jets\n\nDO NOT change in playmode!")]
     [Range(0, 90)]      // -.5 odpovídá 60 °, čili setupu tří jetů do hvězdy
     public float jetAngle = 45;
-    static readonly List<Ship> ShipList = new();
+    public static readonly List<Ship> ShipList = new();
     [HideInInspector]
     public Vector3 moveVector;
     float _jetAngleCos;
@@ -32,37 +33,33 @@ public class Ship : CachedMonoBehaviour
     [HideInInspector]
     public bool isFiring;
     // Collider _closestShipCollider;
-    Collider _collider;
+    public Collider shipCollider;
     int _jetCount;
     List<Weapon> _weapons = new();
     public static float ShootingRange = 40;
     public static float ShootingSqrRange;
     [HideInInspector]
     public float afterburnerCoefficient = 1;
-    public GameObject predictPositionDummyPrefab;
-    Transform _predictPositionDummyTransform;
     Ship _theOtherShipTMP;
     float _fastestWeaponSpeedMetersPerSecond;
+    Transform _predictiveColliderTransform;
 
     void Start()
     {
         ShipList.Add(this);
         ShootingSqrRange = Mathf.Pow(ShootingRange, 2);
-        _collider = GetComponent<Collider>();
-        if (!_collider.enabled)
+        shipCollider = GetComponent<Collider>();
+        // CreatePredictiveCollider();
+
+        if (!shipCollider.enabled)
             Debug.LogWarning("-- Disabled collider! --");
 
         _theOtherShipTMP = GameObject.Find("ship_Space_Shooter").GetComponent<Ship>();
 
-        // var cscGameObject = transformCached.Find("closest ship collider");
-        // if (cscGameObject)
-        // {
-        //     _closestShipCollider = cscGameObject.GetComponent<Collider>();
-        //     // _closestShipCollider.enabled = false;
-        // }
-
         if (CompareTag("Default Ship"))
             /*DefaultShip =*/ ActiveShip = this;
+
+        InitialCameraOffset = MainCameraTransform.position - ActiveShip.transformCached.position;
 
         var jets = transform.Find("JETS");
         if (jets)
@@ -88,9 +85,9 @@ public class Ship : CachedMonoBehaviour
                     _fastestWeaponSpeedMetersPerSecond = speed;
             }
 
-        // _fastestWeaponSpeed *= Time.fixedDeltaTime;  // m/s  =>  m/frame
+        PredictPositionDummyTransform = Instantiate(universeController.predictPositionDummyPrefab).transform;
 
-        _predictPositionDummyTransform = Instantiate(predictPositionDummyPrefab).transform;
+        InitCaption();
     }
 
     void OnEnable()
@@ -113,13 +110,10 @@ public class Ship : CachedMonoBehaviour
         Move();
         Rotate();
 
+        // UpdatePredictiveCollider();
+
         if (name == "PLAYER")
-            //     _predictPositionDummyTransform.position = ShowMyPredictedPositionAccordingTo(_theOtherShipTMP, _theOtherShipTMP.rb.velocity.magnitude);
-            // else
-            // _predictPositionDummyTransform.position = ShowMyPredictedPositionAccordingTo(ActiveShip, ActiveShip.rb.velocity.magnitude);
-            // _predictPositionDummyTransform.position = ShowMyPredictedPositionAccordingTo(ActiveShip, ActiveShip.rb.velocity.magnitude + ActiveShip._fastestWeaponSpeedMetersPerSecond);
-            // _predictPositionDummyTransform.position = ShowMyPredictedPositionAccordingTo(ActiveShip, .04f);
-            _predictPositionDummyTransform.position = GetPredictedPosition(_theOtherShipTMP, _theOtherShipTMP._fastestWeaponSpeedMetersPerSecond );
+            PredictPositionDummyTransform.position = GetPredictedPosition(_theOtherShipTMP, _theOtherShipTMP._fastestWeaponSpeedMetersPerSecond);
     }
 
     public float GetForwardSpeed()  // m / s
@@ -132,7 +126,7 @@ public class Ship : CachedMonoBehaviour
     void Update()
     {
         toTargetV3 = ActiveShip == this ? _userTarget - transformCached.position : rb.velocity;
-        Debug.DrawLine(transformCached.position, _predictPositionDummyTransform.position, Color.magenta);
+        Debug.DrawLine(transformCached.position,  PredictPositionDummyTransform.position, Color.magenta);
     }
 
     void Move()
@@ -223,11 +217,11 @@ public class Ship : CachedMonoBehaviour
     public float GetSqrDistanceFromShipPosition(Ship otherShip, float range = Mathf.Infinity)  // range přesunout výše
     {
         var thisShipPosition = transformCached.position;
-        otherShip._collider.enabled = true;
+        otherShip.shipCollider.enabled = true;
 
         Physics.Raycast(thisShipPosition, otherShip.transformCached.position - thisShipPosition, out var hit, range, universeController.closestShipColliderLayer);
 
-        otherShip._collider.enabled = false;
+        otherShip.shipCollider.enabled = false;
         return (hit.point - thisShipPosition).sqrMagnitude;
     }
 
@@ -239,7 +233,7 @@ public class Ship : CachedMonoBehaviour
         // dummy.transform.position = otherShip._collider.ClosestPoint(thisShipPosition);
         // dummy.GetComponent<Collider>().enabled = false;
         // InfoText.text = "distance: " + (otherShip._collider.ClosestPoint(thisShipPosition) - thisShipPosition).sqrMagnitude;
-        return otherShip._collider.ClosestPoint(thisShipPosition) - thisShipPosition;
+        return otherShip.shipCollider.ClosestPoint(thisShipPosition) - thisShipPosition;
     }
 
     public static bool IsAstronautActive()
@@ -255,6 +249,34 @@ public class Ship : CachedMonoBehaviour
     void OnDestroy()
     {
         ShipList.Remove(this);
+    }
+
+    float GetPredictedPositionZOffsetTime(Ship ship)
+    {
+        var target = ship;
+        var bulletVelocity = ship.rb.velocity.magnitude;
+
+        var targetTransform = target.transformCached;
+        var targetVelocity = target.rb.velocity;
+
+        Vector3 toTarget =  targetTransform.position - transformCached.position;
+        float a = Vector3.Dot(targetVelocity, targetVelocity) - bulletVelocity * bulletVelocity;
+        float b = 2 * Vector3.Dot(targetVelocity, toTarget);
+        float c = Vector3.Dot(toTarget, toTarget);
+
+        float p = - b / (2 * a);
+        float q = Mathf.Sqrt(Mathf.Abs(b * b - 4 * a * c)) / (2 * a);
+
+        float t1 = p - q;
+        float t2 = p + q;
+        float t;
+
+        if (t1 > t2 && t2 > 0)
+            t = t2;
+        else
+            t = t1;
+
+        return Mathf.Abs(t);
     }
 
     Vector3 GetPredictedPosition(Ship target, float bulletVelocity)  // https://gamedev.stackexchange.com/questions/25277/how-to-calculate-shot-angle-and-velocity-to-hit-a-moving-target
@@ -286,6 +308,33 @@ public class Ship : CachedMonoBehaviour
         // Vector3 bulletPath = aimSpot - transform.position;
         //float timeToImpact = bulletPath.magnitude / bulletVelocity;//speed must be in units per second
         return aimSpot;
+    }
+
+    /*void CreatePredictiveCollider()
+    {
+        var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        // cube.transform.parent = transform;
+        cube.transform.position = Vector3.zero;
+        cube.GetComponent<Collider>().isTrigger = true;
+        cube.layer = LayerMask.NameToLayer("predictive collider");
+        cube.transform.localScale = 2 * _collider.bounds.extents;  // TODO: Jestli to tu zůstane, chtělo by to lossyScale
+        _predictiveColliderTransform = cube.transform;
+    }
+
+    void UpdatePredictiveCollider()
+    {
+        var pos = GetPredictedPosition(this, ActiveShip.rb.velocity.magnitude);  // TODO: Pro každý pár je ta predikce jiná
+        
+        if (Double.IsNaN(pos.x) || Double.IsNaN(pos.y) || Double.IsNaN(pos.z))
+            return;
+
+        _predictiveColliderTransform.position = pos;
+    }*/
+
+    void InitCaption()
+    {
+        var caption = Instantiate(universeController.captionPrefab, UI.transform);
+        caption.GetComponent<Caption>().Setup(this);    
     }
 
     // public void Highlight()

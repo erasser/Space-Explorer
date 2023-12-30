@@ -11,10 +11,11 @@ public class UniverseController : MonoBehaviour
     public LayerMask raycastPlaneLayer;
     public LayerMask shootableLayer;
     public LayerMask closestShipColliderLayer;  // all ships (my solution for multiple gameObject layers)
+    // public LayerMask predictiveCollidersLayer;
     public static RaycastHit MouseCursorHit;
     public Camera mainCamera;
-    Transform _mainCameraTransform;
-    Vector3 _initialCameraOffset;
+    public static Transform MainCameraTransform;
+    public static Vector3 InitialCameraOffset;
     public GameObject astronautPrefab;
     public static Ship Astronaut;
     public Texture2D mouseCursor;
@@ -28,24 +29,28 @@ public class UniverseController : MonoBehaviour
     [HideInInspector]
     public VisualEffect explosionEffect;
     float _initialFov;
+    public static GameObject UI;
     public static Text InfoText;
     const float AstronautBoardingDistanceLimit = 4;
     static readonly float AstronautBoardingSqrDistanceLimit = Mathf.Pow(AstronautBoardingDistanceLimit, 2);
     [Tooltip("Will be cleared of disabled ships.")]
     public List<Ship> canBeBoardedList = new();
     // Transform _astronautRangeTransform;
+    public GameObject predictPositionDummyPrefab;
+    public static Transform PredictPositionDummyTransform;
+    public Caption captionPrefab;
 
     void Start()
     {
         universeController = this;
-        _mainCameraTransform = mainCamera.transform;
-        _initialCameraOffset = _mainCameraTransform.position - ActiveShip.transformCached.position;
+        MainCameraTransform = mainCamera.transform;
         _initialFov = mainCamera.fieldOfView;
         Astronaut = Instantiate(astronautPrefab).GetComponent<Ship>();
         Astronaut.gameObject.SetActive(false);
         Cursor.SetCursor(mouseCursor, new(mouseCursor.width / 2f, mouseCursor.height / 2f), CursorMode.ForceSoftware);
         explosionEffect = Instantiate(explosionEffectPrefab);
-        InfoText = GameObject.Find("infoText").GetComponent<Text>();
+        UI = GameObject.Find("UI");
+        InfoText = UI.transform.Find("infoText").GetComponent<Text>();
         canBeBoardedList.RemoveAll(ship => !ship.gameObject.activeSelf);
         // selectionSprite = Instantiate(selectionSpritePrefab);
         // _rangeSprite = Instantiate(rangeSpritePrefab);
@@ -162,24 +167,24 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
     {
         var coef = Input.GetKey(KeyCode.LeftControl) ? .8f : .2f;
 
-        _mainCameraTransform.position = ActiveShip.transformCached.position +
-                                        _initialCameraOffset + // vertical offset
+        MainCameraTransform.position = ActiveShip.transformCached.position +
+                                        InitialCameraOffset + // vertical offset
                                         // SetVectorLength(player.toTargetV3, player.toTargetV3.sqrMagnitude / 3);  // horizontal offset  // Fungovalo to, teď problikává obraz
                                         ActiveShip.toTargetV3 * coef; // horizontal offset
     }
 
     void SetCameraHeight(float multiplier)
     {
-        var startPos = _mainCameraTransform.position;
+        var startPos = MainCameraTransform.position;
         // var endPos = SetVectorLength(startPos, multiplier * startPos.y);
         var endPos = startPos - Vector3.up * 10;
 
-        _mainCameraTransform.gameObject.Tween("Zoom", startPos, endPos, 1.5f, TweenScaleFunctions.SineEaseInOut,
+        MainCameraTransform.gameObject.Tween("Zoom", startPos, endPos, 1.5f, TweenScaleFunctions.SineEaseInOut,
             Bubu);
 
         void Bubu(ITween<Vector3> t)
         {
-            _mainCameraTransform.position = t.CurrentValue;
+            MainCameraTransform.position = t.CurrentValue;
         }
     }
 

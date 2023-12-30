@@ -18,7 +18,7 @@ TagManager:
   - shootable
   - navmesh
   - closest ship collider
-  - 
+  - predictive collider
   - 
   - 
   - 

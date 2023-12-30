@@ -1727,8 +1727,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!120 &80052492
 LineRenderer:
   serializedVersion: 2
@@ -2597,8 +2597,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!120 &110962073
 LineRenderer:
   serializedVersion: 2
@@ -10857,8 +10857,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!120 &688012652
 LineRenderer:
   serializedVersion: 2
@@ -11695,8 +11695,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!120 &732281601
 LineRenderer:
   serializedVersion: 2
@@ -11883,8 +11883,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!135 &737138319
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -13281,8 +13281,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!120 &815254018
 LineRenderer:
   serializedVersion: 2
@@ -15632,8 +15632,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!120 &982663295
 LineRenderer:
   serializedVersion: 2
@@ -17427,8 +17427,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!54 &1111573720
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -18591,8 +18591,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!120 &1175145711
 LineRenderer:
   serializedVersion: 2
@@ -20122,8 +20122,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!120 &1214094794
 LineRenderer:
   serializedVersion: 2
@@ -20374,9 +20374,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 4690051863288629704, guid: 6472b2dfeb81b3349ac001bdec1603fb,
-    type: 3}
 --- !u!135 &1223899197
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -21570,7 +21569,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -21657,7 +21656,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 36
+    m_FontSize: 32
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
@@ -22564,6 +22563,10 @@ MonoBehaviour:
   - {fileID: 1111573718}
   - {fileID: 1223899196}
   - {fileID: 2388053579360366956}
+  predictPositionDummyPrefab: {fileID: 4690051863288629704, guid: 6472b2dfeb81b3349ac001bdec1603fb,
+    type: 3}
+  captionPrefab: {fileID: 2014421549101051829, guid: b0fa0cbcdf43b04409ccdcb18c27cf25,
+    type: 3}
 --- !u!1 &1422001819
 GameObject:
   m_ObjectHideFlags: 0
@@ -23417,8 +23420,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!120 &1466056806
 LineRenderer:
   serializedVersion: 2
@@ -25074,8 +25077,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!120 &1598107624
 LineRenderer:
   serializedVersion: 2
@@ -25464,8 +25467,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!120 &1598670396
 LineRenderer:
   serializedVersion: 2
@@ -27455,9 +27458,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 4690051863288629704, guid: 6472b2dfeb81b3349ac001bdec1603fb,
-    type: 3}
 --- !u!135 &1731987680
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -28060,8 +28062,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!120 &1779875244
 LineRenderer:
   serializedVersion: 2
@@ -29748,8 +29750,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!120 &1867741302
 LineRenderer:
   serializedVersion: 2
@@ -30283,8 +30285,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!120 &1874043360
 LineRenderer:
   serializedVersion: 2
@@ -31046,8 +31048,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!120 &1900129579
 LineRenderer:
   serializedVersion: 2
@@ -32228,8 +32230,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!120 &1960860602
 LineRenderer:
   serializedVersion: 2
@@ -34290,8 +34292,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!120 &2134351828
 LineRenderer:
   serializedVersion: 2
@@ -36107,8 +36109,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
-  predictPositionDummyPrefab: {fileID: 0}
 --- !u!54 &2388053579360366958
 Rigidbody:
   m_ObjectHideFlags: 0

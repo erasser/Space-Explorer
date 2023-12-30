@@ -110,6 +110,8 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         if (_state == State.GoingToDestination)
         {
             CheckPathPoints();
+
+            // PredictCollisions();
         }
 
         /*// if (_state == State.GoingToDestination)
@@ -356,6 +358,21 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             return _pathPoints[_actualPathPointIndex];  // TODO
 
         return transform.position;
+    }
+
+    void PredictCollisions()
+    {
+        foreach (Ship ship in ShipList)
+        {
+            // Debug.DrawRay(transformCached.position, SetVectorLength(ship.transformCached.position - transformCached.position, 30), Color.cyan);
+            var result = Physics.Raycast(transformCached.position, ship.transformCached.position - transformCached.position, out RaycastHit hit, 30, LayerMask.NameToLayer("predictive collider"));
+
+            if (result)
+            {
+                print(name + ": Predicted collision with: " + hit.collider.name);
+                Stop();
+            }
+        }
     }
 
     public void PauseMotion()
