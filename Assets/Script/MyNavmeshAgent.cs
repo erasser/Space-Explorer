@@ -71,6 +71,8 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             _lastAgentFixedUpdate = Time.time;
         }
 
+        // InfoText.text = "state: " + _state;
+        // InfoText.text += "\npath points: index " + _actualPathPointIndex + " / " + _pathPoints.Count + " count";
         // _toActualPathPointDirection = _actualPathPoint - transformCached.position;
         // _toActualPathPointDirection = _pathPoints[_actualPathPointIndex] - transformCached.position;
 
@@ -143,7 +145,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     bool IsPathPointReached()
     {
         // InfoText.text = _toActualPathPointDirection.sqrMagnitude.ToString();
-        InfoText.text = _toActualPathPointDirection.sqrMagnitude + "\n" + _targetSqrMinDistance; 
+        // InfoText.text = _toActualPathPointDirection.sqrMagnitude + "\n" + _targetSqrMinDistance; 
         return _toActualPathPointDirection.sqrMagnitude <= _targetSqrMinDistance;
     }
 
@@ -183,13 +185,14 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         // _toActualPathPointDirection = _pathPoints[_actualPathPointIndex] - transformCached.position;
         var distance = _actualPathPointIndex == _pathPoints.Count - 1 ? _targetSqrMinDistance * 1.5f : _targetSqrMinDistance;  // Break sooner before last path point
         var reached = _toActualPathPointDirection.sqrMagnitude <= distance;
-        InfoText.text = Mathf.Round(_toActualPathPointDirection.sqrMagnitude) + " <\n" + distance + " ?";
+        // InfoText.text = Mathf.Round(_toActualPathPointDirection.sqrMagnitude) + " <\n" + distance + " ?";
         // print(_toActualPathPointDirection.sqrMagnitude + ", " + distance);
 
         if (reached && ++_actualPathPointIndex == _pathPoints.Count)
         {
-            print("• reached!");
-            Stop();
+            // print("• reached!");
+            // Stop();
+            _aiPilot.GoToRandomLocation();
         }
     }
 

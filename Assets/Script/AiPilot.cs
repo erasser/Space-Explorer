@@ -42,9 +42,9 @@ public class AiPilot : CachedMonoBehaviour
         var randomDestination = new Vector3(Random.Range(-300, 300), 0, Random.Range(-300, 300));
         IWantToGoTo(randomDestination);
         
-        // var dummy = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        // dummy.transform.position = randomDestination;
-        // dummy.GetComponent<Collider>().isTrigger = true;
+        var dummy = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        dummy.transform.position = randomDestination;
+        dummy.GetComponent<Collider>().isTrigger = true;
     }
 
     void IWantToStandStill()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -38,6 +39,10 @@ public class Ship : CachedMonoBehaviour
     public static float ShootingSqrRange;
     [HideInInspector]
     public float afterburnerCoefficient = 1;
+    public GameObject predictPositionDummyPrefab;
+    Transform _predictPositionDummyTransform;
+    Ship _theOtherShipTMP;
+    float _fastestWeaponSpeedMetersPerSecond;
 
     void Start()
     {
@@ -46,6 +51,8 @@ public class Ship : CachedMonoBehaviour
         _collider = GetComponent<Collider>();
         if (!_collider.enabled)
             Debug.LogWarning("-- Disabled collider! --");
+
+        _theOtherShipTMP = GameObject.Find("ship_Space_Shooter").GetComponent<Ship>();
 
         // var cscGameObject = transformCached.Find("closest ship collider");
         // if (cscGameObject)
@@ -72,7 +79,18 @@ public class Ship : CachedMonoBehaviour
         var weapons = transform.Find("WEAPON_SLOTS");
         if (weapons)
             foreach (Transform weapon in weapons)
-                _weapons.Add(weapon.GetComponent<Weapon>());
+            {
+                var weaponComponent = weapon.GetComponent<Weapon>();
+                _weapons.Add(weaponComponent);
+                
+                var speed = weaponComponent.projectilePrefab.initialShootSpeed;
+                if (speed > _fastestWeaponSpeedMetersPerSecond)
+                    _fastestWeaponSpeedMetersPerSecond = speed;
+            }
+
+        // _fastestWeaponSpeed *= Time.fixedDeltaTime;  // m/s  =>  m/frame
+
+        _predictPositionDummyTransform = Instantiate(predictPositionDummyPrefab).transform;
     }
 
     void OnEnable()
@@ -94,6 +112,14 @@ public class Ship : CachedMonoBehaviour
     {
         Move();
         Rotate();
+
+        if (name == "PLAYER")
+            //     _predictPositionDummyTransform.position = ShowMyPredictedPositionAccordingTo(_theOtherShipTMP, _theOtherShipTMP.rb.velocity.magnitude);
+            // else
+            // _predictPositionDummyTransform.position = ShowMyPredictedPositionAccordingTo(ActiveShip, ActiveShip.rb.velocity.magnitude);
+            // _predictPositionDummyTransform.position = ShowMyPredictedPositionAccordingTo(ActiveShip, ActiveShip.rb.velocity.magnitude + ActiveShip._fastestWeaponSpeedMetersPerSecond);
+            // _predictPositionDummyTransform.position = ShowMyPredictedPositionAccordingTo(ActiveShip, .04f);
+            _predictPositionDummyTransform.position = GetPredictedPosition(_theOtherShipTMP, _theOtherShipTMP._fastestWeaponSpeedMetersPerSecond );
     }
 
     public float GetForwardSpeed()  // m / s
@@ -106,6 +132,7 @@ public class Ship : CachedMonoBehaviour
     void Update()
     {
         toTargetV3 = ActiveShip == this ? _userTarget - transformCached.position : rb.velocity;
+        Debug.DrawLine(transformCached.position, _predictPositionDummyTransform.position, Color.magenta);
     }
 
     void Move()
@@ -228,6 +255,37 @@ public class Ship : CachedMonoBehaviour
     void OnDestroy()
     {
         ShipList.Remove(this);
+    }
+
+    Vector3 GetPredictedPosition(Ship target, float bulletVelocity)  // https://gamedev.stackexchange.com/questions/25277/how-to-calculate-shot-angle-and-velocity-to-hit-a-moving-target
+    {
+        var targetTransform = target.transformCached;
+        var targetVelocity = target.rb.velocity;
+
+        Vector3 toTarget =  targetTransform.position - transformCached.position;
+        float a = Vector3.Dot(targetVelocity, targetVelocity) - bulletVelocity * bulletVelocity;
+        float b = 2 * Vector3.Dot(targetVelocity, toTarget);
+        float c = Vector3.Dot(toTarget, toTarget);
+
+        float p = - b / (2 * a);
+        float q = Mathf.Sqrt(Mathf.Abs(b * b - 4 * a * c)) / (2 * a);
+
+        float t1 = p - q;
+        float t2 = p + q;
+        float t;
+
+        if (t1 > t2 && t2 > 0)
+            t = t2;
+        else
+            t = t1;
+
+        // print("last calculation: " + target.transform.position + " + " + target.rb.velocity + " * " + t);
+        
+        Vector3 aimSpot = targetTransform.position + targetVelocity * Mathf.Abs(t);
+        
+        // Vector3 bulletPath = aimSpot - transform.position;
+        //float timeToImpact = bulletPath.magnitude / bulletVelocity;//speed must be in units per second
+        return aimSpot;
     }
 
     // public void Highlight()

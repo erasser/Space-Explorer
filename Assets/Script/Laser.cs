@@ -8,7 +8,7 @@ public class Laser : CachedMonoBehaviour
     [Tooltip("m")]
     public float range = 500;
     [Tooltip("m/s")]
-    public float initialShootSpeed = 1.1f;
+    public float initialShootSpeed = 100f;
     public float shootDelay = .3f;
     float _selfDestructAtTime;
     Vector3 _speedV3;  // m / s

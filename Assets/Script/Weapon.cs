@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UniverseController;
 // This is a weapon socket
 
 public class Weapon : CachedMonoBehaviour
@@ -38,6 +39,7 @@ public class Weapon : CachedMonoBehaviour
         newLaser.GetComponent<Laser>().Setup(
             transformCached.position,
             transformCached.eulerAngles.y,
-            _ship.GetForwardSpeed() * _shootVectorCoefficient + _initialShootSpeedV3);  // TODO: stačilo by předávat jen float
+            // _ship.GetForwardSpeed() * _shootVectorCoefficient + _initialShootSpeedV3);  // TODO: stačilo by předávat jen float
+            _initialShootSpeedV3);
     }
 }

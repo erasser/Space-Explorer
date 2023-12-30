@@ -31,6 +31,7 @@ public class UniverseController : MonoBehaviour
     public static Text InfoText;
     const float AstronautBoardingDistanceLimit = 4;
     static readonly float AstronautBoardingSqrDistanceLimit = Mathf.Pow(AstronautBoardingDistanceLimit, 2);
+    [Tooltip("Will be cleared of disabled ships.")]
     public List<Ship> canBeBoardedList = new();
     // Transform _astronautRangeTransform;
 
@@ -159,10 +160,12 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
 
     void UpdateCameraPosition()
     {
+        var coef = Input.GetKey(KeyCode.LeftControl) ? .8f : .2f;
+
         _mainCameraTransform.position = ActiveShip.transformCached.position +
                                         _initialCameraOffset + // vertical offset
                                         // SetVectorLength(player.toTargetV3, player.toTargetV3.sqrMagnitude / 3);  // horizontal offset  // Fungovalo to, teď problikává obraz
-                                        ActiveShip.toTargetV3 * .2f; // horizontal offset
+                                        ActiveShip.toTargetV3 * coef; // horizontal offset
     }
 
     void SetCameraHeight(float multiplier)
