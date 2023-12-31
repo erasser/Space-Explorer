@@ -5071,7 +5071,7 @@ GameObject:
   - component: {fileID: 327933202}
   - component: {fileID: 327933204}
   - component: {fileID: 327933203}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: front left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7081,7 +7081,7 @@ GameObject:
   - component: {fileID: 504307197}
   - component: {fileID: 504307199}
   - component: {fileID: 504307198}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9297,7 +9297,7 @@ GameObject:
   m_Component:
   - component: {fileID: 587562417}
   - component: {fileID: 587562418}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15129,6 +15129,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 564c86c1543c6eb4e8525374599f15cc,
+        type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -15181,6 +15186,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1731987680}
+    - targetCorrespondingSourceObject: {fileID: -927199367670048503, guid: 564c86c1543c6eb4e8525374599f15cc,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1731987687}
   m_SourcePrefab: {fileID: 100100000, guid: 564c86c1543c6eb4e8525374599f15cc, type: 3}
 --- !u!1 &959511041
 GameObject:
@@ -17733,7 +17742,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1135626381}
   - component: {fileID: 1135626382}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: trail right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20926,7 +20935,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1274142563}
   - component: {fileID: 1274142564}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: trail left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22058,7 +22067,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1358909986}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: JETS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24276,7 +24285,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1564235458}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WEAPON_SLOTS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27516,6 +27525,22 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
+--- !u!114 &1731987687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731987671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 878db930f8928ea4ba19bc2fcce5d3da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxArmor: 100
+  currentArmor: 0
+  maxShield: 0
+  currentShield: 0
 --- !u!1 &1754295070
 GameObject:
   m_ObjectHideFlags: 0
@@ -32500,7 +32525,7 @@ GameObject:
   - component: {fileID: 1963238763}
   - component: {fileID: 1963238765}
   - component: {fileID: 1963238764}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: front right
   m_TagString: Untagged
   m_Icon: {fileID: 0}

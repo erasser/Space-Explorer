@@ -37,7 +37,7 @@ public class UniverseController : MonoBehaviour
     public List<Ship> canBeBoardedList = new();
     // Transform _astronautRangeTransform;
     public GameObject predictPositionDummyPrefab;
-    public static Transform PredictPositionDummyTransform;
+    // public static Transform PredictPositionDummyTransform;
     public Caption captionPrefab;
 
     void Start()

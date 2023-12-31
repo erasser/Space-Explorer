@@ -43,6 +43,7 @@ public class Ship : CachedMonoBehaviour
     Ship _theOtherShipTMP;
     float _fastestWeaponSpeedMetersPerSecond;
     Transform _predictiveColliderTransform;
+    public Transform predictPositionDummyTransform;
 
     void Start()
     {
@@ -57,9 +58,10 @@ public class Ship : CachedMonoBehaviour
         _theOtherShipTMP = GameObject.Find("ship_Space_Shooter").GetComponent<Ship>();
 
         if (CompareTag("Default Ship"))
-            /*DefaultShip =*/ ActiveShip = this;
-
-        InitialCameraOffset = MainCameraTransform.position - ActiveShip.transformCached.position;
+        {
+            ActiveShip = this;
+            InitialCameraOffset = MainCameraTransform.position - ActiveShip.transformCached.position;
+        }
 
         var jets = transform.Find("JETS");
         if (jets)
@@ -85,7 +87,7 @@ public class Ship : CachedMonoBehaviour
                     _fastestWeaponSpeedMetersPerSecond = speed;
             }
 
-        PredictPositionDummyTransform = Instantiate(universeController.predictPositionDummyPrefab).transform;
+        predictPositionDummyTransform = Instantiate(universeController.predictPositionDummyPrefab).transform;
 
         InitCaption();
     }
@@ -112,8 +114,10 @@ public class Ship : CachedMonoBehaviour
 
         // UpdatePredictiveCollider();
 
-        if (name == "PLAYER")
-            PredictPositionDummyTransform.position = GetPredictedPosition(_theOtherShipTMP, _theOtherShipTMP._fastestWeaponSpeedMetersPerSecond);
+        // PredictPositionDummyTransform.position = GetPredictedPosition(_theOtherShipTMP, _theOtherShipTMP._fastestWeaponSpeedMetersPerSecond);
+
+        if (ActiveShip != this)
+            predictPositionDummyTransform.position = GetPredictedPosition(this, ActiveShip._fastestWeaponSpeedMetersPerSecond);
     }
 
     public float GetForwardSpeed()  // m / s
@@ -126,7 +130,7 @@ public class Ship : CachedMonoBehaviour
     void Update()
     {
         toTargetV3 = ActiveShip == this ? _userTarget - transformCached.position : rb.velocity;
-        Debug.DrawLine(transformCached.position,  PredictPositionDummyTransform.position, Color.magenta);
+        Debug.DrawLine(transformCached.position,  predictPositionDummyTransform.position, Color.magenta);
     }
 
     void Move()
@@ -284,7 +288,8 @@ public class Ship : CachedMonoBehaviour
         var targetTransform = target.transformCached;
         var targetVelocity = target.rb.velocity;
 
-        Vector3 toTarget =  targetTransform.position - transformCached.position;
+        // Vector3 toTarget =  targetTransform.position - transformCached.position;
+        Vector3 toTarget =  targetTransform.position - ActiveShip.transformCached.position;
         float a = Vector3.Dot(targetVelocity, targetVelocity) - bulletVelocity * bulletVelocity;
         float b = 2 * Vector3.Dot(targetVelocity, toTarget);
         float c = Vector3.Dot(toTarget, toTarget);

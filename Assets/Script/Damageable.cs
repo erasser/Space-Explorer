@@ -1,11 +1,24 @@
+using System;
 using UnityEngine;
 
 public class Damageable : MonoBehaviour
 {
-    public float armor = 100;
+    public float maxArmor = 100;
     public float currentArmor;
-    public float shield = 100;
+    public float maxShield = 0;
     public float currentShield;
+
+    void Start()
+    {
+        // Laser.LaserHitEvent += OnLaserHit(Laser.LaserHitDelegate l);
+        currentArmor = maxArmor;
+        currentShield = maxShield;
+    }
+
+    // void OnLaserHit()
+    // {
+    //     
+    // }
 
     public void TakeDamage(float damage)
     {

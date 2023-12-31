@@ -14,6 +14,9 @@ public class Laser : CachedMonoBehaviour
     Vector3 _speedV3;  // m / s
     float _sqrRaycastLength;
 
+    // public delegate void LaserHitDelegate(Laser l);
+    // public static event LaserHitDelegate LaserHitEvent;
+
     void FixedUpdate()
     {
         CheckLifeSpan();
@@ -57,6 +60,8 @@ public class Laser : CachedMonoBehaviour
             universeController.LaunchHitEffect(hit.point, hit.normal);
 
             hit.collider.gameObject.GetComponent<Damageable>()?.TakeDamage(10);
+            // TODO: SEND MESSAGE
+            // LaserHitEvent(this);
 
             Destroy(gameObject);
         }

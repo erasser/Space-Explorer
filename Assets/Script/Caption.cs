@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using static UniverseController;
 
 public class Caption : CachedMonoBehaviour
@@ -7,9 +8,11 @@ public class Caption : CachedMonoBehaviour
     [HideInInspector]
     public Ship targetShip;
     TextMeshProUGUI _caption;
-    Content _actualContent;
+    RectTransform _armor;
+    // Content _actualContent;
+    Damageable _damageable;
 
-    public struct Content
+    /*public struct Content
     {
         public string name;
         public string speed;
@@ -21,38 +24,53 @@ public class Caption : CachedMonoBehaviour
             speed = velocityMagnitude.ToString();
             customField = customText;
         }
-    }
+    }*/
 
     void Start()
     {
         _caption = transform.Find("text").GetComponent<TextMeshProUGUI>();
+        _armor = transform.Find("bar_armor").GetComponent<RectTransform>();
+        _damageable = targetShip.transform.GetComponent<Damageable>();
     }
 
     public void Setup(Ship ship)
     {
         targetShip = ship;
-        _actualContent = new(ship.name, ship.rb.velocity.magnitude, "...");
+        // _actualContent = new(ship.name, ship.rb.velocity.magnitude, "...");
     }
 
     public void Update()
     {
+        if (!targetShip)  // TODO: Vyřešit přes Event
+        {
+            DestroyImmediate(gameObject);
+            return;
+        }
+
         UpdatePosition();
         
-        UpdateText(_actualContent);
+        UpdateText(/*_actualContent*/);
+        
+        UpdateBars();
     }
 
     void UpdatePosition()
     {
-        var zOffset = targetShip.shipCollider.bounds.extents.z;
-        // print("extents: " + yOffset);
-        var coords = universeController.mainCamera.WorldToScreenPoint(targetShip.transformCached.position + Vector3.back * zOffset);
-        coords = new(coords.x, coords.y, coords.z);
+        var coords = universeController.mainCamera.WorldToScreenPoint(targetShip.transformCached.position + Vector3.back * targetShip.shipCollider.bounds.extents.z);
+        // coords = new(coords.x, coords.y, coords.z);
         transformCached.position = coords;
     }
 
-    // TODO: Updatovat, jen když se zmení hodnoty
-    public void UpdateText(Content content)
+    public void UpdateText(/*Content content*/)
     {
-        _caption.text = $"<b>{content.name}</b>\n{content.speed}\n<i>{content.customField}</i>";
+        _caption.text = $"<b>{targetShip.name}</b>\n" +
+                        $"{Mathf.Round(targetShip.rb.velocity.magnitude)} m/s\n" +
+                        $"<i>...</i>";
+    }
+
+    void UpdateBars()
+    {
+        if (_damageable)
+            _armor.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _damageable.currentArmor);
     }
 }
