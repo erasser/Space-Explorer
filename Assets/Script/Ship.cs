@@ -40,9 +40,7 @@ public class Ship : CachedMonoBehaviour
     public static float ShootingSqrRange;
     [HideInInspector]
     public float afterburnerCoefficient = 1;
-    Ship _theOtherShipTMP;
     float _fastestWeaponSpeedMetersPerSecond;
-    Transform _predictiveColliderTransform;
     public Transform predictPositionDummyTransform;
 
     void Start()
@@ -54,8 +52,6 @@ public class Ship : CachedMonoBehaviour
 
         if (!shipCollider.enabled)
             Debug.LogWarning("-- Disabled collider! --");
-
-        _theOtherShipTMP = GameObject.Find("ship_Space_Shooter").GetComponent<Ship>();
 
         if (CompareTag("Default Ship"))
         {
@@ -117,7 +113,7 @@ public class Ship : CachedMonoBehaviour
         // PredictPositionDummyTransform.position = GetPredictedPosition(_theOtherShipTMP, _theOtherShipTMP._fastestWeaponSpeedMetersPerSecond);
 
         if (ActiveShip != this)
-            predictPositionDummyTransform.position = GetPredictedPosition(this, ActiveShip._fastestWeaponSpeedMetersPerSecond);
+            predictPositionDummyTransform.position = transformCached.position + GetPredictedPositionOffset(ActiveShip, ActiveShip._fastestWeaponSpeedMetersPerSecond, this);
     }
 
     public float GetForwardSpeed()  // m / s
@@ -281,38 +277,6 @@ public class Ship : CachedMonoBehaviour
             t = t1;
 
         return Mathf.Abs(t);
-    }
-
-    Vector3 GetPredictedPosition(Ship target, float bulletVelocity)  // https://gamedev.stackexchange.com/questions/25277/how-to-calculate-shot-angle-and-velocity-to-hit-a-moving-target
-    {
-        var targetTransform = target.transformCached;
-        var targetVelocity = target.rb.velocity;
-
-        // Vector3 toTarget =  targetTransform.position - transformCached.position;
-        Vector3 toTarget =  targetTransform.position - ActiveShip.transformCached.position;
-        float a = Vector3.Dot(targetVelocity, targetVelocity) - bulletVelocity * bulletVelocity;
-        float b = 2 * Vector3.Dot(targetVelocity, toTarget);
-        float c = Vector3.Dot(toTarget, toTarget);
-
-        float p = - b / (2 * a);
-        float q = Mathf.Sqrt(Mathf.Abs(b * b - 4 * a * c)) / (2 * a);
-
-        float t1 = p - q;
-        float t2 = p + q;
-        float t;
-
-        if (t1 > t2 && t2 > 0)
-            t = t2;
-        else
-            t = t1;
-
-        // print("last calculation: " + target.transform.position + " + " + target.rb.velocity + " * " + t);
-        
-        Vector3 aimSpot = targetTransform.position + targetVelocity * Mathf.Abs(t);
-        
-        // Vector3 bulletPath = aimSpot - transform.position;
-        //float timeToImpact = bulletPath.magnitude / bulletVelocity;//speed must be in units per second
-        return aimSpot;
     }
 
     /*void CreatePredictiveCollider()

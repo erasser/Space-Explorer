@@ -16,6 +16,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     public bool showPath = true;
     public float targetMinDistance = 2f;
     public float agentFixedUpdateDeltaTime = .2f;
+    const float CollisionPredictionMaxDistance = 50;
     float _lastAgentFixedUpdate;
     Ship _ship;
     NavMeshPath _navMeshPath;
@@ -29,6 +30,10 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     State _state;
     AiPilot _aiPilot;
     bool _needsRegeneratePath;
+    static BoxCollider _predictiveCollider;
+    static LayerMask _predictiveColliderLayerMask;
+    static readonly List<MyNavMeshAgent> MyNavMeshAgents = new();  // for collision predicting
+
     // TARGETS and DESTINATIONS  (helper class to be created)
     Ship _target;
     Vector3 _destination;
@@ -36,7 +41,8 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     // int _remainingPathPoints;
     // int _actualDestinationIndex;
 
-    // public ReportedEvent reportedEvent; 
+
+    // public ReportedEvent reportedEvent;
 
     // public enum ReportedEvent
     // {
@@ -61,6 +67,8 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         _lastAgentFixedUpdate = Time.time;
         _targetSqrMinDistance = Mathf.Pow(targetMinDistance, 2);
         _aiPilot = GetComponent<AiPilot>();
+        MyNavMeshAgents.Add(this);
+        _predictiveColliderLayerMask = LayerMask.NameToLayer("predictive collider");
     }
 
     void FixedUpdate()
@@ -360,7 +368,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         return transform.position;
     }
 
-    void PredictCollisions()
+    /*void PredictCollisions()
     {
         foreach (Ship ship in ShipList)
         {
@@ -373,18 +381,73 @@ public class MyNavMeshAgent : CachedMonoBehaviour
                 Stop();
             }
         }
+    }*/
+
+    static void CreatePredictiveCollider()  // Mělo by se volat jen jednou
+    {
+        var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cube.name = "collision prediction collider";
+        // cube.transform.parent = transform;
+        // cube.transform.position = Vector3.zero;  // needed?
+        cube.layer = LayerMask.NameToLayer("predictive collider");
+        _predictiveCollider = cube.GetComponent<BoxCollider>();
+        _predictiveCollider.isTrigger = true;
+        _predictiveCollider.includeLayers = LayerMask.NameToLayer("predictive collider");
+        _predictiveCollider.excludeLayers = Physics.AllLayers;
+        // Destroy(cube.GetComponent<Renderer>());
+        cube.SetActive(false);
+
+        // cube.transform.localScale = 2 * _collider.bounds.extents;  // TODO: Jestli to tu zůstane, chtělo by to lossyScale
+    }
+
+    void UpdatePredictiveColliderFor()
+    {
+        
+    }
+
+    static void PredictCollisions()
+    {
+        int count = MyNavMeshAgents.Count;
+
+        if (count < 2)
+            return;
+
+        _predictiveCollider.gameObject.SetActive(true);
+
+        for (int first = 0; first < count - 1; ++first)
+        {
+            for (int second = first + 1; second < count; ++second)
+            {
+                PredictCollision(MyNavMeshAgents[first], MyNavMeshAgents[second]);
+            }
+        }
+
+        _predictiveCollider.gameObject.SetActive(true);
+    }
+
+    static void PredictCollision(MyNavMeshAgent observer, MyNavMeshAgent target)
+    {
+        // target - proti čemu castit        
+        var predictionColliderPosition = GetPredictedPositionOffset(observer._ship, target._ship.rb.velocity.magnitude, target._ship);
+
+        _predictiveCollider.transform.position = target.transformCached.position + predictionColliderPosition;
+        // _predictiveCollider.size = 2 *   // TODO: Zde jsem skončil.
+
+        // observer - kde bude box cast
+        var boxCastCenter = GetPredictedPositionOffset(target._ship, observer._ship.rb.velocity.magnitude, observer._ship);
+        var wasHit = Physics.BoxCast(boxCastCenter, _predictiveCollider.size, observer._ship.rb.velocity, observer.transformCached.rotation, Mathf.Infinity, _predictiveColliderLayerMask);
     }
 
     public void PauseMotion()
     {
-        
+
     }
 
     public void ResumeMotion()
     {
-        
+
     }
-    
-    
+
+
     // TODO: Nějak low-level zajistit, aby cíl měl vždy y = 0
 }

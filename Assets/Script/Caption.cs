@@ -56,7 +56,7 @@ public class Caption : CachedMonoBehaviour
 
     void UpdatePosition()
     {
-        var coords = universeController.mainCamera.WorldToScreenPoint(targetShip.transformCached.position + Vector3.back * targetShip.shipCollider.bounds.extents.z);
+        var coords = universeController.mainCamera.WorldToScreenPoint(targetShip.transformCached.position + targetShip.shipCollider.bounds.extents.z * 2 * Vector3.back);
         // coords = new(coords.x, coords.y, coords.z);
         transformCached.position = coords;
     }

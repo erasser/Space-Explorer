@@ -209,6 +209,34 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
         return vector.normalized * length;
     }
 
+    // Observer is checking collision / shooting with bulletVelocity, target's velocity is predicted
+    public static Vector3 GetPredictedPositionOffset(Ship observer, float bulletVelocity, Ship target)  // https://gamedev.stackexchange.com/questions/25277/how-to-calculate-shot-angle-and-velocity-to-hit-a-moving-target
+    {
+        var targetTransform = target.transformCached;
+        var targetVelocity = target.rb.velocity;
 
+        // Vector3 toTarget =  targetTransform.position - transformCached.position;
+        Vector3 toTarget =  targetTransform.position - observer.transformCached.position;
+        float a = Vector3.Dot(targetVelocity, targetVelocity) - bulletVelocity * bulletVelocity;
+        float b = 2 * Vector3.Dot(targetVelocity, toTarget);
+        float c = Vector3.Dot(toTarget, toTarget);
+
+        float p = - b / (2 * a);
+        float q = Mathf.Sqrt(Mathf.Abs(b * b - 4 * a * c)) / (2 * a);
+
+        float t1 = p - q;
+        float t2 = p + q;
+        float t;
+
+        if (t1 > t2 && t2 > 0)
+            t = t2;
+        else
+            t = t1;
+
+        // Vector3 aimSpot = targetVelocity * Mathf.Abs(t);
+        // Vector3 bulletPath = aimSpot - transform.position;
+        //float timeToImpact = bulletPath.magnitude / bulletVelocity;//speed must be in units per second
+        return targetVelocity * Mathf.Abs(t);
+    }
 
 }
