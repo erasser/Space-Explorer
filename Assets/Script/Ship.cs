@@ -113,7 +113,7 @@ public class Ship : CachedMonoBehaviour
         // PredictPositionDummyTransform.position = GetPredictedPosition(_theOtherShipTMP, _theOtherShipTMP._fastestWeaponSpeedMetersPerSecond);
 
         if (ActiveShip != this)
-            predictPositionDummyTransform.position = transformCached.position + GetPredictedPositionOffset(ActiveShip, ActiveShip._fastestWeaponSpeedMetersPerSecond, this);
+            predictPositionDummyTransform.position = transformCached.position + GetPredictedPositionOffset(this, ActiveShip, ActiveShip._fastestWeaponSpeedMetersPerSecond);
     }
 
     public float GetForwardSpeed()  // m / s

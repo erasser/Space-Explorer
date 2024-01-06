@@ -19,9 +19,8 @@ public class UniverseController : MonoBehaviour
     public GameObject astronautPrefab;
     public static Ship Astronaut;
     public Texture2D mouseCursor;
-    // public GameObject selectionSpritePrefab;
-    // public GameObject rangeSpritePrefab;
     GameObject _rangeSprite;
+    // public GameObject selectionSpritePrefab;
     // [HideInInspector]
     // public GameObject selectionSprite;
     [SerializeField]
@@ -39,6 +38,8 @@ public class UniverseController : MonoBehaviour
     public GameObject predictPositionDummyPrefab;
     // public static Transform PredictPositionDummyTransform;
     public Caption captionPrefab;
+    public float staticFixedUpdateDeltaTime = .2f;  // fot purpose of static calls (i.e. not called by each component as it's in FixedUpdate)
+    float _lastStaticFixedUpdate;
 
     void Start()
     {
@@ -53,8 +54,8 @@ public class UniverseController : MonoBehaviour
         InfoText = UI.transform.Find("infoText").GetComponent<Text>();
         canBeBoardedList.RemoveAll(ship => !ship.gameObject.activeSelf);
         // selectionSprite = Instantiate(selectionSpritePrefab);
-        // _rangeSprite = Instantiate(rangeSpritePrefab);
-        // _rangeSprite.transform.localScale = Vector3.one * AstronautBoardingDistanceLimit * 2;
+
+        MyNavMeshAgent.CreatePredictiveCollider();
     }
 
     void Update()
@@ -67,7 +68,23 @@ public class UniverseController : MonoBehaviour
 
         UpdateCameraPosition();
 
+        ProcessStaticFixedDeltaTime();
+        MyNavMeshAgent.PredictCollisions();
         // _rangeSprite.transform.position = Astronaut.transformCached.position;
+    }
+
+    void ProcessStaticFixedDeltaTime()
+    {
+        if (Time.time > _lastStaticFixedUpdate + staticFixedUpdateDeltaTime)
+        {
+            StaticFixedUpdate();
+            _lastStaticFixedUpdate = Time.time;
+        }
+    }
+
+    static void StaticFixedUpdate()
+    {
+        // MyNavMeshAgent.PredictCollisions();
     }
 
     void ProcessKeys()
@@ -209,15 +226,16 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
         return vector.normalized * length;
     }
 
-    // Observer is checking collision / shooting with bulletVelocity, target's velocity is predicted
-    public static Vector3 GetPredictedPositionOffset(Ship observer, float bulletVelocity, Ship target)  // https://gamedev.stackexchange.com/questions/25277/how-to-calculate-shot-angle-and-velocity-to-hit-a-moving-target
+    // Target's velocity is predicted, observer is checking collision / shooting with observerVelocity
+    public static Vector3 GetPredictedPositionOffset(Ship target, Ship observer, float observerVelocity)  // https://gamedev.stackexchange.com/questions/25277/how-to-calculate-shot-angle-and-velocity-to-hit-a-moving-target
     {
-        var targetTransform = target.transformCached;
         var targetVelocity = target.rb.velocity;
 
-        // Vector3 toTarget =  targetTransform.position - transformCached.position;
-        Vector3 toTarget =  targetTransform.position - observer.transformCached.position;
-        float a = Vector3.Dot(targetVelocity, targetVelocity) - bulletVelocity * bulletVelocity;
+        if (targetVelocity == Vector3.zero)
+            return Vector3.zero;
+
+        Vector3 toTarget =  target.transformCached.position - observer.transformCached.position;
+        float a = Vector3.Dot(targetVelocity, targetVelocity) - observerVelocity * observerVelocity;
         float b = 2 * Vector3.Dot(targetVelocity, toTarget);
         float c = Vector3.Dot(toTarget, toTarget);
 
