@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DigitalRuby.Tween;
 using UnityEngine;
@@ -250,6 +251,9 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
             t = t2;
         else
             t = t1;
+
+        if (Double.IsNaN(t))
+            return Vector3.zero;
 
         // Vector3 aimSpot = targetVelocity * Mathf.Abs(t);
         // Vector3 bulletPath = aimSpot - transform.position;

@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using static UniverseController;
 
 public class Caption : CachedMonoBehaviour
@@ -63,9 +62,11 @@ public class Caption : CachedMonoBehaviour
 
     public void UpdateText(/*Content content*/)
     {
+        if (!targetShip.velocityEstimator) return;
+
         _caption.text = $"<b>{targetShip.name}</b>\n" +
-                        $"{Mathf.Round(targetShip.rb.velocity.magnitude)} m/s\n" +
-                        $"<i>...</i>";
+                        $"speed: {Mathf.Round(targetShip.rb.velocity.magnitude)} m/s\n" +
+                        $"<i>est. speed: {Mathf.Round(targetShip.velocityEstimator.GetVelocityEstimate().magnitude)}</i>";
     }
 
     void UpdateBars()

@@ -42,13 +42,14 @@ public class Ship : CachedMonoBehaviour
     public float afterburnerCoefficient = 1;
     float _fastestWeaponSpeedMetersPerSecond;
     public Transform predictPositionDummyTransform;
+    public VelocityEstimator velocityEstimator;
 
     void Start()
     {
         ShipList.Add(this);
         ShootingSqrRange = Mathf.Pow(ShootingRange, 2);
         shipCollider = GetComponent<Collider>();
-        // CreatePredictiveCollider();
+        velocityEstimator = GetComponent<VelocityEstimator>();
 
         if (!shipCollider.enabled)
             Debug.LogWarning("-- Disabled collider! --");

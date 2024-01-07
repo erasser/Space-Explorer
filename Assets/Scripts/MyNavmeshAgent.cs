@@ -34,7 +34,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     static Transform _predictiveColliderTransform;
     static LayerMask _predictiveColliderLayerMask;
     static readonly List<MyNavMeshAgent> MyNavMeshAgents = new();  // for collision predicting
-    Vector3 _predictiveBoxCastSize;
+    Vector3 _predictiveBoxExtents;
 
     // TARGETS and DESTINATIONS  (helper class to be created)
     Ship _target;
@@ -395,12 +395,14 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         // cube.transform.parent = transform;
         // cube.transform.position = Vector3.zero;  // needed?
         cube.layer = LayerMask.NameToLayer("predictive collider");
+        cube.name = "predictive collider";
         _predictiveCollider = cube.GetComponent<BoxCollider>();
         _predictiveCollider.isTrigger = true;
         _predictiveCollider.includeLayers = LayerMask.NameToLayer("predictive collider");
         _predictiveCollider.excludeLayers = Physics.AllLayers;
         _predictiveColliderTransform = _predictiveCollider.transform;
-        // Destroy(cube.GetComponent<Renderer>());
+        Destroy(cube.GetComponent<Renderer>());
+        Destroy(cube.GetComponent<MeshFilter>());
         cube.SetActive(false);
     }
 
@@ -432,37 +434,39 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     static void PredictCollision(MyNavMeshAgent obj1, MyNavMeshAgent obj2)
     {
-        // TODO: Každej box je jinak velkej, přestože vycházejí ze stejných modelů
-        // TODO: Overlapování bez výsledku
+        // TODO: Detekuje to kolize, i když nejsou
         // TODO: Prodlužovat ty boxy jen vodorovně (například pro nakloněné lodě čumákem dolů).
         
         // prepare collider to cast against
-        var predictionColliderPosition = GetPredictedPositionOffset(obj2._ship, obj1._ship, obj1._ship.rb.velocity.magnitude);
+        // var predictionColliderPosition = GetPredictedPositionOffset(obj2._ship, obj1._ship, obj1._ship.rb.velocity.magnitude);
+        var predictionColliderPosition = GetPredictedPositionOffset(obj2._ship, obj1._ship, obj1._ship.velocityEstimator.GetVelocityEstimate().magnitude);
         _predictiveColliderTransform.position = obj2.transformCached.position + predictionColliderPosition;
         _predictiveColliderTransform.rotation = Quaternion.Euler(0, obj2.transformCached.rotation.y, 0);
-        _predictiveCollider.size = obj2._predictiveBoxCastSize;
+        _predictiveCollider.size = obj2._predictiveBoxExtents * 2;
 
         // box cast to be set
-        var boxCastCenterOffset = GetPredictedPositionOffset(obj1._ship, obj2._ship, obj2._ship.rb.velocity.magnitude);
+        // var boxCastCenterOffset = GetPredictedPositionOffset(obj1._ship, obj2._ship, obj2._ship.rb.velocity.magnitude);
+        var boxCastCenterOffset = GetPredictedPositionOffset(obj1._ship, obj2._ship, obj2._ship.velocityEstimator.GetVelocityEstimate().magnitude);
 
         // var wasHit = Physics.BoxCast(obj1.transformCached.position + boxCastCenterOffset, obj1._predictiveBoxCastSize, obj1._ship.rb.velocity, obj1.transformCached.rotation, Mathf.Infinity, _predictiveColliderLayerMask);
 
         var rot = Quaternion.Euler(0, obj1.transformCached.rotation.y, 0);
-        Collider[] colliders = Physics.OverlapBox(obj1.transformCached.position + boxCastCenterOffset, obj1._predictiveBoxCastSize, rot, _predictiveColliderLayerMask);
+        Collider[] colliders = Physics.OverlapBox(obj1.transformCached.position + boxCastCenterOffset, obj1._predictiveBoxExtents, rot, _predictiveColliderLayerMask);
 
-        
+        InfoText.text = colliders.Length.ToString();
+
         if (colliders.Length > 0)
         {
-            // print("• predicted collision between " + obj1.name + " and " + obj2.name);
+            print("• predicted collision between " + obj1.name + " and " + obj2.name);
             // EditorApplication.isPaused = true;
-            InfoText.text = "• predicted collision between " + obj1.name + " and " + obj2.name;
+            // InfoText.text = "• predicted collision between " + obj1.name + " and " + obj2.name;
         }
         else
             InfoText.text = "";
 
         ExtDebug.DrawBox(_predictiveColliderTransform.position, _predictiveCollider.bounds.extents, _predictiveColliderTransform.rotation, Color.magenta);
 
-        ExtDebug.DrawBox(obj1.transformCached.position + boxCastCenterOffset, obj1._predictiveBoxCastSize, rot, Color.cyan);
+        ExtDebug.DrawBox(obj1.transformCached.position + boxCastCenterOffset, obj1._predictiveBoxExtents, rot, Color.cyan);
         
         Debug.DrawLine(_predictiveColliderTransform.position, obj1.transformCached.position + boxCastCenterOffset, Color.yellow);
     }
@@ -472,15 +476,22 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         var originalRotation = transformCached.rotation;
         transformCached.rotation = Quaternion.identity;
 
-        foreach (var component in transform.GetComponentsInChildren(typeof(Renderer)))
+        foreach (var component in transform.GetComponentsInChildren(typeof(MeshFilter)))
         {
-            var rendererComponent = (Renderer)component;
-            if (_predictiveBoxCastSize.x < rendererComponent.bounds.size.x)
-                _predictiveBoxCastSize.x = rendererComponent.bounds.size.x;
-            if (_predictiveBoxCastSize.y < rendererComponent.bounds.size.y)
-                _predictiveBoxCastSize.y = rendererComponent.bounds.size.y;
-            if (_predictiveBoxCastSize.z < rendererComponent.bounds.size.z)
-                _predictiveBoxCastSize.z = rendererComponent.bounds.size.z;
+            var meshFilterComponent = (MeshFilter)component;
+            var offset = meshFilterComponent.transform.position - transformCached.position;
+            var boundsSize = new Vector3(meshFilterComponent.sharedMesh.bounds.size.x * meshFilterComponent.transform.lossyScale.x,
+            meshFilterComponent.sharedMesh.bounds.size.y * meshFilterComponent.transform.lossyScale.y,
+            meshFilterComponent.sharedMesh.bounds.size.z * meshFilterComponent.transform.lossyScale.z) / 2;
+            
+            // boundsSize += offset; // TODO: Vzít v potaz pozici jednotlivých meshů - OTESTOVAT
+
+            if (_predictiveBoxExtents.x < boundsSize.x)
+                _predictiveBoxExtents.x = boundsSize.x;
+            if (_predictiveBoxExtents.y < boundsSize.y)
+                _predictiveBoxExtents.y = boundsSize.y;
+            if (_predictiveBoxExtents.z < boundsSize.z)
+                _predictiveBoxExtents.z = boundsSize.z;
         }
 
         transformCached.rotation = originalRotation;
