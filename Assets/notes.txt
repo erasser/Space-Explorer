@@ -1,5 +1,7 @@
 ﻿Kde je Time.fixedDeltaTime ve Start(), tam asi bude problém se slow-motion
-daly by se traily renderovat pod lodí? Možná pomocí sorting layers u trail rendereru?
+Daly by se traily renderovat pod lodí? Možná pomocí sorting layers u trail rendereru?
+
+Captions se renderují i mimo kameru.
 
 TODO: projectile pooling
 

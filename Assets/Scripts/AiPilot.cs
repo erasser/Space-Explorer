@@ -25,15 +25,18 @@ public class AiPilot : CachedMonoBehaviour
     void Start()
     {
         _myNavMeshAgent = GetComponent<MyNavMeshAgent>();
-        
-        
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
-        {
             GoToRandomLocation();
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (MyNavMeshAgent.MyNavMeshAgents[0] == _myNavMeshAgent)
+                IWantToPatrolTo(new(100, 0, 0));
+            else
+                IWantToPatrolTo(new(0, 0, 100));
         }
     }
 
@@ -62,8 +65,8 @@ public class AiPilot : CachedMonoBehaviour
         _travelStance = TravelStance.PreferDestination;
     }
 
-    void IWantToPatrol(Vector3 secondPosition /*, TravelStance travelStance = TravelStance.PreferDestination*/)
+    void IWantToPatrolTo(Vector3 secondPosition /*, TravelStance travelStance = TravelStance.PreferDestination*/)
     {
-        IWantToPatrol(secondPosition);
+        _myNavMeshAgent.SetPatrolTo(secondPosition);
     }
 }

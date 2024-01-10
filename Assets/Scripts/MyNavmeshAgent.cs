@@ -33,13 +33,16 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     static BoxCollider _predictiveCollider;
     static Transform _predictiveColliderTransform;
     static LayerMask _predictiveColliderLayerMask;
-    static readonly List<MyNavMeshAgent> MyNavMeshAgents = new();  // for collision predicting
+    public static readonly List<MyNavMeshAgent> MyNavMeshAgents = new();  // for collision predicting
     Vector3 _predictiveBoxExtents;
+    bool _predictedCollisionLastFrame;
+    int _predictedCollisionTime;
 
     // TARGETS and DESTINATIONS  (helper class to be created)
     Ship _target;
     Vector3 _destination;
-    // readonly List<Vector3> _destinations = new(new Vector3[2]);  // TODO: Just two for now
+    readonly List<Vector3> _destinations = new(new Vector3[2]);  // TODO: Just two for now
+    int _destinationsIndex;
     // int _remainingPathPoints;
     // int _actualDestinationIndex;
 
@@ -85,8 +88,11 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             _needsRegeneratePath = false;
         }
 
-        if (_state == State.GoingToDestination)
-        {
+        if (_state == State.StandingStill)
+            return;
+
+        // if (_state == State.GoingToDestination)
+        // {
             // // CheckPathPointReached();
             //
             // if (_state == State.StandingStill)
@@ -96,7 +102,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             _toActualPathPointDirection = GetCurrentPathPoint() - transformCached.position;
             _ship.SetMoveVectorHorizontal(_toActualPathPointDirection.x);
             _ship.SetMoveVectorVertical(_toActualPathPointDirection.z);
-        }
+        // }
     }
 
     void ProcessAgentFixedUpdateDeltaTime()
@@ -113,12 +119,12 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         if (_state == State.StandingStill)
             return;
 
-        if (_state == State.GoingToDestination)
-        {
+        // if (_state == State.GoingToDestination)
+        // {
             CheckPathPoints();
 
             // PredictCollisions();
-        }
+        // }
 
         /*// if (_state == State.GoingToDestination)
         if (rigidBodyCached.velocity.sqrMagnitude > 0)
@@ -152,6 +158,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     Vector3 GetCurrentPathPoint()
     {
+        // print(_pathPoints.Count + ", " + _actualPathPointIndex);
         return _pathPoints[_actualPathPointIndex];
     }
 
@@ -183,7 +190,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     void CheckPathPoints()
     {
-        if (_actualPathPointIndex >= _pathPoints.Count)
+        /*if (_actualPathPointIndex >= _pathPoints.Count)
         {
             print("☺ Key is beyond the pathPoints count, returning");
             return;
@@ -193,19 +200,27 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         {
             print("☻ Key is -1");
             return;
-        }
+        }*/
 // print("count: " + _pathPoints.Count + ", index: " + _actualDestinationIndex);
         // _toActualPathPointDirection = _pathPoints[_actualPathPointIndex] - transformCached.position;
-        var distance = _actualPathPointIndex == _pathPoints.Count - 1 ? _targetSqrMinDistance * 1.5f : _targetSqrMinDistance;  // Break sooner before last path point
-        var reached = _toActualPathPointDirection.sqrMagnitude <= distance;
+        var sqrDistance = _actualPathPointIndex == _pathPoints.Count - 1 ? _targetSqrMinDistance * 1.5f : _targetSqrMinDistance;  // Break sooner before last path point
+        var reached = _toActualPathPointDirection.sqrMagnitude <= sqrDistance;
         // InfoText.text = Mathf.Round(_toActualPathPointDirection.sqrMagnitude) + " <\n" + distance + " ?";
         // print(_toActualPathPointDirection.sqrMagnitude + ", " + distance);
 
         if (reached && ++_actualPathPointIndex == _pathPoints.Count)
         {
-            // print("• reached!");
-            // Stop();
-            _aiPilot.GoToRandomLocation();
+            if (_state == State.GoingToDestination)
+            {
+                // print("• reached!");
+                // Stop();
+                _aiPilot.GoToRandomLocation();
+            }
+            else if (_state == State.Patrolling)
+            {
+                _destinationsIndex = _destinationsIndex == 0 ? 1 : 0;
+                ReGeneratePath();
+            }
         }
     }
 
@@ -277,10 +292,21 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         if (!GeneratePathTo(target))
             return false;
 
-        // _destinations[0] = target;
-        // _actualPathPoint = target;
         _destination = target;
         _state = State.GoingToDestination;
+
+        return true;
+    }
+
+    public bool SetPatrolTo(Vector3 target)
+    {
+        if (!GeneratePathTo(target))
+            return false;
+
+        _destinations[0] = target;
+        _destinations[1] = transformCached.position;
+        _destinationsIndex = 0;
+        _state = State.Patrolling;
 
         return true;
     }
@@ -359,11 +385,11 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     {
         if (_state == State.GoingToDestination)
             return _destination;
+        if (_state == State.Patrolling)
+            return _destinations[_destinationsIndex];
 
         Debug.LogWarning("TODO !");
         if (_state == State.FollowingEnemy)
-            return _pathPoints[_actualPathPointIndex];  // TODO
-        if (_state == State.Patrolling)
             return _pathPoints[_actualPathPointIndex];  // TODO
         if (_state == State.RandomRoaming)
             return _pathPoints[_actualPathPointIndex];  // TODO
@@ -434,8 +460,8 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     static void PredictCollision(MyNavMeshAgent obj1, MyNavMeshAgent obj2)
     {
-        // TODO: Detekuje to kolize, i když nejsou
-        // TODO: Prodlužovat ty boxy jen vodorovně (například pro nakloněné lodě čumákem dolů).
+        // TODO: Detekuje to kolize, i když nejsou - možná to castí ke stavu o 1 frame předchozímu
+        // TODO: Prodlužovat ty boxy jen vodorovně (například pro nakloněné lodě čumákem dolů). Bude to chtít spíš otočit vektor než nastavit y = 0.
         
         // prepare collider to cast against
         // var predictionColliderPosition = GetPredictedPositionOffset(obj2._ship, obj1._ship, obj1._ship.rb.velocity.magnitude);
@@ -451,18 +477,26 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         // var wasHit = Physics.BoxCast(obj1.transformCached.position + boxCastCenterOffset, obj1._predictiveBoxCastSize, obj1._ship.rb.velocity, obj1.transformCached.rotation, Mathf.Infinity, _predictiveColliderLayerMask);
 
         var rot = Quaternion.Euler(0, obj1.transformCached.rotation.y, 0);
+        
+        Physics.SyncTransforms();
+
         Collider[] colliders = Physics.OverlapBox(obj1.transformCached.position + boxCastCenterOffset, obj1._predictiveBoxExtents, rot, _predictiveColliderLayerMask);
 
         InfoText.text = colliders.Length.ToString();
 
         if (colliders.Length > 0)
         {
-            print("• predicted collision between " + obj1.name + " and " + obj2.name);
-            // EditorApplication.isPaused = true;
+            print("• predicted collision between " + obj1.name + " and " + obj2.name + ", distance of boxes: " + (obj1.transformCached.position + boxCastCenterOffset - _predictiveColliderTransform.position).magnitude);
+            print("box 1: center = " + _predictiveColliderTransform.position + ", size = " + _predictiveCollider.size);
+            print("box 2: center = " + (obj1.transformCached.position + boxCastCenterOffset) + ", size = " + obj1._predictiveBoxExtents * 2);
+            EditorApplication.isPaused = true;
             // InfoText.text = "• predicted collision between " + obj1.name + " and " + obj2.name;
+
+            // _predictedCollisionLastFrame, _predictedCollisionTime
+
         }
-        else
-            InfoText.text = "";
+        // else
+            // InfoText.text = "";
 
         ExtDebug.DrawBox(_predictiveColliderTransform.position, _predictiveCollider.bounds.extents, _predictiveColliderTransform.rotation, Color.magenta);
 

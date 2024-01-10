@@ -230,6 +230,8 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
     // Target's velocity is predicted, observer is checking collision / shooting with observerVelocity
     public static Vector3 GetPredictedPositionOffset(Ship target, Ship observer, float observerVelocity)  // https://gamedev.stackexchange.com/questions/25277/how-to-calculate-shot-angle-and-velocity-to-hit-a-moving-target
     {
+        // TODO: Pro predikci kolizí by se to dalo optimalizovat, protože známe směr druhého objektu a testovat nejdřív Dot(targetVelocity, observerVelocity)
+
         var targetVelocity = target.rb.velocity;
 
         if (targetVelocity == Vector3.zero)
@@ -252,8 +254,12 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
         else
             t = t1;
 
+        // TODO: Nastává toto vůbec? (Myslím, že s použitím VelocityExtimatoru ano)
         if (Double.IsNaN(t))
+        {
+            print("debug me ☺");
             return Vector3.zero;
+        }
 
         // Vector3 aimSpot = targetVelocity * Mathf.Abs(t);
         // Vector3 bulletPath = aimSpot - transform.position;
