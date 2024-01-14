@@ -62,11 +62,14 @@ public class Caption : CachedMonoBehaviour
 
     public void UpdateText(/*Content content*/)
     {
-        if (!targetShip.velocityEstimator) return;
+        // if (!targetShip.velocityEstimator) return;
+        var state = targetShip.GetComponent<MyNavMeshAgent>()?._state;
+        // var state = agent
 
         _caption.text = $"<b>{targetShip.name}</b>\n" +
                         $"speed: {Mathf.Round(targetShip.rb.velocity.magnitude)} m/s\n" +
-                        $"<i>est. speed: {Mathf.Round(targetShip.velocityEstimator.GetVelocityEstimate().magnitude)}</i>";
+                        // $"<i>est. speed: {Mathf.Round(targetShip.velocityEstimator.GetVelocityEstimate().magnitude)}</i>";
+                        $"state: <i>{state}</i>";
     }
 
     void UpdateBars()

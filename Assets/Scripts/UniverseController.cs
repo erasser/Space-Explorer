@@ -41,6 +41,8 @@ public class UniverseController : MonoBehaviour
     public Caption captionPrefab;
     public float staticFixedUpdateDeltaTime = .2f;  // fot purpose of static calls (i.e. not called by each component as it's in FixedUpdate)
     float _lastStaticFixedUpdate;
+    public BoxCollider predictiveColliderPrefab;
+    public LayerMask predictiveColliderLayerMask;  // TODO: Bylo by hezký vytáhnout to z toho predictiveColliderPrefabu
 
     void Start()
     {
@@ -55,7 +57,6 @@ public class UniverseController : MonoBehaviour
         InfoText = UI.transform.Find("infoText").GetComponent<Text>();
         canBeBoardedList.RemoveAll(ship => !ship.gameObject.activeSelf);
         // selectionSprite = Instantiate(selectionSpritePrefab);
-
         MyNavMeshAgent.CreatePredictiveCollider();
     }
 
@@ -70,6 +71,7 @@ public class UniverseController : MonoBehaviour
         UpdateCameraPosition();
 
         ProcessStaticFixedDeltaTime();
+        
         MyNavMeshAgent.PredictCollisions();
         // _rangeSprite.transform.position = Astronaut.transformCached.position;
     }
@@ -228,17 +230,13 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
     }
 
     // Target's velocity is predicted, observer is checking collision / shooting with observerVelocity
-    public static Vector3 GetPredictedPositionOffset(Ship target, Ship observer, float observerVelocity)  // https://gamedev.stackexchange.com/questions/25277/how-to-calculate-shot-angle-and-velocity-to-hit-a-moving-target
+    public static Vector3 GetPredictedPositionOffset(Ship target, Vector3 targetVelocity, Ship observer, float observerSpeed)  // https://gamedev.stackexchange.com/questions/25277/how-to-calculate-shot-angle-and-velocity-to-hit-a-moving-target
     {
-        // TODO: Pro predikci kolizí by se to dalo optimalizovat, protože známe směr druhého objektu a testovat nejdřív Dot(targetVelocity, observerVelocity)
-
-        var targetVelocity = target.rb.velocity;
-
         if (targetVelocity == Vector3.zero)
             return Vector3.zero;
 
         Vector3 toTarget =  target.transformCached.position - observer.transformCached.position;
-        float a = Vector3.Dot(targetVelocity, targetVelocity) - observerVelocity * observerVelocity;
+        float a = Vector3.Dot(targetVelocity, targetVelocity) - observerSpeed * observerSpeed;
         float b = 2 * Vector3.Dot(targetVelocity, toTarget);
         float c = Vector3.Dot(toTarget, toTarget);
 
@@ -254,7 +252,7 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
         else
             t = t1;
 
-        // TODO: Nastává toto vůbec? (Myslím, že s použitím VelocityExtimatoru ano)
+        // TODO: Nastává toto vůbec? (Myslím, že s použitím VelocityExtimatoru ano) (Nastalo to po kolizi objektů)
         if (Double.IsNaN(t))
         {
             print("debug me ☺");

@@ -33,10 +33,11 @@ public class AiPilot : CachedMonoBehaviour
             GoToRandomLocation();
         if (Input.GetKeyDown(KeyCode.P))
         {
-            if (MyNavMeshAgent.MyNavMeshAgents[0] == _myNavMeshAgent)
-                IWantToPatrolTo(new(100, 0, 0));
+            // if (MyNavMeshAgent.MyNavMeshAgents[0] == _myNavMeshAgent)
+            if (_myNavMeshAgent.transformCached.position.z == -50)
+                IWantToPatrolTo(new(-100, 0, -75));
             else
-                IWantToPatrolTo(new(0, 0, 100));
+                IWantToPatrolTo(new(-100, 0, -75));
         }
     }
 

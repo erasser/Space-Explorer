@@ -27,16 +27,20 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     GameObject _pointVisualizer;
     // Vector3 _actualPathPoint;
     Vector3 _toActualPathPointDirection;
-    State _state;
+    public State _state;
+    State _stateBeforeWaiting;
+    Vector3 _velocityBeforeWaiting;
     AiPilot _aiPilot;
     bool _needsRegeneratePath;
-    static BoxCollider _predictiveCollider;
+    public static BoxCollider PredictiveCollider;
     static Transform _predictiveColliderTransform;
-    static LayerMask _predictiveColliderLayerMask;
+    // static LayerMask _predictiveColliderLayerMask;
     public static readonly List<MyNavMeshAgent> MyNavMeshAgents = new();  // for collision predicting
     Vector3 _predictiveBoxExtents;
-    bool _predictedCollisionLastFrame;
-    int _predictedCollisionTime;
+    // bool _predictedCollisionLastFrame;
+    // int _predictedCollisionTime;
+    List<PredictedCollision> _predictedCollisions = new();
+    static readonly Collider[] CollisionPredictionResults = new Collider[1];
 
     // TARGETS and DESTINATIONS  (helper class to be created)
     Ship _target;
@@ -55,13 +59,14 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     //     TargetReached
     // }
 
-    enum State
+    public enum State
     {
         StandingStill,
         GoingToDestination,
         Patrolling,
         FollowingEnemy,
-        RandomRoaming
+        RandomRoaming,
+        WaitingToPreventCollision
     }
 
     void Start()
@@ -73,7 +78,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         _targetSqrMinDistance = Mathf.Pow(targetMinDistance, 2);
         _aiPilot = GetComponent<AiPilot>();
         MyNavMeshAgents.Add(this);
-        _predictiveColliderLayerMask = LayerMask.NameToLayer("predictive collider");
+        // _predictiveColliderLayerMask = LayerMask.NameToLayer("predictive collider");
         SetBounds();
     }
 
@@ -88,7 +93,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             _needsRegeneratePath = false;
         }
 
-        if (_state == State.StandingStill)
+        if (_state == State.StandingStill || _state == State.WaitingToPreventCollision)
             return;
 
         // if (_state == State.GoingToDestination)
@@ -116,7 +121,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     void AgentFixedUpdate()
     {
-        if (_state == State.StandingStill)
+        if (_state == State.StandingStill || _state == State.WaitingToPreventCollision)
             return;
 
         // if (_state == State.GoingToDestination)
@@ -322,11 +327,15 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     public void Stop()
     {
-        print("STOP!");
         _pathPoints.Clear();
         _actualPathPointIndex = -1;
         _state = State.StandingStill;
 
+        SetZeroMoveVector();
+    }
+
+    void SetZeroMoveVector()
+    {
         _ship.SetMoveVectorHorizontal(0);
         _ship.SetMoveVectorVertical(0);
         // GetComponent<Rigidbody>().velocity = Vector3.zero;   ??? ??? ???
@@ -336,17 +345,6 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     {
         var sqrDistance = (ActiveShip.transformCached.position - transformCached.position).sqrMagnitude;
         return sqrDistance <= ShootingSqrRange;
-    }
-
-    public void Patrol(Vector3 destinationPoint)
-    {
-        // TODO: Checknout situaci, kdy 2. bod je už nadosah
-
-        // _destinations[0] = transformCached.position;
-        // _destinations[1] = destinationPoint;
-        
-        // ...        
-
     }
 
     void ShowPath()
@@ -369,7 +367,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     {
         if (_state != State.StandingStill)
         {
-            print("collision: " + other.collider.name);
+            // print("collision: " + other.collider.name);
             // ReGeneratePath();
             _needsRegeneratePath = true;
         }
@@ -377,7 +375,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     bool ReGeneratePath()
     {
-        print("► REGENERATING PATH ◄");
+        // print("► REGENERATING PATH ◄");
         return GeneratePathTo(GetCurrentDestination());
     }
 
@@ -414,27 +412,8 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     public static void CreatePredictiveCollider()
     {
-        if (_predictiveCollider)
-            return;
-
-        var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        // cube.transform.parent = transform;
-        // cube.transform.position = Vector3.zero;  // needed?
-        cube.layer = LayerMask.NameToLayer("predictive collider");
-        cube.name = "predictive collider";
-        _predictiveCollider = cube.GetComponent<BoxCollider>();
-        _predictiveCollider.isTrigger = true;
-        _predictiveCollider.includeLayers = LayerMask.NameToLayer("predictive collider");
-        _predictiveCollider.excludeLayers = Physics.AllLayers;
-        _predictiveColliderTransform = _predictiveCollider.transform;
-        Destroy(cube.GetComponent<Renderer>());
-        Destroy(cube.GetComponent<MeshFilter>());
-        cube.SetActive(false);
-    }
-
-    void UpdatePredictiveColliderFor()
-    {
-        
+        PredictiveCollider = Instantiate(universeController.predictiveColliderPrefab);
+        _predictiveColliderTransform = PredictiveCollider.transform;
     }
 
     public static void PredictCollisions()
@@ -444,7 +423,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         if (count < 2)
             return;
 
-        _predictiveCollider.gameObject.SetActive(true);
+        PredictiveCollider.gameObject.SetActive(true);
 
         for (int first = 0; first < count - 1; ++first)
         {
@@ -455,54 +434,120 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             }
         }
 
-        _predictiveCollider.gameObject.SetActive(true);
+        PredictiveCollider.gameObject.SetActive(false);
     }
 
     static void PredictCollision(MyNavMeshAgent obj1, MyNavMeshAgent obj2)
     {
-        // TODO: Detekuje to kolize, i když nejsou - možná to castí ke stavu o 1 frame předchozímu
+        if (obj1._state == State.WaitingToPreventCollision && obj2._state == State.WaitingToPreventCollision)
+            return;
+
+        if (obj2._state == State.WaitingToPreventCollision)  // So it can be only obj1 to be waiting
+            (obj1, obj2) = (obj2, obj1);
+
         // TODO: Prodlužovat ty boxy jen vodorovně (například pro nakloněné lodě čumákem dolů). Bude to chtít spíš otočit vektor než nastavit y = 0.
-        
+        // TODO: Volá se to z Update(), přemístit do StaticFixedUpdate()
+
         // prepare collider to cast against
-        // var predictionColliderPosition = GetPredictedPositionOffset(obj2._ship, obj1._ship, obj1._ship.rb.velocity.magnitude);
-        var predictionColliderPosition = GetPredictedPositionOffset(obj2._ship, obj1._ship, obj1._ship.velocityEstimator.GetVelocityEstimate().magnitude);
+        var predictionColliderPosition = GetPredictedPositionOffset(obj2._ship, obj2._ship.velocityEstimator.GetVelocityEstimate(), obj1._ship, GetVelocity(obj1).magnitude);
         _predictiveColliderTransform.position = obj2.transformCached.position + predictionColliderPosition;
         _predictiveColliderTransform.rotation = Quaternion.Euler(0, obj2.transformCached.rotation.y, 0);
-        _predictiveCollider.size = obj2._predictiveBoxExtents * 2;
+        PredictiveCollider.size = obj2._predictiveBoxExtents * 2;
 
         // box cast to be set
-        // var boxCastCenterOffset = GetPredictedPositionOffset(obj1._ship, obj2._ship, obj2._ship.rb.velocity.magnitude);
-        var boxCastCenterOffset = GetPredictedPositionOffset(obj1._ship, obj2._ship, obj2._ship.velocityEstimator.GetVelocityEstimate().magnitude);
-
-        // var wasHit = Physics.BoxCast(obj1.transformCached.position + boxCastCenterOffset, obj1._predictiveBoxCastSize, obj1._ship.rb.velocity, obj1.transformCached.rotation, Mathf.Infinity, _predictiveColliderLayerMask);
+        var boxCastCenterOffset = GetPredictedPositionOffset(obj1._ship, GetVelocity(obj1), obj2._ship, obj2._ship.velocityEstimator.GetVelocityEstimate().magnitude);
 
         var rot = Quaternion.Euler(0, obj1.transformCached.rotation.y, 0);
-        
-        Physics.SyncTransforms();
 
-        Collider[] colliders = Physics.OverlapBox(obj1.transformCached.position + boxCastCenterOffset, obj1._predictiveBoxExtents, rot, _predictiveColliderLayerMask);
+        Physics.SyncTransforms();  // Možná to není nezbytné? Otestovat s více objekty.
 
-        InfoText.text = colliders.Length.ToString();
+        var size = Physics.OverlapBoxNonAlloc(obj1.transformCached.position + boxCastCenterOffset, obj1._predictiveBoxExtents, CollisionPredictionResults, rot, universeController.predictiveColliderLayerMask);
 
-        if (colliders.Length > 0)
+        // InfoText.text = colliders.Length.ToString();
+
+        if (size > 0)
+            ManagePredictedCollisions(obj1, obj2);
+        else
         {
-            print("• predicted collision between " + obj1.name + " and " + obj2.name + ", distance of boxes: " + (obj1.transformCached.position + boxCastCenterOffset - _predictiveColliderTransform.position).magnitude);
-            print("box 1: center = " + _predictiveColliderTransform.position + ", size = " + _predictiveCollider.size);
-            print("box 2: center = " + (obj1.transformCached.position + boxCastCenterOffset) + ", size = " + obj1._predictiveBoxExtents * 2);
-            EditorApplication.isPaused = true;
-            // InfoText.text = "• predicted collision between " + obj1.name + " and " + obj2.name;
-
-            // _predictedCollisionLastFrame, _predictedCollisionTime
-
+            // collision exit
+            if (obj1._state == State.WaitingToPreventCollision)
+            {
+                obj1._state = obj1._stateBeforeWaiting;
+                print(obj1.name + " was waiting");
+            }
+            if (obj2._state == State.WaitingToPreventCollision)
+            {
+                obj2._state = obj2._stateBeforeWaiting;
+                print(obj2.name + " was waiting");
+            }
         }
-        // else
-            // InfoText.text = "";
 
-        ExtDebug.DrawBox(_predictiveColliderTransform.position, _predictiveCollider.bounds.extents, _predictiveColliderTransform.rotation, Color.magenta);
+        ExtDebug.DrawBox(_predictiveColliderTransform.position, PredictiveCollider.bounds.extents, _predictiveColliderTransform.rotation, Color.magenta);
 
         ExtDebug.DrawBox(obj1.transformCached.position + boxCastCenterOffset, obj1._predictiveBoxExtents, rot, Color.cyan);
         
         Debug.DrawLine(_predictiveColliderTransform.position, obj1.transformCached.position + boxCastCenterOffset, Color.yellow);
+        
+        // print("• predicted collision between " + obj1.name + " and " + obj2.name + ", distance of boxes: " + (obj1.transformCached.position + boxCastCenterOffset - _predictiveColliderTransform.position).magnitude);
+        // print("box 1: center = " + _predictiveColliderTransform.position + ", size = " + _predictiveCollider.size);
+        // print("box 2: center = " + (obj1.transformCached.position + boxCastCenterOffset) + ", size = " + obj1._predictiveBoxExtents * 2);
+        // EditorApplication.isPaused = true;
+        // InfoText.text = "• predicted collision between " + obj1.name + " and " + obj2.name;
+
+        // _predictedCollisionLastFrame, _predictedCollisionTime
+            
+        // else
+        // InfoText.text = "";
+
+        Vector3 GetVelocity(MyNavMeshAgent obj)
+        {
+            return obj._state == State.WaitingToPreventCollision ? obj._velocityBeforeWaiting : obj._ship.velocityEstimator.GetVelocityEstimate();
+        }
+    }
+
+    static void ManagePredictedCollisions(MyNavMeshAgent obj1, MyNavMeshAgent obj2)
+    {
+        // EditorApplication.isPaused = true;
+        var objectToWait = obj1.GetInstanceID() < obj2.GetInstanceID() ? obj1 : obj2;  // TODO: Ošetřit možnost, když je to kolize s hráčem
+
+        if (objectToWait._state == State.WaitingToPreventCollision)  // already waiting
+            return;
+
+        objectToWait._stateBeforeWaiting = objectToWait._state;
+        objectToWait._velocityBeforeWaiting = objectToWait._ship.velocityEstimator.GetVelocityEstimate();  // TODO: Počítá se zbytečně znovu po PredictCollision()
+        objectToWait._state = State.WaitingToPreventCollision;
+
+        objectToWait.SetZeroMoveVector();
+
+        print(objectToWait.name + " is waiting. Previous state: " + objectToWait._stateBeforeWaiting);
+
+        /*if (obj1._predictedCollisions.Count == 0 && obj2._predictedCollisions.Count == 0)
+        {
+            // GetPredictedCollisionLowerPriorityObject(obj1, obj2);
+            // TODO: Zde jsem skončil
+            var objectToWait = obj1.GetInstanceID() < obj2.GetInstanceID() ? obj1 : obj2;
+            objectToWait._predictedCollisions.Add(new PredictedCollision(obj1));
+
+            // WaitingToPreventCollision
+        }
+        
+        foreach (var predictedCollision in obj1._predictedCollisions)
+        {
+            if (!predictedCollision.ongoingCollision)
+            {
+                
+            }
+        }
+        
+        // if (obj1._predictedCollisions.Count > 0)
+        // {
+        //     
+        // }
+        
+        // MyNavMeshAgent GetPredictedCollisionLowerPriorityObject(MyNavMeshAgent obj1, MyNavMeshAgent obj2)
+        // {
+        //     
+        // }*/
     }
 
     void SetBounds()
