@@ -265,4 +265,39 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
         return targetVelocity * Mathf.Abs(t);
     }
 
+    public static Vector3 GetPredictedPositionOffset2(Ship target, Vector3 targetVelocity, Ship observer, float observerSpeed)  // moje řešení
+    {
+        var distanceVector = target.transformCached.position - observer.transformCached.position;
+        var d = distanceVector.magnitude;
+        var α = Vector3.Angle(distanceVector, targetVelocity);
+        var cosα = Mathf.Cos(α);
+        var voPerVtSquared = Mathf.Pow(observerSpeed / targetVelocity.magnitude, 2);
+
+        var D = d * d * (cosα * cosα - 1 + voPerVtSquared);  // není zkutečný diskriminant, je to pokrácení dvojkou
+        
+        if (D < 0)
+        {
+            print("negative D, returning zero Vector");
+            return Vector3.zero;
+        }
+
+        var Dsqrt = Mathf.Sqrt(D);
+
+        var x1 = (d * cosα + Dsqrt) / (1 - voPerVtSquared);
+        var x2 = (d * cosα - Dsqrt) / (1 - voPerVtSquared);
+        
+        print( "x1 = " + x1 + ", x2 = " + x2);
+        float x;
+
+        x = x1 >= 0 ? x1 : x2;
+        
+        if (Double.IsNaN(x))
+        {
+            print("I am NaN");
+            return Vector3.zero;
+        }
+
+        return targetVelocity * x;
+    }
+
 }
