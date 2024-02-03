@@ -1,69 +1,37 @@
+using System;
 using UnityEngine;
-using static UniverseController;
 using Vector3 = UnityEngine.Vector3;
 
-public class Laser : CachedMonoBehaviour
+public class Laser : Projectile
 {
-    public bool autoAim;
-    [Tooltip("m")]
-    public float range = 500;
-    [Tooltip("m/s")]
-    public float initialShootSpeed = 100f;
-    public float shootDelay = .3f;
-    float _selfDestructAtTime;
-    Vector3 _speedV3;  // m / s
-    float _sqrRaycastLength;
+    // Vector3 _velocity;  // m / s
 
-    // public delegate void LaserHitDelegate(Laser l);
-    // public static event LaserHitDelegate LaserHitEvent;
-
-    void FixedUpdate()
-    {
-        CheckLifeSpan();
-
-        UpdateTransform();
-
-        CheckIntersection();
-    }
-
-    public void Setup(Vector3 position, float rotationY, Vector3 speed)
+    /*public void Setup(Vector3 position, float rotationY, Vector3 speed)
     {
         _speedV3 = speed;
         _sqrRaycastLength = speed.z;  // TODO: Myslet na slow-motion, mělo by obsahovat Time.fixedDeltaTime a po přechodu do slow-mo updatovat - to se asi týká jen už vystřelených projektilů  
-        _selfDestructAtTime = Time.time + range / (_speedV3.z / Time.fixedDeltaTime);
+        _selfDestructAtTime = Time.time + weapon.range / (_speedV3.z / Time.fixedDeltaTime);
         transform.position = position;
 
-        if (autoAim)
+        if (weapon.autoAim)
             transform.LookAt(MouseCursorHit.point);
         else
             transform.rotation = Quaternion.Euler(new(0, rotationY, 0));  // TODO: Nedalo by se to nějak zjednodušit? :D
-    }
+    }*/
 
-    void CheckLifeSpan()
-    {
-        if (Time.time > _selfDestructAtTime)
-            Destroy(gameObject);
-    }
+    // void Start()
+    // {
+    //     _velocity = speed * Time.fixedDeltaTime * Vector3.forward;
+    // }
 
-    void UpdateTransform()
-    {
-        transform.Translate(_speedV3);
-    }
+    // void FixedUpdate()
+    // {
+    //     UpdateTransform();
+    // }
 
-    void CheckIntersection()
-    {
-        // Debug.DrawRay(transform.position, transformCached.forward * _speedV3.z, Color.yellow);
+    // void UpdateTransform()
+    // {
+    //     transform.Translate(velocity);
+    // }
 
-        // if (Physics.Raycast(transformCached.position, transformCached.forward, out var hit, _sqrRaycastLength, universeController.shootableLayer))
-        if (Physics.Raycast(new(transformCached.position.x, 0, transformCached.position.z), transformCached.forward, out var hit, _sqrRaycastLength, universeController.shootableLayer))
-        {
-            universeController.LaunchHitEffect(hit.point, hit.normal);
-
-            hit.collider.gameObject.GetComponent<Damageable>()?.TakeDamage(10);
-            // TODO: SEND MESSAGE
-            // LaserHitEvent(this);
-
-            Destroy(gameObject);
-        }
-    }
 }

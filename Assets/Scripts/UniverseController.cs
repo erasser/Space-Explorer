@@ -71,8 +71,9 @@ public class UniverseController : MonoBehaviour
         UpdateCameraPosition();
 
         ProcessStaticFixedDeltaTime();
-        
-        MyNavMeshAgent.PredictCollisions();
+
+        // MyNavMeshAgent.PredictCollisions();
+
         // _rangeSprite.transform.position = Astronaut.transformCached.position;
     }
 
@@ -122,14 +123,14 @@ public class UniverseController : MonoBehaviour
             if (!IsAstronautActive() && !ActiveShip.isFiring)
                 EjectAstronaut();
             else
-                BoardAstronaut(ActiveShip.GetClosestShipInRange(AstronautBoardingDistanceLimit).ship);
+                BoardAstronaut(ActiveShip.GetClosestShipInRange(canBeBoardedList, AstronautBoardingDistanceLimit).ship);
         }
 
         if (Input.GetKey(KeyCode.Q))
         {
             if (!wasQPressedThisFrame && IsAstronautActive())
             {
-                var closestShip = Astronaut.GetClosestShipInRange();
+                var closestShip = Astronaut.GetClosestShipInRange(canBeBoardedList);
 
                 if (closestShip.ship)
                 {
@@ -234,8 +235,17 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
     {
         if (targetVelocity == Vector3.zero)
             return Vector3.zero;
+        Vector3 toTarget = Vector3.zero;
+        try
+        {
+            toTarget =  target.transformCached.position - observer.transformCached.position;    
+        }
+        catch (Exception)
+        {
+            print("ERROR! " + target + ", " + observer);
+        }
 
-        Vector3 toTarget =  target.transformCached.position - observer.transformCached.position;
+        
         float a = Vector3.Dot(targetVelocity, targetVelocity) - observerSpeed * observerSpeed;
         float b = 2 * Vector3.Dot(targetVelocity, toTarget);
         float c = Vector3.Dot(toTarget, toTarget);

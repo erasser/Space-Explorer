@@ -697,8 +697,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: a30b2614d539af04fa3292afeebb6408,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &37493939
 GameObject:
   m_ObjectHideFlags: 0
@@ -1127,8 +1127,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: 7a16f21f8b8d8ef41a432f58b5387fba,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1001 &73892706
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1915,8 +1915,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: 3ab13521779d7874ba09c60918609207,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &135760966
 GameObject:
   m_ObjectHideFlags: 0
@@ -2105,8 +2105,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: 7a16f21f8b8d8ef41a432f58b5387fba,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &147148785 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 564c86c1543c6eb4e8525374599f15cc,
@@ -2203,6 +2203,7 @@ MonoBehaviour:
   rotationSpeed: 0.3
   maxRollAngle: 80
   jetAngle: 60
+  isEnemy: 1
   moveVector: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
@@ -3716,6 +3717,7 @@ MonoBehaviour:
   rotationSpeed: 0.3
   maxRollAngle: 80
   jetAngle: 60
+  isEnemy: 1
   moveVector: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
@@ -4026,6 +4028,7 @@ MonoBehaviour:
   rotationSpeed: 0.3
   maxRollAngle: 80
   jetAngle: 60
+  isEnemy: 1
   moveVector: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
@@ -5437,6 +5440,7 @@ MonoBehaviour:
   rotationSpeed: 0.3
   maxRollAngle: 80
   jetAngle: 60
+  isEnemy: 1
   moveVector: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
@@ -5770,8 +5774,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: 3ab13521779d7874ba09c60918609207,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &497562538
 GameObject:
   m_ObjectHideFlags: 0
@@ -6399,6 +6403,7 @@ MonoBehaviour:
   rotationSpeed: 0.3
   maxRollAngle: 80
   jetAngle: 60
+  isEnemy: 1
   moveVector: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
@@ -6626,8 +6631,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: a30b2614d539af04fa3292afeebb6408,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1001 &526897408
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6851,8 +6856,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: 3ab13521779d7874ba09c60918609207,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &536572418
 GameObject:
   m_ObjectHideFlags: 0
@@ -7901,8 +7906,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: 3ab13521779d7874ba09c60918609207,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &599897828 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c255eeaec779d148a216fceb6780f9f,
@@ -9725,6 +9730,7 @@ MonoBehaviour:
   rotationSpeed: 0.02
   maxRollAngle: 0
   jetAngle: 45
+  isEnemy: 0
   moveVector: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
@@ -11114,8 +11120,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: 7a16f21f8b8d8ef41a432f58b5387fba,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &809295300
 GameObject:
   m_ObjectHideFlags: 0
@@ -11163,8 +11169,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: a30b2614d539af04fa3292afeebb6408,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &821166769
 GameObject:
   m_ObjectHideFlags: 0
@@ -11610,8 +11616,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: a30b2614d539af04fa3292afeebb6408,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &862218302
 GameObject:
   m_ObjectHideFlags: 0
@@ -11785,8 +11791,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: 3ab13521779d7874ba09c60918609207,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &871343519
 GameObject:
   m_ObjectHideFlags: 0
@@ -11834,8 +11840,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &876137802
 GameObject:
   m_ObjectHideFlags: 0
@@ -11883,8 +11889,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: 3ab13521779d7874ba09c60918609207,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &877280034
 GameObject:
   m_ObjectHideFlags: 0
@@ -13920,6 +13926,7 @@ MonoBehaviour:
   rotationSpeed: 0.25
   maxRollAngle: 70
   jetAngle: 50
+  isEnemy: 0
   moveVector: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
@@ -15644,8 +15651,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: a30b2614d539af04fa3292afeebb6408,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &1210020339 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1846397802687310, guid: 8c22678d7aa562145804b6f0af7e603a,
@@ -16025,6 +16032,7 @@ MonoBehaviour:
   rotationSpeed: 0.4
   maxRollAngle: 80
   jetAngle: 80
+  isEnemy: 0
   moveVector: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
@@ -16196,17 +16204,17 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
@@ -16871,8 +16879,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: a30b2614d539af04fa3292afeebb6408,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &1321883795
 GameObject:
   m_ObjectHideFlags: 0
@@ -16920,8 +16928,9 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+  projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
+  shootDelay: 0.3
 --- !u!1 &1326775332
 GameObject:
   m_ObjectHideFlags: 0
@@ -17153,8 +17162,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &1335031842
 GameObject:
   m_ObjectHideFlags: 0
@@ -17489,6 +17498,7 @@ MonoBehaviour:
   rotationSpeed: 0.3
   maxRollAngle: 80
   jetAngle: 60
+  isEnemy: 1
   moveVector: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
@@ -17895,8 +17905,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1001 &1397813330
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18184,8 +18194,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: 3ab13521779d7874ba09c60918609207,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &1398826103
 GameObject:
   m_ObjectHideFlags: 0
@@ -19512,6 +19522,55 @@ Transform:
   m_Father: {fileID: 1741507460}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1511557267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1511557268}
+  - component: {fileID: 1511557269}
+  m_Layer: 0
+  m_Name: rocket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1511557268
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511557267}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.51, z: 3.13}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1917289541}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1511557269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511557267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transformCached: {fileID: 0}
+  gameObjectCached: {fileID: 0}
+  rigidBodyCached: {fileID: 0}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &1528784726
 GameObject:
   m_ObjectHideFlags: 0
@@ -19721,8 +19780,9 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
     type: 3}
+  shootDelay: 0.3
 --- !u!1 &1552410416
 GameObject:
   m_ObjectHideFlags: 0
@@ -20313,8 +20373,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: 7a16f21f8b8d8ef41a432f58b5387fba,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &1608526392
 GameObject:
   m_ObjectHideFlags: 0
@@ -20689,8 +20749,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: a30b2614d539af04fa3292afeebb6408,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &1648226670
 GameObject:
   m_ObjectHideFlags: 0
@@ -21228,8 +21288,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &1677437616
 GameObject:
   m_ObjectHideFlags: 0
@@ -21422,8 +21482,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: a30b2614d539af04fa3292afeebb6408,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &1731987671 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 564c86c1543c6eb4e8525374599f15cc,
@@ -21605,6 +21665,7 @@ MonoBehaviour:
   rotationSpeed: 0.3
   maxRollAngle: 80
   jetAngle: 60
+  isEnemy: 1
   moveVector: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
@@ -21841,8 +21902,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: 3ab13521779d7874ba09c60918609207,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1001 &1791912493
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22560,8 +22621,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1001 &1822010254
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22942,8 +23003,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: a30b2614d539af04fa3292afeebb6408,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &1876456622
 GameObject:
   m_ObjectHideFlags: 0
@@ -24069,6 +24130,7 @@ Transform:
   m_Children:
   - {fileID: 1544812272}
   - {fileID: 1321883796}
+  - {fileID: 1511557268}
   m_Father: {fileID: 543450652484722630}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -24454,6 +24516,7 @@ MonoBehaviour:
   rotationSpeed: 0.3
   maxRollAngle: 80
   jetAngle: 60
+  isEnemy: 1
   moveVector: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
@@ -25092,8 +25155,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: 7a16f21f8b8d8ef41a432f58b5387fba,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!4 &2009251648 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4579553980399578, guid: f603e71ddc270d54192200e95673e2a6,
@@ -25321,8 +25384,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: 7a16f21f8b8d8ef41a432f58b5387fba,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &2016740563
 GameObject:
   m_ObjectHideFlags: 0
@@ -25746,8 +25809,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: 3ab13521779d7874ba09c60918609207,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &2029740273
 GameObject:
   m_ObjectHideFlags: 0
@@ -25795,8 +25858,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
-    type: 3}
+  projectilePrefab: {fileID: 0}
+  shootDelay: 0.3
 --- !u!1 &2029826413 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 564c86c1543c6eb4e8525374599f15cc,
@@ -25893,6 +25956,7 @@ MonoBehaviour:
   rotationSpeed: 0.3
   maxRollAngle: 80
   jetAngle: 60
+  isEnemy: 1
   moveVector: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
@@ -28658,6 +28722,7 @@ MonoBehaviour:
   rotationSpeed: 0.12
   maxRollAngle: 30
   jetAngle: 55
+  isEnemy: 0
   moveVector: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}

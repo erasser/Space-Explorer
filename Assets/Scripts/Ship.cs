@@ -17,7 +17,9 @@ public class Ship : CachedMonoBehaviour
     [Tooltip("Jet to ship angle in degrees.\nIt affects individual jet activation condition.\nHigher value => more jets\n\nDO NOT change in playmode!")]
     [Range(0, 90)]      // -.5 odpovídá 60 °, čili setupu tří jetů do hvězdy
     public float jetAngle = 45;
-    public static readonly List<Ship> ShipList = new();
+    // public static readonly List<Ship> ShipList = new();
+    public static readonly List<Ship> EnemyShips = new();
+    public bool isEnemy;
     [HideInInspector]
     public Vector3 moveVector;
     float _jetAngleCos;
@@ -33,6 +35,7 @@ public class Ship : CachedMonoBehaviour
     [HideInInspector]
     public bool isFiring;
     // Collider _closestShipCollider;
+    [HideInInspector]
     public Collider shipCollider;
     int _jetCount;
     List<Weapon> _weapons = new();
@@ -41,15 +44,20 @@ public class Ship : CachedMonoBehaviour
     [HideInInspector]
     public float afterburnerCoefficient = 1;
     float _fastestWeaponSpeedMetersPerSecond;
+    [HideInInspector]
     public Transform predictPositionDummyTransform;
+    [HideInInspector]
     public VelocityEstimator velocityEstimator;
 
     void Start()
     {
-        ShipList.Add(this);
+        // ShipList.Add(this);
         ShootingSqrRange = Mathf.Pow(ShootingRange, 2);
         shipCollider = GetComponent<Collider>();
         velocityEstimator = GetComponent<VelocityEstimator>();
+
+        if (isEnemy)
+            EnemyShips.Add(this);
 
         if (!shipCollider.enabled)
             Debug.LogWarning("-- Disabled collider! --");
@@ -78,10 +86,14 @@ public class Ship : CachedMonoBehaviour
             {
                 var weaponComponent = weapon.GetComponent<Weapon>();
                 _weapons.Add(weaponComponent);
-                
-                var speed = weaponComponent.projectilePrefab.initialShootSpeed;
-                if (speed > _fastestWeaponSpeedMetersPerSecond)
-                    _fastestWeaponSpeedMetersPerSecond = speed;
+
+                // float speed = 100;  // TODO
+                var laserComponent = weaponComponent.GetComponent<Laser>();
+                float highestSpeed = laserComponent ? laserComponent.speed : 0;
+                // speed = laserComponent ? laserComponent.speed : weaponComponent.GetComponent<Rocket>().speed;
+
+                if (highestSpeed > _fastestWeaponSpeedMetersPerSecond)
+                    _fastestWeaponSpeedMetersPerSecond = highestSpeed;
             }
 
         predictPositionDummyTransform = Instantiate(universeController.predictPositionDummyPrefab).transform;
@@ -188,14 +200,14 @@ public class Ship : CachedMonoBehaviour
             vfx.SetBool("jet enabled", false);
     }
 
-    public ClosestShip GetClosestShipInRange(float range = Mathf.Infinity)
+    public ClosestShip GetClosestShipInRange(List<Ship> shipList, float range = Mathf.Infinity)
     {
         var closestSqrRange = Mathf.Pow(range, 2);
         ClosestShip closestShip = new(); 
 
-        foreach (var ship in universeController.canBeBoardedList)
+        foreach (var ship in shipList)
         {
-            if (ActiveShip == ship)
+            if (this == ship)
                 continue;
 
             var toClosestPointV3 = ActiveShip.GetVectorToClosestPoint(ship);
@@ -249,7 +261,8 @@ public class Ship : CachedMonoBehaviour
 
     void OnDestroy()
     {
-        ShipList.Remove(this);
+        EnemyShips.Remove(this);
+        universeController.canBeBoardedList.Remove(this);
     }
 
     float GetPredictedPositionZOffsetTime(Ship ship)

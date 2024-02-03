@@ -1177,11 +1177,11 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661614710}
       inputSlot: {fileID: 8926484042661614831}
-    position: {x: 713.71423, y: 605.1429}
+    position: {x: 633.71423, y: 581.7143}
     expandedSlots:
     - {fileID: 8926484042661614703}
     - {fileID: 8926484042661614708}
-    expanded: 0
+    expanded: 1
 --- !u!114 &8926484042661614703
 MonoBehaviour:
   m_ObjectHideFlags: 0

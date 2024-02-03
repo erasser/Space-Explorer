@@ -1,4 +1,6 @@
-﻿Kde je Time.fixedDeltaTime ve Start(), tam asi bude problém se slow-motion
+﻿TODO!  GetClosestShipInRange může vracet ClosestShip s ship = null
+
+Kde je Time.fixedDeltaTime ve Start(), tam asi bude problém se slow-motion
 Daly by se traily renderovat pod lodí? Možná pomocí sorting layers u trail rendereru?
 
 Captions se renderují i mimo kameru.
