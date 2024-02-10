@@ -233,8 +233,11 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
     // Target's velocity is predicted, observer is checking collision / shooting with observerVelocity
     public static Vector3 GetPredictedPositionOffset(Ship target, Vector3 targetVelocity, Ship observer, float observerSpeed)  // https://gamedev.stackexchange.com/questions/25277/how-to-calculate-shot-angle-and-velocity-to-hit-a-moving-target
     {
-        if (targetVelocity == Vector3.zero)
+        // TODO: Chtěl bych ještě analyzovat výsledek a zahodit, pokud nedává smysl
+  
+        if (targetVelocity == Vector3.zero || observerSpeed == 0)
             return Vector3.zero;
+
         Vector3 toTarget = Vector3.zero;
         try
         {

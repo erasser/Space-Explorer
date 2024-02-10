@@ -1915,7 +1915,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+    type: 3}
   shootDelay: 0.3
 --- !u!1 &135760966
 GameObject:
@@ -4720,7 +4721,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 393712702}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -7906,7 +7907,8 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+    type: 3}
   shootDelay: 0.3
 --- !u!1 &599897828 stripped
 GameObject:
@@ -12744,7 +12746,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -200
+      value: -45
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
@@ -12754,7 +12756,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -50
+      value: 9.9
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
@@ -18808,7 +18810,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1429229512}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -19522,55 +19524,6 @@ Transform:
   m_Father: {fileID: 1741507460}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1511557267
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1511557268}
-  - component: {fileID: 1511557269}
-  m_Layer: 0
-  m_Name: rocket
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1511557268
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1511557267}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.51, z: 3.13}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1917289541}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1511557269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1511557267}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 0}
-  shootDelay: 0.3
 --- !u!1 &1528784726
 GameObject:
   m_ObjectHideFlags: 0
@@ -19957,6 +19910,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 587562417}
+  - {fileID: 1998174337}
   m_Father: {fileID: 1731987674}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20416,7 +20370,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1608526392}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -23800,7 +23754,7 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -5716681864270162303, guid: 564c86c1543c6eb4e8525374599f15cc, type: 3}
@@ -24130,7 +24084,6 @@ Transform:
   m_Children:
   - {fileID: 1544812272}
   - {fileID: 1321883796}
-  - {fileID: 1511557268}
   m_Father: {fileID: 543450652484722630}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -25157,6 +25110,56 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 0}
   shootDelay: 0.3
+--- !u!1 &1998174336
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1998174337}
+  - component: {fileID: 1998174338}
+  m_Layer: 8
+  m_Name: rocket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1998174337
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998174336}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1564235458}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1998174338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998174336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transformCached: {fileID: 0}
+  gameObjectCached: {fileID: 0}
+  rigidBodyCached: {fileID: 0}
+  projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
+    type: 3}
+  shootDelay: 0.9
 --- !u!4 &2009251648 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4579553980399578, guid: f603e71ddc270d54192200e95673e2a6,

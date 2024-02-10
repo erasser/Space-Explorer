@@ -102,8 +102,8 @@ MonoBehaviour:
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
   autoAim: 1
-  range: 100
-  speed: 50
+  range: 10
+  speed: 60
   velocity: {x: 0, y: 0, z: 0}
   rotationSpeed: 4
 --- !u!96 &4388847196733905234

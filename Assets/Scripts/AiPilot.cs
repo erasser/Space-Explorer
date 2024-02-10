@@ -31,6 +31,8 @@ public class AiPilot : CachedMonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
             GoToRandomLocation();
+        if (Input.GetKeyDown(KeyCode.F))
+            IWantToAttack(Ship.ActiveShip);
         if (Input.GetKeyDown(KeyCode.P))
         {
             // if (MyNavMeshAgent.MyNavMeshAgents[0] == _myNavMeshAgent)
@@ -69,5 +71,10 @@ public class AiPilot : CachedMonoBehaviour
     void IWantToPatrolTo(Vector3 secondPosition /*, TravelStance travelStance = TravelStance.PreferDestination*/)
     {
         _myNavMeshAgent.SetPatrolTo(secondPosition);
+    }
+
+    void IWantToAttack(Ship ship)
+    {
+        _myNavMeshAgent.SetTargetToFollow(ship);
     }
 }

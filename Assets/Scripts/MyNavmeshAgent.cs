@@ -126,7 +126,14 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
         // if (_state == State.GoingToDestination)
         // {
-            CheckPathPoints();
+            
+        CheckPathPoints();
+        
+        if (_state == State.FollowingEnemy)
+        {
+            ReGeneratePath();
+            CheckFollowingEnemyDistance();
+        }
 
             // PredictCollisions();
         // }
@@ -144,10 +151,6 @@ public class MyNavMeshAgent : CachedMonoBehaviour
                 if (_actualPathPointIndex == _pathPoints.Count)  // last point
                     Stop();
             }
-        }
-        else if (_state == State.FollowingEnemy)
-        {
-            GeneratePathTo(_target.transformCached.position);
         }*/
         
         /*if (_state == State.GoingToDestination)
@@ -159,6 +162,36 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             }
         }*/
 
+    }
+
+    void CheckFollowingEnemyDistance()
+    {
+        if (_ship.isFiring)
+        {
+            if (IsTargetInSqrRange(ShootingSqrRange))
+            {
+                // TODO: Bude to chtít zavést čekací stav
+            }
+        }
+        
+        /*if (_ship.isFiring)
+        {
+            if (!IsTargetInSqrRange(ShootingSqrRange * .7f))
+                ReGeneratePath();
+        }
+        else
+        {
+            if (IsTargetInSqrRange(ShootingSqrRange))
+                _ship.isFiring = true;
+        }*/
+    }
+
+    bool IsTargetInSqrRange(float sqrRange)
+    {
+        // var sqrDistance = (ActiveShip.transformCached.position - transformCached.position).sqrMagnitude;
+        // return sqrDistance <= ShootingSqrRange;
+
+        return _ship.GetSqrClosestDistanceToShip(_target) <= sqrRange;
     }
 
     Vector3 GetCurrentPathPoint()
@@ -316,14 +349,13 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         return true;
     }
 
-    /*public void SetTargetToFollow(Ship target)
+    public void SetTargetToFollow(Ship target)
     {
         _target = target;
-        _state = State.GoingToDestination;
-        _travelStance = TravelStance.FollowEnemy;
+        _state = State.FollowingEnemy;
 
-        // GeneratePathTo(target.transformCached.position);  // bude se dít v updatu
-    }*/
+        GeneratePathTo(target.transformCached.position);
+    }
 
     public void Stop()
     {
@@ -339,12 +371,6 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         _ship.SetMoveVectorHorizontal(0);
         _ship.SetMoveVectorVertical(0);
         // GetComponent<Rigidbody>().velocity = Vector3.zero;   ??? ??? ???
-    }
-
-    bool IsEnemyInRange()
-    {
-        var sqrDistance = (ActiveShip.transformCached.position - transformCached.position).sqrMagnitude;
-        return sqrDistance <= ShootingSqrRange;
     }
 
     void ShowPath()
@@ -385,10 +411,11 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             return _destination;
         if (_state == State.Patrolling)
             return _destinations[_destinationsIndex];
+        if (_state == State.FollowingEnemy)
+            return _target.transformCached.position;  // TODO
+
 
         Debug.LogWarning("TODO !");
-        if (_state == State.FollowingEnemy)
-            return _pathPoints[_actualPathPointIndex];  // TODO
         if (_state == State.RandomRoaming)
             return _pathPoints[_actualPathPointIndex];  // TODO
 

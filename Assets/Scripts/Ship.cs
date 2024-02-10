@@ -85,10 +85,14 @@ public class Ship : CachedMonoBehaviour
             foreach (Transform weapon in weapons)
             {
                 var weaponComponent = weapon.GetComponent<Weapon>();
+
+                if (!weaponComponent.enabled)
+                    continue;
+
                 _weapons.Add(weaponComponent);
 
-                // float speed = 100;  // TODO
-                var laserComponent = weaponComponent.GetComponent<Laser>();
+                var projectilePrefab = weaponComponent.projectilePrefab;
+                var laserComponent = projectilePrefab.GetComponent<Laser>();
                 float highestSpeed = laserComponent ? laserComponent.speed : 0;
                 // speed = laserComponent ? laserComponent.speed : weaponComponent.GetComponent<Rocket>().speed;
 
@@ -247,6 +251,11 @@ public class Ship : CachedMonoBehaviour
         // dummy.GetComponent<Collider>().enabled = false;
         // InfoText.text = "distance: " + (otherShip._collider.ClosestPoint(thisShipPosition) - thisShipPosition).sqrMagnitude;
         return otherShip.shipCollider.ClosestPoint(thisShipPosition) - thisShipPosition;
+    }
+
+    public float GetSqrClosestDistanceToShip(Ship otherShip)
+    {
+        return GetVectorToClosestPoint(otherShip).sqrMagnitude;
     }
 
     public static bool IsAstronautActive()
