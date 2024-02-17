@@ -2168,7 +2168,6 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   showPath: 1
   targetMinDistance: 2
-  agentFixedUpdateDeltaTime: 0.1
   _state: 0
 --- !u!114 &147148789
 MonoBehaviour:
@@ -3682,7 +3681,6 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   showPath: 1
   targetMinDistance: 2
-  agentFixedUpdateDeltaTime: 0.1
   _state: 0
 --- !u!114 &244803251
 MonoBehaviour:
@@ -3993,7 +3991,6 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   showPath: 1
   targetMinDistance: 2
-  agentFixedUpdateDeltaTime: 0.1
   _state: 0
 --- !u!114 &269216014
 MonoBehaviour:
@@ -5405,7 +5402,6 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   showPath: 1
   targetMinDistance: 2
-  agentFixedUpdateDeltaTime: 0.1
   _state: 0
 --- !u!114 &447003419
 MonoBehaviour:
@@ -6368,7 +6364,6 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   showPath: 1
   targetMinDistance: 2
-  agentFixedUpdateDeltaTime: 0.1
   _state: 0
 --- !u!114 &518919688
 MonoBehaviour:
@@ -7907,7 +7902,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+  projectilePrefab: {fileID: 8219408188620219722, guid: a30b2614d539af04fa3292afeebb6408,
     type: 3}
   shootDelay: 0.3
 --- !u!1 &599897828 stripped
@@ -17464,7 +17459,6 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   showPath: 1
   targetMinDistance: 2
-  agentFixedUpdateDeltaTime: 0.1
   _state: 0
 --- !u!114 &1342638732
 MonoBehaviour:
@@ -21598,7 +21592,6 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   showPath: 1
   targetMinDistance: 2
-  agentFixedUpdateDeltaTime: 0.1
   _state: 0
 --- !u!114 &1731987679
 MonoBehaviour:
@@ -23646,7 +23639,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1901652227}
   m_LocalRotation: {x: 0.4863354, y: -0, z: -0, w: 0.87377226}
-  m_LocalPosition: {x: 0, y: 30.86, z: -21.1}
+  m_LocalPosition: {x: 0, y: 80, z: -21.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24433,7 +24426,6 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   showPath: 1
   targetMinDistance: 2
-  agentFixedUpdateDeltaTime: 0.1
   _state: 0
 --- !u!114 &1930452190
 MonoBehaviour:
@@ -25923,7 +25915,6 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   showPath: 1
   targetMinDistance: 2
-  agentFixedUpdateDeltaTime: 0.1
   _state: 0
 --- !u!114 &2029826417
 MonoBehaviour:

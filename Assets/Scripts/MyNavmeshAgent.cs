@@ -15,7 +15,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 {
     public bool showPath = true;
     public float targetMinDistance = 2f;
-    public float agentFixedUpdateDeltaTime = .2f;
+    static readonly float AgentFixedUpdateDeltaTime = .4f;
     const float CollisionPredictionMaxDistance = 50;
     float _lastAgentFixedUpdate;
     Ship _ship;
@@ -41,6 +41,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     // int _predictedCollisionTime;
     List<PredictedCollision> _predictedCollisions = new();
     static readonly Collider[] CollisionPredictionResults = new Collider[1];
+    Transform _tmpActivePointDummy;
 
     // TARGETS and DESTINATIONS  (helper class to be created)
     Ship _target;
@@ -66,7 +67,8 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         Patrolling,
         FollowingEnemy,
         RandomRoaming,
-        WaitingToPreventCollision
+        WaitingToPreventCollision,
+        WaitingWhileShooting
     }
 
     void Start()
@@ -80,10 +82,18 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         MyNavMeshAgents.Add(this);
         // _predictiveColliderLayerMask = LayerMask.NameToLayer("predictive collider");
         SetBounds();
+
+        var tmp = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        _tmpActivePointDummy = tmp.transform;
+        _tmpActivePointDummy.localScale = new(1, 4, 1);
+        Destroy(_tmpActivePointDummy.GetComponent<SphereCollider>());
     }
 
     void FixedUpdate()
     {
+        if (_actualPathPointIndex >= 0 && _actualPathPointIndex < _pathPoints.Count)
+            _tmpActivePointDummy.position = _pathPoints[_actualPathPointIndex];
+
         ProcessAgentFixedUpdateDeltaTime();
 
         if (_needsRegeneratePath)
@@ -104,15 +114,20 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             //     return;
 
             // _toActualPathPointDirection = _actualPathPoint - transformCached.position;
+
             _toActualPathPointDirection = GetCurrentPathPoint() - transformCached.position;
+            // print("_toActualPathPointDirection = " + _toActualPathPointDirection);
             _ship.SetMoveVectorHorizontal(_toActualPathPointDirection.x);
             _ship.SetMoveVectorVertical(_toActualPathPointDirection.z);
+            
+            // if (_ship != ActiveShip)
+            //     print(_ship.moveVector);
         // }
     }
 
     void ProcessAgentFixedUpdateDeltaTime()
     {
-        if (Time.time > _lastAgentFixedUpdate + agentFixedUpdateDeltaTime)
+        if (Time.time > _lastAgentFixedUpdate + AgentFixedUpdateDeltaTime)
         {
             AgentFixedUpdate();
             _lastAgentFixedUpdate = Time.time;
@@ -129,9 +144,10 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             
         CheckPathPoints();
         
-        if (_state == State.FollowingEnemy)
+        if (_state == State.FollowingEnemy || _state == State.WaitingWhileShooting)
         {
             ReGeneratePath();
+
             CheckFollowingEnemyDistance();
         }
 
@@ -164,26 +180,44 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     }
 
-    void CheckFollowingEnemyDistance()
+    public void CheckFollowingEnemyDistance()
     {
-        if (_ship.isFiring)
-        {
-            if (IsTargetInSqrRange(ShootingSqrRange))
+        // if (_state == State.FollowingEnemy)
+        // {
+        //     
+        // }
+       
+        // if (_ship.isFiring)
+        // {
+        //     if (IsTargetInSqrRange(ShootingSqrRange))
+        //     {
+        //         _state = State.WaitingWhileShooting;
+        //     }
+        //     else
+        //     {
+        //         _state = State.FollowingEnemy;
+        //     }
+        // }
+        // else  // not firing
+        // {
+            if (IsTargetInSqrRange(ShootingSqrRange * .7f))
             {
-                // TODO: Bude to chtít zavést čekací stav
-            }
-        }
-        
-        /*if (_ship.isFiring)
-        {
-            if (!IsTargetInSqrRange(ShootingSqrRange * .7f))
-                ReGeneratePath();
-        }
-        else
-        {
-            if (IsTargetInSqrRange(ShootingSqrRange))
                 _ship.isFiring = true;
-        }*/
+                _state = State.WaitingWhileShooting;
+                // print("target in small range");
+            }
+            else if (IsTargetInSqrRange(ShootingSqrRange))
+            {
+                _ship.isFiring = true;
+                _state = State.FollowingEnemy;
+                // print("target in range");
+            }
+            else
+            {
+                _ship.isFiring = false;
+                _state = State.FollowingEnemy;
+            }
+        // }
     }
 
     bool IsTargetInSqrRange(float sqrRange)
@@ -197,7 +231,15 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     Vector3 GetCurrentPathPoint()
     {
         // print(_pathPoints.Count + ", " + _actualPathPointIndex);
-        return _pathPoints[_actualPathPointIndex];
+        try
+        {
+            return _pathPoints[_actualPathPointIndex];
+        }
+        catch
+        {
+            print(_pathPoints.Count + ", " + _actualPathPointIndex);
+            return _pathPoints[_actualPathPointIndex-1];
+        }
     }
 
     bool IsPathPointReached()
@@ -246,6 +288,9 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         // InfoText.text = Mathf.Round(_toActualPathPointDirection.sqrMagnitude) + " <\n" + distance + " ?";
         // print(_toActualPathPointDirection.sqrMagnitude + ", " + distance);
 
+        if (reached)
+            print("Pathpoint reached!");
+
         if (reached && ++_actualPathPointIndex == _pathPoints.Count)
         {
             if (_state == State.GoingToDestination)
@@ -259,7 +304,14 @@ public class MyNavMeshAgent : CachedMonoBehaviour
                 _destinationsIndex = _destinationsIndex == 0 ? 1 : 0;
                 ReGeneratePath();
             }
+            else if (_state == State.FollowingEnemy || _state == State.WaitingWhileShooting)
+            {
+                ReGeneratePath();
+            }
         }
+
+        if (_ship != ActiveShip)
+            InfoText.text = $"pathPoints: {_actualPathPointIndex} / {_pathPoints.Count}";
     }
 
     /*bool CheckPathPointReached()
@@ -309,7 +361,9 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         // _actualPathPointIndex = 0;
         _pathPoints.Clear();
         _pathPoints.AddRange(_navMeshPath.corners);
-        _actualPathPointIndex = 0;
+        _actualPathPointIndex = 1;  // index = 0 is at actual agent position
+        
+        // ↑ TODO: Může se vygenerovat cesta s neplatným indexem 1
 
         // _pathPoints = new(_navMeshPath.corners);
 
@@ -384,6 +438,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         // foreach (var point in _navMeshPath.corners)
         // {
         //     _pointVisualizer = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        //     DestroyImmediate(_pointVisualizer.GetComponent<BoxCollider>());
         //     _pointVisualizer.transform.position = point;
         //     _pointVisualizer.name = $"{name}_path_point";
         // }
@@ -399,10 +454,17 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         }
     }
 
-    bool ReGeneratePath()
+    public bool ReGeneratePath()
     {
-        // print("► REGENERATING PATH ◄");
-        return GeneratePathTo(GetCurrentDestination());
+        var result = GeneratePathTo(GetCurrentDestination());
+        if (!result)
+            Debug.LogWarning("Path was NOT generated!");
+        // else
+        // {
+        //     print("PATH REGENERATED");            
+        // }
+
+        return result;
     }
 
     Vector3 GetCurrentDestination()
@@ -412,8 +474,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         if (_state == State.Patrolling)
             return _destinations[_destinationsIndex];
         if (_state == State.FollowingEnemy)
-            return _target.transformCached.position;  // TODO
-
+            return _target.transformCached.position;
 
         Debug.LogWarning("TODO !");
         if (_state == State.RandomRoaming)

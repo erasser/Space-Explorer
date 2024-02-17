@@ -41,6 +41,14 @@ public class AiPilot : CachedMonoBehaviour
             else
                 IWantToPatrolTo(new(-100, 0, -75));
         }
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            _myNavMeshAgent.ReGeneratePath();
+
+            _myNavMeshAgent.CheckFollowingEnemyDistance();
+        }
+
     }
 
     public void GoToRandomLocation()
