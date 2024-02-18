@@ -151,6 +151,7 @@ public class Ship : CachedMonoBehaviour
         if (moveVector is { x: 0, z: 0 })
         {
             DisableJets();
+            
             return;
         }
 
@@ -167,6 +168,7 @@ public class Ship : CachedMonoBehaviour
 
     void Rotate()
     {
+        // print("rotating ship");
         // yaw
         var forward = transformCached.forward;
         var toTargetNormalized = toTargetV3.normalized;
