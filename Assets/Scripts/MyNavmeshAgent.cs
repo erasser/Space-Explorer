@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using static Ship;
 using static UniverseController;
+using Random = UnityEngine.Random;
 
 // TODO: Patrol
 // TODO: Zajistit, aby byla cesta korektní po kolizi (tj. změny pozice) objektu.
@@ -42,6 +43,8 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     List<PredictedCollision> _predictedCollisions = new();
     static readonly Collider[] CollisionPredictionResults = new Collider[1];
     Transform _tmpActivePointDummy;
+    static List<State> _turnTypesThatNeedCheckingPathPoints = new() {State.Patrolling, State.FollowingEnemy, State.RandomRoaming, State.GoingToDestination};
+    float _strafeCoefficient;
 
     // TARGETS and DESTINATIONS  (helper class to be created)
     Ship _target;
@@ -104,6 +107,9 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         }
 
         CheckPathPoints();
+
+        if (_state == State.WaitingWhileShooting)
+            Strafe();
 
         if (_state == State.StandingStill || _state == State.WaitingToPreventCollision || _state == State.WaitingWhileShooting)
             return;
@@ -180,25 +186,35 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     }
 
+    void Strafe()
+    {
+        _ship.rb.AddForce(_strafeCoefficient * transformCached.right);
+    }
+
     public void CheckFollowingEnemyDistance()
     {
-        // TODO: Když v dosahu, natáčet k targetu
-
         if (IsTargetInSqrRange(ShootingSqrRange * .7f))
         {
+            if (_state != State.WaitingWhileShooting)
+                _strafeCoefficient = _ship.speed * Random.Range(- .6f, .6f);
+
             _ship.isFiring = true;
             _state = State.WaitingWhileShooting;
+            _ship.turnType = TurnType.CustomTarget;
+            _ship.SetCustomTarget(_target.transformCached.position);  // TODO: Mělo by to mířit na ten nejbližší point
             SetZeroMoveVector();
         }
         else if (IsTargetInSqrRange(ShootingSqrRange))
         {
             _ship.isFiring = true;
             _state = State.FollowingEnemy;
+            _ship.turnType = TurnType.Velocity;
         }
         else
         {
             _ship.isFiring = false;
             _state = State.FollowingEnemy;
+            _ship.turnType = TurnType.Velocity;
         }
     }
 
@@ -243,41 +259,20 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     //             SetTargetToFollow();  // potřebuju toho novýho enemyho + přepodmínkovat
     //         }
     //     }
-    //     else
-    //     {
-    //         /*if (_ship.isFiring)*/
-    //         _ship.isFiring = false;
-    //     }
     // }
 
     void CheckPathPoints()
     {
-        /*if (_actualPathPointIndex >= _pathPoints.Count)
-        {
-            print("☺ Key is beyond the pathPoints count, returning");
+        if (!_turnTypesThatNeedCheckingPathPoints.Contains(_state))
             return;
-        }
 
-        if (_actualPathPointIndex == -1)
-        {
-            print("☻ Key is -1");
-            return;
-        }*/
-// print("count: " + _pathPoints.Count + ", index: " + _actualDestinationIndex);
-        // _toActualPathPointDirection = _pathPoints[_actualPathPointIndex] - transformCached.position;
         var sqrDistance = _actualPathPointIndex == _pathPoints.Count - 1 ? _targetSqrMinDistance * 1.5f : _targetSqrMinDistance;  // Break sooner before last path point
         var reached = _toActualPathPointDirection.sqrMagnitude <= sqrDistance;
-        // InfoText.text = Mathf.Round(_toActualPathPointDirection.sqrMagnitude) + " <\n" + distance + " ?";
-        // print(_toActualPathPointDirection.sqrMagnitude + ", " + distance);
-
-        // if (reached)
-        //     print("Pathpoint reached!");
 
         if (reached && ++_actualPathPointIndex == _pathPoints.Count)
         {
             if (_state == State.GoingToDestination)
             {
-                // print("• reached!");
                 // Stop();
                 _aiPilot.GoToRandomLocation();
             }
@@ -296,56 +291,19 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             InfoText.text = $"pathPoints: {_actualPathPointIndex} / {_pathPoints.Count}";
     }
 
-    /*bool CheckPathPointReached()
-    {
-        // _toActualPathPointDirection = _actualPathPoint - transformCached.position;
-        // InfoText.text = (Mathf.Round(_toActualPathPointDirection.magnitude * 10)/10).ToString();
-        
-        // var distance = _actualPathPointIndex == _pathPoints.Count - 1 ? _targetSqrMinDistance * 1.5f : _targetSqrMinDistance;  // Break sooner before last path point
-        var reached = _toActualPathPointDirection.sqrMagnitude <= 16;  // TODO...
-
-        if (reached)
-        {
-            // print("checkpoint reached!");
-
-            if (_remainingPathPoints == 0)
-            {
-                // print("That was last checkpoint!");
-
-                // Stop();
-                _aiPilot.GoToRandomLocation();
-
-            }
-            // else
-            //     GeneratePathTo();
-            return true;
-        }
-
-        return false;
-    }*/
-    
     bool GeneratePathTo(Vector3 targetLocation)
     {
-        // CheckPathPoint();
-        //
-        // if (_actualPathPointIndex == -1)
-        // {
-        //     print("• _actualPathPointIndex = -1");
-        //     return false;
-        // }
-
         var position = transformCached.position;
         var result = NavMesh.CalculatePath(new(position.x, 0, position.z), targetLocation, NavMesh.AllAreas, _navMeshPath);
 
         if (!result)
             return false;
 
-        // _actualPathPointIndex = 0;
         _pathPoints.Clear();
         _pathPoints.AddRange(_navMeshPath.corners);
         _actualPathPointIndex = 1;  // index = 0 is at actual agent position
         
-        // ↑ TODO: Může se vygenerovat cesta s neplatným indexem 1
+        // ↑ TODO: Může se vygenerovat cesta s neplatným indexem 1?
 
         // _pathPoints = new(_navMeshPath.corners);
 
@@ -646,16 +604,11 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         transformCached.rotation = originalRotation;
     }
 
-    public void PauseMotion()
+    void OnCollisionEnter(Collision other)
     {
-
+        if (_state == State.WaitingWhileShooting)
+            _strafeCoefficient *= -1;
     }
-
-    public void ResumeMotion()
-    {
-
-    }
-
 
     // TODO: Nějak low-level zajistit, aby cíl měl vždy y = 0
 }

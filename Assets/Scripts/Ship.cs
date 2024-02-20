@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.VFX;
 using static UniverseController;
 
@@ -23,7 +22,7 @@ public class Ship : CachedMonoBehaviour
     [HideInInspector]
     public Vector3 moveVector;
     float _jetAngleCos;
-    Vector3 _userTarget;
+    Vector3 _customTarget;
     [HideInInspector]
     public Rigidbody rb;
     [HideInInspector]
@@ -48,6 +47,13 @@ public class Ship : CachedMonoBehaviour
     public Transform predictPositionDummyTransform;
     [HideInInspector]
     public VelocityEstimator velocityEstimator;
+    public TurnType turnType;
+
+    public enum TurnType
+    {
+        Velocity,
+        CustomTarget
+    }
 
     void Start()
     {
@@ -142,8 +148,7 @@ public class Ship : CachedMonoBehaviour
 
     void Update()
     {
-        toTargetV3 = ActiveShip == this ? _userTarget - transformCached.position : rb.velocity;
-        Debug.DrawLine(transformCached.position,  predictPositionDummyTransform.position, Color.magenta);
+        // Debug.DrawLine(transformCached.position,  predictPositionDummyTransform.position, Color.magenta);
     }
 
     void Move()
@@ -171,6 +176,8 @@ public class Ship : CachedMonoBehaviour
         // print("rotating ship");
         // yaw
         var forward = transformCached.forward;
+        // toTargetV3 = ActiveShip == this ? _userTarget - transformCached.position : rb.velocity;
+        toTargetV3 = ActiveShip == this || turnType == TurnType.CustomTarget ? _customTarget - transformCached.position : rb.velocity;
         var toTargetNormalized = toTargetV3.normalized;
         rb.AddTorque(- Vector2.SignedAngle(new(forward.x, forward.z), new(toTargetNormalized.x, toTargetNormalized.z)) * rotationSpeed * Vector3.up, ForceMode.Acceleration);
 
@@ -183,9 +190,9 @@ public class Ship : CachedMonoBehaviour
         rb.transform.localEulerAngles = new(0, transformCached.localEulerAngles.y, Mathf.Clamp(- 20 * rb.angularVelocity.y, - maxRollAngle, maxRollAngle));
     }
 
-    public void SetUserTarget(Vector3 target)
+    public void SetCustomTarget(Vector3 target)
     {
-        _userTarget = target;
+        _customTarget = target;
     }
 
     void UpdateJets()
@@ -329,6 +336,16 @@ public class Ship : CachedMonoBehaviour
     {
         var caption = Instantiate(universeController.captionPrefab, UI.transform);
         caption.GetComponent<Caption>().Setup(this);    
+    }
+
+    public void UpdateCameraPosition()
+    {
+        var coef = Input.GetKey(KeyCode.LeftControl) ? .8f : .2f;
+
+        MainCameraTransform.position = ActiveShip.transformCached.position +
+                                       InitialCameraOffset + // vertical offset
+                                       // SetVectorLength(player.toTargetV3, player.toTargetV3.sqrMagnitude / 3);  // horizontal offset  // Fungovalo to, teď problikává obraz
+                                       ActiveShip.toTargetV3 * coef; // horizontal offset
     }
 
     // public void Highlight()

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.VFX;
 using static Ship;
+using Random = UnityEngine.Random;
 
 public class UniverseController : MonoBehaviour
 {
@@ -66,9 +67,9 @@ public class UniverseController : MonoBehaviour
 
         ProcessMouseMove();
 
-        ActiveShip.SetUserTarget(MouseCursorHit.point);
+        ActiveShip.SetCustomTarget(MouseCursorHit.point);
 
-        UpdateCameraPosition();
+        ActiveShip.UpdateCameraPosition();
 
         ProcessStaticFixedDeltaTime();
 
@@ -182,16 +183,6 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
     void ProcessMouseMove()
     {
         Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out MouseCursorHit, Mathf.Infinity, raycastPlaneLayer);
-    }
-
-    void UpdateCameraPosition()
-    {
-        var coef = Input.GetKey(KeyCode.LeftControl) ? .8f : .2f;
-
-        MainCameraTransform.position = ActiveShip.transformCached.position +
-                                        InitialCameraOffset + // vertical offset
-                                        // SetVectorLength(player.toTargetV3, player.toTargetV3.sqrMagnitude / 3);  // horizontal offset  // Fungovalo to, teď problikává obraz
-                                        ActiveShip.toTargetV3 * coef; // horizontal offset
     }
 
     void SetCameraHeight(float multiplier)
@@ -311,6 +302,11 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
         }
 
         return targetVelocity * x;
+    }
+
+    public static int GetRandomSign()
+    {
+        return Random.value < .5f ? - 1 : 1;
     }
 
 }
