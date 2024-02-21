@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -47,7 +46,10 @@ public class Ship : CachedMonoBehaviour
     public Transform predictPositionDummyTransform;
     [HideInInspector]
     public VelocityEstimator velocityEstimator;
+    [HideInInspector]
     public TurnType turnType;
+    [HideInInspector]
+    public LayerMask shootableLayerMasks;  // All layers that this ship shoots
 
     public enum TurnType
     {
@@ -70,7 +72,7 @@ public class Ship : CachedMonoBehaviour
 
         if (CompareTag("Default Ship"))
         {
-            ActiveShip = this;
+            SetAsActiveShip();
             InitialCameraOffset = MainCameraTransform.position - ActiveShip.transformCached.position;
         }
 
@@ -106,9 +108,43 @@ public class Ship : CachedMonoBehaviour
                     _fastestWeaponSpeedMetersPerSecond = highestSpeed;
             }
 
-        predictPositionDummyTransform = Instantiate(universeController.predictPositionDummyPrefab).transform;
+        predictPositionDummyTransform = Instantiate(Uc.predictPositionDummyPrefab).transform;
 
         InitCaption();
+        
+        UpdateShootableLayerMasks();
+    }
+
+    public void SetAsActiveShip()
+    {
+        if (ActiveShip)
+            ActiveShip.gameObject.layer = Uc.shootableShipsNeutralLayer;
+
+        ActiveShip = this;
+
+        gameObject.layer = Uc.shootablePlayerLayer;
+
+        UpdateShootableLayerMasks();
+    }
+
+    void UpdateShootableLayerMasks()
+    {
+        if (IsPlayer())
+            shootableLayerMasks = 1 << Uc.shootableEnvironmentLayer | 1 << Uc.shootableShipsEnemyLayer;
+        else if (IsEnemy())
+            shootableLayerMasks = 1 << Uc.shootableEnvironmentLayer | 1 << Uc.shootablePlayerLayer;
+        else if (gameObject.layer == Uc.shootableShipsNeutralLayer)
+            shootableLayerMasks = 1 << Uc.shootableEnvironmentLayer;
+    }
+
+    public bool IsPlayer()
+    {
+        return this == ActiveShip;
+    }
+
+    bool IsEnemy()
+    {
+        return gameObject.layer == Uc.shootableShipsEnemyLayer;
     }
 
     void OnEnable()
@@ -177,7 +213,7 @@ public class Ship : CachedMonoBehaviour
         // yaw
         var forward = transformCached.forward;
         // toTargetV3 = ActiveShip == this ? _userTarget - transformCached.position : rb.velocity;
-        toTargetV3 = ActiveShip == this || turnType == TurnType.CustomTarget ? _customTarget - transformCached.position : rb.velocity;
+        toTargetV3 = IsPlayer() || turnType == TurnType.CustomTarget ? _customTarget - transformCached.position : rb.velocity;
         var toTargetNormalized = toTargetV3.normalized;
         rb.AddTorque(- Vector2.SignedAngle(new(forward.x, forward.z), new(toTargetNormalized.x, toTargetNormalized.z)) * rotationSpeed * Vector3.up, ForceMode.Acceleration);
 
@@ -245,7 +281,7 @@ public class Ship : CachedMonoBehaviour
         var thisShipPosition = transformCached.position;
         otherShip.shipCollider.enabled = true;
 
-        Physics.Raycast(thisShipPosition, otherShip.transformCached.position - thisShipPosition, out var hit, range, universeController.closestShipColliderLayer);
+        Physics.Raycast(thisShipPosition, otherShip.transformCached.position - thisShipPosition, out var hit, range, Uc.closestShipColliderLayer);
 
         otherShip.shipCollider.enabled = false;
         return (hit.point - thisShipPosition).sqrMagnitude;
@@ -280,7 +316,7 @@ public class Ship : CachedMonoBehaviour
     void OnDestroy()
     {
         EnemyShips.Remove(this);
-        universeController.canBeBoardedList.Remove(this);
+        Uc.canBeBoardedList.Remove(this);
     }
 
     float GetPredictedPositionZOffsetTime(Ship ship)
@@ -334,7 +370,7 @@ public class Ship : CachedMonoBehaviour
 
     void InitCaption()
     {
-        var caption = Instantiate(universeController.captionPrefab, UI.transform);
+        var caption = Instantiate(Uc.captionPrefab, UI.transform);
         caption.GetComponent<Caption>().Setup(this);    
     }
 

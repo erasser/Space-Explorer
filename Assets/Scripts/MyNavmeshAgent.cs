@@ -440,7 +440,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     public static void CreatePredictiveCollider()
     {
-        PredictiveCollider = Instantiate(universeController.predictiveColliderPrefab);
+        PredictiveCollider = Instantiate(Uc.predictiveColliderPrefab);
         _predictiveColliderTransform = PredictiveCollider.transform;
     }
 
@@ -489,7 +489,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
         Physics.SyncTransforms();  // Možná to není nezbytné? Otestovat s více objekty.
 
-        var size = Physics.OverlapBoxNonAlloc(obj1.transformCached.position + boxCastCenterOffset, obj1._predictiveBoxExtents, CollisionPredictionResults, rot, universeController.predictiveColliderLayerMask);
+        var size = Physics.OverlapBoxNonAlloc(obj1.transformCached.position + boxCastCenterOffset, obj1._predictiveBoxExtents, CollisionPredictionResults, rot, Uc.predictiveColliderLayerMask);
 
         // InfoText.text = colliders.Length.ToString();
 

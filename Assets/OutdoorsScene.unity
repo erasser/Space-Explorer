@@ -211,7 +211,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2c255eeaec779d148a216fceb6780f9f,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -650,7 +650,7 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
@@ -794,7 +794,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  showPath: 1
+  showPath: 0
   targetMinDistance: 5
   _state: 0
 --- !u!114 &26364059
@@ -841,6 +841,9 @@ MonoBehaviour:
   predictPositionDummyTransform: {fileID: 0}
   velocityEstimator: {fileID: 0}
   turnType: 0
+  shootableLayerMasks:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!120 &26364061
 LineRenderer:
   serializedVersion: 2
@@ -1486,7 +1489,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2c255eeaec779d148a216fceb6780f9f,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1726,7 +1729,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2c255eeaec779d148a216fceb6780f9f,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1884,7 +1887,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 133100964}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: WEAPON_SLOTS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2659,7 +2662,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 186179092}
-  m_Layer: 8
+  m_Layer: 31
   m_Name: JETS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2776,7 +2779,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2c255eeaec779d148a216fceb6780f9f,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2935,7 +2938,7 @@ GameObject:
   m_Component:
   - component: {fileID: 283932858}
   - component: {fileID: 283932859}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: trail left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3081,7 +3084,7 @@ GameObject:
   - component: {fileID: 306769854}
   - component: {fileID: 306769856}
   - component: {fileID: 306769855}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: front left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3207,7 +3210,7 @@ GameObject:
   - component: {fileID: 327933202}
   - component: {fileID: 327933204}
   - component: {fileID: 327933203}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: front left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3802,7 +3805,7 @@ GameObject:
   m_Component:
   - component: {fileID: 411681949}
   - component: {fileID: 411681950}
-  m_Layer: 8
+  m_Layer: 31
   m_Name: trail left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3947,7 +3950,7 @@ GameObject:
   m_Component:
   - component: {fileID: 416714260}
   - component: {fileID: 416714261}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: trail right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4340,7 +4343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 471533425}
   - component: {fileID: 471533426}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4391,7 +4394,7 @@ GameObject:
   - component: {fileID: 497562541}
   - component: {fileID: 497562540}
   - component: {fileID: 497562539}
-  m_Layer: 8
+  m_Layer: 31
   m_Name: back left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4796,7 +4799,7 @@ GameObject:
   - component: {fileID: 504307197}
   - component: {fileID: 504307199}
   - component: {fileID: 504307198}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5232,7 +5235,7 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
@@ -5376,7 +5379,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  showPath: 1
+  showPath: 0
   targetMinDistance: 5
   _state: 0
 --- !u!114 &534181495
@@ -5423,6 +5426,9 @@ MonoBehaviour:
   predictPositionDummyTransform: {fileID: 0}
   velocityEstimator: {fileID: 0}
   turnType: 0
+  shootableLayerMasks:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!120 &534181497
 LineRenderer:
   serializedVersion: 2
@@ -5963,7 +5969,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2c255eeaec779d148a216fceb6780f9f,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6209,7 +6215,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2c255eeaec779d148a216fceb6780f9f,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6585,7 +6591,7 @@ GameObject:
   m_Component:
   - component: {fileID: 587562417}
   - component: {fileID: 587562418}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7499,7 +7505,7 @@ GameObject:
   m_Component:
   - component: {fileID: 723596552}
   - component: {fileID: 723596553}
-  m_Layer: 8
+  m_Layer: 31
   m_Name: trail right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7644,7 +7650,7 @@ GameObject:
   m_Component:
   - component: {fileID: 736379099}
   - component: {fileID: 736379100}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7725,6 +7731,9 @@ MonoBehaviour:
   predictPositionDummyTransform: {fileID: 0}
   velocityEstimator: {fileID: 0}
   turnType: 0
+  shootableLayerMasks:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!135 &737138319
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -8050,7 +8059,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2c255eeaec779d148a216fceb6780f9f,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8524,7 +8533,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2c255eeaec779d148a216fceb6780f9f,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9821,7 +9830,7 @@ GameObject:
   m_Component:
   - component: {fileID: 908515075}
   - component: {fileID: 908515076}
-  m_Layer: 8
+  m_Layer: 31
   m_Name: closest ship collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9874,7 +9883,7 @@ GameObject:
   m_Component:
   - component: {fileID: 941717923}
   - component: {fileID: 941717924}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: rocket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10155,7 +10164,7 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 564c86c1543c6eb4e8525374599f15cc,
         type: 3}
@@ -10329,7 +10338,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1004458011}
   - component: {fileID: 1004458012}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: rocket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10668,7 +10677,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1051929124}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: JETS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11205,6 +11214,9 @@ MonoBehaviour:
   predictPositionDummyTransform: {fileID: 0}
   velocityEstimator: {fileID: 0}
   turnType: 0
+  shootableLayerMasks:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!54 &1111573720
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -11509,7 +11521,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1135626381}
   - component: {fileID: 1135626382}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: trail right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11735,7 +11747,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2c255eeaec779d148a216fceb6780f9f,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12168,7 +12180,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2c255eeaec779d148a216fceb6780f9f,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12454,7 +12466,7 @@ GameObject:
   - component: {fileID: 1206646555}
   - component: {fileID: 1206646557}
   - component: {fileID: 1206646556}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: front left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12846,6 +12858,9 @@ MonoBehaviour:
   predictPositionDummyTransform: {fileID: 0}
   velocityEstimator: {fileID: 0}
   turnType: 0
+  shootableLayerMasks:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!135 &1223899197
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -12916,7 +12931,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1274142563}
   - component: {fileID: 1274142564}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: trail left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13128,7 +13143,7 @@ GameObject:
   - component: {fileID: 1306125517}
   - component: {fileID: 1306125521}
   - component: {fileID: 1306125520}
-  m_Layer: 8
+  m_Layer: 31
   m_Name: front left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13266,7 +13281,7 @@ GameObject:
   - component: {fileID: 1308659118}
   - component: {fileID: 1308659120}
   - component: {fileID: 1308659119}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13503,7 +13518,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1321883796}
   - component: {fileID: 1321883797}
-  m_Layer: 8
+  m_Layer: 31
   m_Name: 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14023,7 +14038,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1358909986}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: JETS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14188,7 +14203,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2c255eeaec779d148a216fceb6780f9f,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14479,12 +14494,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66984ba137c08844a8ba2cbb46b58e3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shootablePlayerLayer: 0
+  shootableEnvironmentLayer: 0
+  shootableShipsNeutralLayer: 0
+  shootableShipsEnemyLayer: 0
   raycastPlaneLayer:
     serializedVersion: 2
     m_Bits: 64
-  shootableLayer:
-    serializedVersion: 2
-    m_Bits: 256
   closestShipColliderLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -14708,7 +14724,7 @@ GameObject:
   - component: {fileID: 1439959608}
   - component: {fileID: 1439959610}
   - component: {fileID: 1439959609}
-  m_Layer: 8
+  m_Layer: 31
   m_Name: back right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14939,7 +14955,7 @@ GameObject:
   - component: {fileID: 1454135812}
   - component: {fileID: 1454135814}
   - component: {fileID: 1454135813}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15287,7 +15303,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1544812272}
   - component: {fileID: 1544812273}
-  m_Layer: 8
+  m_Layer: 31
   m_Name: 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15336,7 +15352,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1564235458}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: WEAPON_SLOTS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15451,7 +15467,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2c255eeaec779d148a216fceb6780f9f,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15660,7 +15676,7 @@ GameObject:
   - component: {fileID: 1608235613}
   - component: {fileID: 1608235615}
   - component: {fileID: 1608235614}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: front right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16302,7 +16318,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1680528011}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: WEAPON_SLOTS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16384,7 +16400,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1688235231}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: JETS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16567,7 +16583,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  showPath: 1
+  showPath: 0
   targetMinDistance: 5
   _state: 0
 --- !u!114 &1731987679
@@ -16599,6 +16615,9 @@ MonoBehaviour:
   predictPositionDummyTransform: {fileID: 0}
   velocityEstimator: {fileID: 0}
   turnType: 0
+  shootableLayerMasks:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!135 &1731987680
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -16790,7 +16809,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1773285223}
   - component: {fileID: 1773285224}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: trail right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17082,7 +17101,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2c255eeaec779d148a216fceb6780f9f,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17464,7 +17483,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2c255eeaec779d148a216fceb6780f9f,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18170,14 +18189,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1901652227}
-  m_LocalRotation: {x: 0.4863354, y: -0, z: -0, w: 0.87377226}
-  m_LocalPosition: {x: 0, y: 30, z: -21.1}
+  m_LocalRotation: {x: 0.5271041, y: 0, z: 0, w: 0.84980077}
+  m_LocalPosition: {x: 0, y: 40, z: -21.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1405392143}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 58.2, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 63.62, y: 0, z: 0}
 --- !u!1 &1912165997
 GameObject:
   m_ObjectHideFlags: 0
@@ -18188,7 +18207,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1912165998}
   - component: {fileID: 1912165999}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: trail left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18414,7 +18433,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2c255eeaec779d148a216fceb6780f9f,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18572,7 +18591,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1917289541}
-  m_Layer: 8
+  m_Layer: 31
   m_Name: WEAPON_SLOTS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18748,7 +18767,7 @@ GameObject:
   - component: {fileID: 1949596760}
   - component: {fileID: 1949596762}
   - component: {fileID: 1949596761}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: front right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18980,7 +18999,7 @@ GameObject:
   - component: {fileID: 1963238763}
   - component: {fileID: 1963238765}
   - component: {fileID: 1963238764}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: front right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19301,7 +19320,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1998174337}
   - component: {fileID: 1998174338}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: rocket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19548,7 +19567,7 @@ GameObject:
   - component: {fileID: 2019503105}
   - component: {fileID: 2019503109}
   - component: {fileID: 2019503108}
-  m_Layer: 8
+  m_Layer: 31
   m_Name: front right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20577,7 +20596,7 @@ GameObject:
   - component: {fileID: 1223899196}
   - component: {fileID: 1223899197}
   - component: {fileID: 3469287838414098533}
-  m_Layer: 8
+  m_Layer: 31
   m_Name: PLAYER
   m_TagString: Default Ship
   m_Icon: {fileID: 0}
@@ -21515,6 +21534,9 @@ MonoBehaviour:
   predictPositionDummyTransform: {fileID: 0}
   velocityEstimator: {fileID: 0}
   turnType: 0
+  shootableLayerMasks:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!54 &2388053579360366958
 Rigidbody:
   m_ObjectHideFlags: 0

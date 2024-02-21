@@ -9,9 +9,12 @@ using Random = UnityEngine.Random;
 
 public class UniverseController : MonoBehaviour
 {
-    public static UniverseController universeController;
+    public static UniverseController Uc;
+    public int shootablePlayerLayer;
+    public int shootableEnvironmentLayer;
+    public int shootableShipsNeutralLayer;
+    public int shootableShipsEnemyLayer;
     public LayerMask raycastPlaneLayer;
-    public LayerMask shootableLayer;
     public LayerMask closestShipColliderLayer;  // all ships (my solution for multiple gameObject layers)
     // public LayerMask predictiveCollidersLayer;
     public static RaycastHit MouseCursorHit;
@@ -47,7 +50,7 @@ public class UniverseController : MonoBehaviour
 
     void Start()
     {
-        universeController = this;
+        Uc = this;
         MainCameraTransform = mainCamera.transform;
         _initialFov = mainCamera.fieldOfView;
         Astronaut = Instantiate(astronautPrefab).GetComponent<Ship>();
@@ -59,6 +62,10 @@ public class UniverseController : MonoBehaviour
         canBeBoardedList.RemoveAll(ship => !ship.gameObject.activeSelf);
         // selectionSprite = Instantiate(selectionSpritePrefab);
         MyNavMeshAgent.CreatePredictiveCollider();
+        shootablePlayerLayer = LayerMask.NameToLayer("shootablePlayer");
+        shootableEnvironmentLayer = LayerMask.NameToLayer("shootableEnvironment");
+        shootableShipsNeutralLayer = LayerMask.NameToLayer("shootableShipsNeutral");
+        shootableShipsEnemyLayer = LayerMask.NameToLayer("shootableShipsEnemy");
     }
 
     void Update()
@@ -162,7 +169,7 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
             return;
 
         Astronaut.gameObject.SetActive(false);
-        ActiveShip = ship;
+        ship.SetAsActiveShip();
 
         mainCamera.fieldOfView = _initialFov;
     }
@@ -175,7 +182,7 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
 
         Astronaut.rb.AddForce(-10000 * ActiveShip.transformCached.forward, ForceMode.Impulse);
         ActiveShip.moveVector.x = ActiveShip.moveVector.z = 0;
-        ActiveShip = Astronaut;
+        Astronaut.SetAsActiveShip();
 
         mainCamera.fieldOfView = _initialFov / 2;
     }

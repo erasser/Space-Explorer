@@ -12,6 +12,7 @@ public abstract class Projectile : CachedMonoBehaviour
     float _selfDestructAtTime;
     [HideInInspector]
     public Vector3 velocity;  // m / s
+    LayerMask _shootableLayerMask;
     // public bool followTarget;
     // [Range(0, 200)]
     // public float followTargetRotationSpeed = 50;
@@ -37,12 +38,13 @@ public abstract class Projectile : CachedMonoBehaviour
         // UpdateRotation();
     }
 
-    public void Setup(Vector3 position, float rotationY/*, Vector3 speed*/)
+    public void Setup(Vector3 position, float rotationY, LayerMask shootableLayerMask  /*, Vector3 speed*/)
     {
         // _speedV3 = speed;
         _sqrRaycastLength = speed * Time.fixedDeltaTime;  // TODO: Myslet na slow-motion, mělo by obsahovat Time.fixedDeltaTime a po přechodu do slow-mo updatovat - to se asi týká jen už vystřelených projektilů  
         _selfDestructAtTime = Time.time + range / (speed/* / Time.fixedDeltaTime*/);
         transform.position = position;
+        _shootableLayerMask = shootableLayerMask;
 
         if (autoAim)
             transform.LookAt(MouseCursorHit.point);
@@ -55,9 +57,9 @@ public abstract class Projectile : CachedMonoBehaviour
         // Debug.DrawRay(transform.position, transformCached.forward * _speedV3.z, Color.yellow);
 
         // if (Physics.Raycast(transformCached.position, transformCached.forward, out var hit, _sqrRaycastLength, universeController.shootableLayer))
-        if (Physics.Raycast(new(transform.position.x, 0, transform.position.z), transform.forward, out var hit, _sqrRaycastLength, universeController.shootableLayer))
+        if (Physics.Raycast(new(transform.position.x, 0, transform.position.z), transform.forward, out var hit, _sqrRaycastLength, _shootableLayerMask))
         {
-            universeController.LaunchHitEffect(hit.point, hit.normal);
+            Uc.LaunchHitEffect(hit.point, hit.normal);
 
             hit.collider.gameObject.GetComponent<Damageable>()?.TakeDamage(10);
             // TODO: SEND MESSAGE

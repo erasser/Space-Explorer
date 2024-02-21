@@ -54,12 +54,12 @@ public class Weapon : CachedMonoBehaviour
         }*/
 
         var projectileComponent = newProjectile.GetComponent<Projectile>();
-        projectileComponent.Setup(transformCached.position, transformCached.eulerAngles.y);
+        projectileComponent.Setup(transformCached.position, transformCached.eulerAngles.y, _ship.shootableLayerMasks);
 
         Rocket componentRocket = newProjectile.GetComponent<Rocket>();
         if (componentRocket)
         {
-            if (_ship == ActiveShip)
+            if (_ship.IsPlayer())
             {
                 componentRocket.SetTarget(_ship.GetClosestShipInRange(EnemyShips).ship);
             }

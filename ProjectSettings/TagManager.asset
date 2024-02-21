@@ -15,11 +15,12 @@ TagManager:
   - UI
   - raycast plane
   - astronaut
-  - shootable
+  - 
   - navmesh
   - closest ship collider
   - predictive collider
   - 
+  - test2
   - 
   - 
   - 
@@ -34,11 +35,10 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - shootableShipsEnemy
+  - shootableShipsNeutral
+  - shootableEnvironment
+  - shootablePlayer
   m_SortingLayers:
   - name: Default
     uniqueID: 0
