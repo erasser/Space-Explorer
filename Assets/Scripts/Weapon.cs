@@ -53,18 +53,14 @@ public class Weapon : CachedMonoBehaviour
             return;
         }*/
 
-        var projectileComponent = newProjectile.GetComponent<Projectile>();
-        projectileComponent.Setup(transformCached.position, transformCached.eulerAngles.y, _ship.shootableLayerMasks, _ship);
-
         Rocket componentRocket = newProjectile.GetComponent<Rocket>();
         if (componentRocket)
-        {
-            if (_ship.IsPlayer())
-            {
-                componentRocket.SetTarget(_ship.GetClosestShipInRange(EnemyShips).ship);
-            }
-            else
-                componentRocket.SetTarget(ActiveShip);
-        }
+            componentRocket.SetTarget(_ship.IsPlayer() ? _ship.GetClosestShipInRange(EnemyShips).ship : ActiveShip);
+
+        var targetShip = _ship.IsPlayer() ? _ship.GetClosestShipInRange(EnemyShips).ship : ActiveShip;  // TODO: GetClosestShipInRange() volat jen jednou 
+
+        var projectileComponent = newProjectile.GetComponent<Projectile>();
+        projectileComponent.Setup(transformCached.position, transformCached.eulerAngles.y, _ship.shootableLayerMasks, _ship, targetShip);
+
     }
 }

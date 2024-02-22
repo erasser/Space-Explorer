@@ -233,7 +233,7 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
     }
 
     // Target's velocity is predicted, observer is checking collision / shooting with observerVelocity
-    public static Vector3 GetPredictedPositionOffset(Ship target, Vector3 targetVelocity, Ship observer, float observerSpeed)  // https://gamedev.stackexchange.com/questions/25277/how-to-calculate-shot-angle-and-velocity-to-hit-a-moving-target
+    public static Vector3 GetPredictedPositionOffset(Ship target, Vector3 targetVelocity, GameObject observer, float observerSpeed)  // https://gamedev.stackexchange.com/questions/25277/how-to-calculate-shot-angle-and-velocity-to-hit-a-moving-target
     {
         // TODO: Chtěl bych ještě analyzovat výsledek a zahodit, pokud nedává smysl
   
@@ -243,13 +243,12 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
         Vector3 toTarget = Vector3.zero;
         try
         {
-            toTarget =  target.transformCached.position - observer.transformCached.position;    
+            toTarget =  target.transformCached.position - observer.transform.position;    
         }
         catch (Exception)
         {
             print("ERROR! " + target + ", " + observer);
         }
-
         
         float a = Vector3.Dot(targetVelocity, targetVelocity) - observerSpeed * observerSpeed;
         float b = 2 * Vector3.Dot(targetVelocity, toTarget);

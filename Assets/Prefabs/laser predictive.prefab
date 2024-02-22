@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 795871129129536821}
   - component: {fileID: 4698057267504606932}
   m_Layer: 0
-  m_Name: laser
+  m_Name: laser predictive
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,7 +99,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  autoAimType: 1
+  autoAimType: 2
   range: 1000
   speed: 80
   velocity: {x: 0, y: 0, z: 0}

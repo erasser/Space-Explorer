@@ -552,7 +552,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+  projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootDelay: 0.3
 --- !u!1001 &26364052
@@ -1262,7 +1262,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+  projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootDelay: 0.3
 --- !u!1001 &73892706
@@ -1928,6 +1928,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 736379099}
+  - {fileID: 946938458}
   - {fileID: 941717923}
   m_Father: {fileID: 534181490}
   m_RootOrder: -1
@@ -2120,7 +2121,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+  projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootDelay: 0.3
 --- !u!1 &157207112
@@ -4471,7 +4472,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &471533425
 Transform:
   m_ObjectHideFlags: 0
@@ -5133,7 +5134,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+  projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootDelay: 0.3
 --- !u!1001 &526897408
@@ -6768,7 +6769,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &587562417
 Transform:
   m_ObjectHideFlags: 0
@@ -7827,7 +7828,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &736379099
 Transform:
   m_ObjectHideFlags: 0
@@ -9174,7 +9175,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+  projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootDelay: 0.3
 --- !u!1 &809295300
@@ -10246,6 +10247,56 @@ MonoBehaviour:
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
   shootDelay: 0.9
+--- !u!1 &946938457
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 946938458}
+  - component: {fileID: 946938459}
+  m_Layer: 28
+  m_Name: predictive autoaim
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &946938458
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 946938457}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 133100964}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &946938459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 946938457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transformCached: {fileID: 0}
+  gameObjectCached: {fileID: 0}
+  rigidBodyCached: {fileID: 0}
+  projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
+    type: 3}
+  shootDelay: 0.3
 --- !u!1 &956705028
 GameObject:
   m_ObjectHideFlags: 0
@@ -11706,7 +11757,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocityAverageFrames: 5
   angularVelocityAverageFrames: 11
-  estimateOnAwake: 0
+  estimateOnAwake: 1
 --- !u!114 &1111573736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12890,6 +12941,56 @@ VisualEffect:
       m_Array: []
     m_Bool:
       m_Array: []
+--- !u!1 &1199183132
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1199183133}
+  - component: {fileID: 1199183134}
+  m_Layer: 28
+  m_Name: predictive autoaim
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1199183133
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199183132}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1564235458}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1199183134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199183132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transformCached: {fileID: 0}
+  gameObjectCached: {fileID: 0}
+  rigidBodyCached: {fileID: 0}
+  projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
+    type: 3}
+  shootDelay: 0.3
 --- !u!1 &1206646554
 GameObject:
   m_ObjectHideFlags: 0
@@ -13317,6 +13418,56 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 3.0461967
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1225453302
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1225453303}
+  - component: {fileID: 1225453304}
+  m_Layer: 31
+  m_Name: predictive autoaim
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1225453303
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225453302}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.39, y: -0.493, z: 1.768}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1917289541}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1225453304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225453302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transformCached: {fileID: 0}
+  gameObjectCached: {fileID: 0}
+  rigidBodyCached: {fileID: 0}
+  projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
+    type: 3}
+  shootDelay: 0.3
 --- !u!1 &1272718092
 GameObject:
   m_ObjectHideFlags: 0
@@ -13991,7 +14142,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+  projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootDelay: 0.3
 --- !u!1 &1321883795
@@ -14010,7 +14161,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1321883796
 Transform:
   m_ObjectHideFlags: 0
@@ -15845,7 +15996,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1544812272
 Transform:
   m_ObjectHideFlags: 0
@@ -15908,6 +16059,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 587562417}
+  - {fileID: 1199183133}
   - {fileID: 1998174337}
   m_Father: {fileID: 1731987674}
   m_RootOrder: -1
@@ -16199,7 +16351,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+  projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootDelay: 0.3
 --- !u!1 &1608235612
@@ -16576,7 +16728,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+  projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootDelay: 0.3
 --- !u!1 &1648226670
@@ -16876,6 +17028,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 471533425}
+  - {fileID: 2105348360}
   - {fileID: 1004458011}
   m_Father: {fileID: 26364054}
   m_RootOrder: -1
@@ -16927,7 +17080,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+  projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootDelay: 0.3
 --- !u!1 &1688235230
@@ -18359,7 +18512,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+  projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootDelay: 0.3
 --- !u!1 &1876456622
@@ -19199,6 +19352,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1544812272}
+  - {fileID: 1225453303}
   - {fileID: 1321883796}
   m_Father: {fileID: 543450652484722630}
   m_RootOrder: -1
@@ -19906,7 +20060,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+  projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootDelay: 0.3
 --- !u!1 &1998174336
@@ -20060,7 +20214,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+  projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootDelay: 0.3
 --- !u!1 &2019188887
@@ -20463,6 +20617,56 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1000, y: 1, z: 1000}
   m_Center: {x: 0, y: -1, z: 0}
+--- !u!1 &2105348359
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2105348360}
+  - component: {fileID: 2105348361}
+  m_Layer: 28
+  m_Name: predictive autoaim
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2105348360
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2105348359}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1680528011}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2105348361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2105348359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transformCached: {fileID: 0}
+  gameObjectCached: {fileID: 0}
+  rigidBodyCached: {fileID: 0}
+  projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
+    type: 3}
+  shootDelay: 0.3
 --- !u!1 &2138673644
 GameObject:
   m_ObjectHideFlags: 0
@@ -22203,7 +22407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocityAverageFrames: 5
   angularVelocityAverageFrames: 11
-  estimateOnAwake: 0
+  estimateOnAwake: 1
 --- !u!114 &2388053579360366961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23017,7 +23221,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocityAverageFrames: 5
   angularVelocityAverageFrames: 11
-  estimateOnAwake: 0
+  estimateOnAwake: 1
 --- !u!1 &3482340346405246029
 GameObject:
   m_ObjectHideFlags: 0

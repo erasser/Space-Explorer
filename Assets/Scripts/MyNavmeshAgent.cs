@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
 using static Ship;
 using static UniverseController;
 using Random = UnityEngine.Random;
@@ -478,13 +476,13 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         // TODO: Volá se to z Update(), přemístit do StaticFixedUpdate()
 
         // prepare collider to cast against
-        var predictionColliderPosition = GetPredictedPositionOffset(obj2._ship, obj2._ship.velocityEstimator.GetVelocityEstimate(), obj1._ship, GetVelocity(obj1).magnitude);
+        var predictionColliderPosition = GetPredictedPositionOffset(obj2._ship, obj2._ship.velocityEstimator.GetVelocityEstimate(), obj1.gameObject, GetVelocity(obj1).magnitude);
         _predictiveColliderTransform.position = obj2.transformCached.position + predictionColliderPosition;
         _predictiveColliderTransform.rotation = Quaternion.Euler(0, obj2.transformCached.rotation.y, 0);
         PredictiveCollider.size = obj2._predictiveBoxExtents * 2;
 
         // box cast to be set
-        var boxCastCenterOffset = GetPredictedPositionOffset(obj1._ship, GetVelocity(obj1), obj2._ship, obj2._ship.velocityEstimator.GetVelocityEstimate().magnitude);
+        var boxCastCenterOffset = GetPredictedPositionOffset(obj1._ship, GetVelocity(obj1), obj2.gameObject, obj2._ship.velocityEstimator.GetVelocityEstimate().magnitude);
 
         var rot = Quaternion.Euler(0, obj1.transformCached.rotation.y, 0);
 

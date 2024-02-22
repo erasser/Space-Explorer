@@ -36,7 +36,7 @@ public class Ship : CachedMonoBehaviour
     public Collider shipCollider;
     int _jetCount;
     List<Weapon> _weapons = new();
-    public static float ShootingRange = 40;
+    public static float ShootingRange = 200;
     public static float ShootingSqrRange;
     [HideInInspector]
     public float afterburnerCoefficient = 1;
@@ -171,7 +171,7 @@ public class Ship : CachedMonoBehaviour
         // PredictPositionDummyTransform.position = GetPredictedPosition(_theOtherShipTMP, _theOtherShipTMP._fastestWeaponSpeedMetersPerSecond);
 
         if (ActiveShip != this)
-            predictPositionDummyTransform.position = transformCached.position + GetPredictedPositionOffset(this, rb.velocity, ActiveShip, ActiveShip._fastestWeaponSpeedMetersPerSecond);
+            predictPositionDummyTransform.position = transformCached.position + GetPredictedPositionOffset(this, rb.velocity, ActiveShip.gameObject, ActiveShip._fastestWeaponSpeedMetersPerSecond);
     }
 
     public float GetForwardSpeed()  // m / s

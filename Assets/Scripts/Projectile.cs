@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using static UniverseController;
 using static Ship;
 
 public abstract class Projectile : CachedMonoBehaviour
 {
-    public bool autoAim;
+    public AutoAim autoAimType;
     [Tooltip("m")]
     public float range = 500;
     [Tooltip("m/s")]
@@ -22,6 +23,13 @@ public abstract class Projectile : CachedMonoBehaviour
     // {
     //     base.Awake();
     // }
+
+    public enum AutoAim
+    {
+        None,
+        PositionAutoAim,
+        PositionPredictionAutoAim
+    }
     
     public void Start()
     {
@@ -39,7 +47,7 @@ public abstract class Projectile : CachedMonoBehaviour
         // UpdateRotation();
     }
 
-    public void Setup(Vector3 position, float rotationY, LayerMask shootableLayerMask, Ship originShip  /*, Vector3 speed*/)
+    public void Setup(Vector3 position, float rotationY, LayerMask shootableLayerMask, Ship originShip, Ship targetShip  /*, Vector3 speed*/)
     {
         // _speedV3 = speed;
         _sqrRaycastLength = speed * Time.fixedDeltaTime;  // TODO: Myslet na slow-motion, mělo by obsahovat Time.fixedDeltaTime a po přechodu do slow-mo updatovat - to se asi týká jen už vystřelených projektilů  
@@ -47,7 +55,9 @@ public abstract class Projectile : CachedMonoBehaviour
         transform.position = position;
         _shootableLayerMask = shootableLayerMask;
 
-        if (autoAim)
+        if (autoAimType == AutoAim.None)
+            transform.rotation = Quaternion.Euler(new(0, rotationY, 0));  // TODO: Nedalo by se to nějak zjednodušit? :D
+        else if (autoAimType == AutoAim.PositionAutoAim)
         {
             if (originShip.IsPlayer())
                 transform.LookAt(MouseCursorHit.point);
@@ -55,7 +65,7 @@ public abstract class Projectile : CachedMonoBehaviour
                 transform.LookAt(ActiveShip.transformCached);
         }
         else
-            transform.rotation = Quaternion.Euler(new(0, rotationY, 0));  // TODO: Nedalo by se to nějak zjednodušit? :D
+            transform.LookAt(targetShip.transformCached.position + GetPredictedPositionOffset(targetShip, targetShip.velocityEstimator.GetVelocityEstimate(), originShip.gameObject, speed));
     }
 
     void CheckIntersection()

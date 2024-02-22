@@ -15,7 +15,7 @@ public class VelocityEstimator : MonoBehaviour
 	[Tooltip( "How many frames to average over for computing angular velocity" )]
 	public int angularVelocityAverageFrames = 11;
 
-	public bool estimateOnAwake = false;
+	public bool estimateOnAwake = true;
 
 	Coroutine routine;
 	int sampleCount;
