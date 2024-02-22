@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 using static Ship;
 using static UniverseController;
 using Random = UnityEngine.Random;
@@ -14,21 +15,21 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(Rigidbody), typeof(LineRenderer))]
 public class MyNavMeshAgent : CachedMonoBehaviour
 {
-    public bool showPath = true;
-    public float targetMinDistance = 5;
-    static readonly float AgentFixedUpdateDeltaTime = .4f;
+    public bool showPath = false;
+    const float TargetMinDistance = 5;
+    static readonly float AgentFixedUpdateDeltaTime = .1f;
     const float CollisionPredictionMaxDistance = 50;
     float _lastAgentFixedUpdate;
     Ship _ship;
     NavMeshPath _navMeshPath;
     readonly List<Vector3> _pathPoints = new();
     int _actualPathPointIndex = -1;
-    float _targetSqrMinDistance;
+    static float _targetSqrMinDistance;
     LineRenderer _lineRenderer;
     GameObject _pointVisualizer;
     // Vector3 _actualPathPoint;
     Vector3 _toActualPathPointDirection;
-    public State _state;
+    public State state;
     State _stateBeforeWaiting;
     Vector3 _velocityBeforeWaiting;
     AiPilot _aiPilot;
@@ -80,7 +81,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         _lineRenderer = GetComponent<LineRenderer>();
         _navMeshPath = new();
         _lastAgentFixedUpdate = Time.time;
-        _targetSqrMinDistance = Mathf.Pow(targetMinDistance, 2);
+        _targetSqrMinDistance = Mathf.Pow(TargetMinDistance, 2);
         _aiPilot = GetComponent<AiPilot>();
         MyNavMeshAgents.Add(this);
         // _predictiveColliderLayerMask = LayerMask.NameToLayer("predictive collider");
@@ -108,10 +109,10 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
         CheckPathPoints();
 
-        if (_state == State.WaitingWhileShooting)
+        if (state == State.WaitingWhileShooting)
             Strafe();
 
-        if (_state == State.StandingStill || _state == State.WaitingToPreventCollision || _state == State.WaitingWhileShooting)
+        if (state == State.StandingStill || state == State.WaitingToPreventCollision || state == State.WaitingWhileShooting)
             return;
 
         // if (_state == State.GoingToDestination)
@@ -144,13 +145,13 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     void AgentFixedUpdate()
     {
-        if (_state == State.StandingStill || _state == State.WaitingToPreventCollision)
+        if (state == State.StandingStill || state == State.WaitingToPreventCollision)
             return;
 
         // if (_state == State.GoingToDestination)
         // {
             
-        if (_state == State.FollowingEnemy || _state == State.WaitingWhileShooting)
+        if (state == State.FollowingEnemy || state == State.WaitingWhileShooting)
         {
             ReGeneratePath();
 
@@ -195,11 +196,11 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     {
         if (IsTargetInSqrRange(ShootingSqrRange * .7f))
         {
-            if (_state != State.WaitingWhileShooting)
+            if (state != State.WaitingWhileShooting)
                 _strafeCoefficient = _ship.speed * Random.Range(- .6f, .6f);
 
             _ship.isFiring = true;
-            _state = State.WaitingWhileShooting;
+            state = State.WaitingWhileShooting;
             _ship.turnType = TurnType.CustomTarget;
             _ship.SetCustomTarget(_target.transformCached.position);  // TODO: Mělo by to mířit na ten nejbližší point
             SetZeroMoveVector();
@@ -207,13 +208,13 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         else if (IsTargetInSqrRange(ShootingSqrRange))
         {
             _ship.isFiring = true;
-            _state = State.FollowingEnemy;
+            state = State.FollowingEnemy;
             _ship.turnType = TurnType.Velocity;
         }
         else
         {
             _ship.isFiring = false;
-            _state = State.FollowingEnemy;
+            state = State.FollowingEnemy;
             _ship.turnType = TurnType.Velocity;
         }
     }
@@ -263,7 +264,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     void CheckPathPoints()
     {
-        if (!_turnTypesThatNeedCheckingPathPoints.Contains(_state))
+        if (!_turnTypesThatNeedCheckingPathPoints.Contains(state))
             return;
 
         var sqrDistance = _actualPathPointIndex == _pathPoints.Count - 1 ? _targetSqrMinDistance * 1.5f : _targetSqrMinDistance;  // Break sooner before last path point
@@ -271,17 +272,17 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
         if (reached && ++_actualPathPointIndex == _pathPoints.Count)
         {
-            if (_state == State.GoingToDestination)
+            if (state == State.GoingToDestination)
             {
                 // Stop();
                 _aiPilot.GoToRandomLocation();
             }
-            else if (_state == State.Patrolling)
+            else if (state == State.Patrolling)
             {
                 _destinationsIndex = _destinationsIndex == 0 ? 1 : 0;
                 ReGeneratePath();
             }
-            else if (_state == State.FollowingEnemy || _state == State.WaitingWhileShooting)
+            else if (state == State.FollowingEnemy || state == State.WaitingWhileShooting)
             {
                 ReGeneratePath();
             }
@@ -325,7 +326,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             return false;
 
         _destination = target;
-        _state = State.GoingToDestination;
+        state = State.GoingToDestination;
 
         return true;
     }
@@ -338,7 +339,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         _destinations[0] = target;
         _destinations[1] = transformCached.position;
         _destinationsIndex = 0;
-        _state = State.Patrolling;
+        state = State.Patrolling;
 
         return true;
     }
@@ -346,7 +347,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     public void SetTargetToFollow(Ship target)
     {
         _target = target;
-        _state = State.FollowingEnemy;
+        state = State.FollowingEnemy;
 
         GeneratePathTo(target.transformCached.position);
     }
@@ -355,7 +356,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     {
         _pathPoints.Clear();
         _actualPathPointIndex = -1;
-        _state = State.StandingStill;
+        state = State.StandingStill;
 
         SetZeroMoveVector();
     }
@@ -386,7 +387,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     void OnCollisionExit(Collision other)
     {
-        if (_state != State.StandingStill)
+        if (state != State.StandingStill)
         {
             // print("collision: " + other.collider.name);
             // ReGeneratePath();
@@ -409,15 +410,15 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     Vector3 GetCurrentDestination()
     {
-        if (_state == State.GoingToDestination)
+        if (state == State.GoingToDestination)
             return _destination;
-        if (_state == State.Patrolling)
+        if (state == State.Patrolling)
             return _destinations[_destinationsIndex];
-        if (_state == State.FollowingEnemy || _state == State.WaitingWhileShooting)
+        if (state == State.FollowingEnemy || state == State.WaitingWhileShooting)
             return _target.transformCached.position;
 
         Debug.LogWarning("TODO !");
-        if (_state == State.RandomRoaming)
+        if (state == State.RandomRoaming)
             return _pathPoints[_actualPathPointIndex];  // TODO
 
         return transform.position;
@@ -467,10 +468,10 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     static void PredictCollision(MyNavMeshAgent obj1, MyNavMeshAgent obj2)
     {
-        if (obj1._state == State.WaitingToPreventCollision && obj2._state == State.WaitingToPreventCollision)
+        if (obj1.state == State.WaitingToPreventCollision && obj2.state == State.WaitingToPreventCollision)
             return;
 
-        if (obj2._state == State.WaitingToPreventCollision)  // So it can be only obj1 to be waiting
+        if (obj2.state == State.WaitingToPreventCollision)  // So it can be only obj1 to be waiting
             (obj1, obj2) = (obj2, obj1);
 
         // TODO: Prodlužovat ty boxy jen vodorovně (například pro nakloněné lodě čumákem dolů). Bude to chtít spíš otočit vektor než nastavit y = 0.
@@ -498,14 +499,14 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         else
         {
             // collision exit
-            if (obj1._state == State.WaitingToPreventCollision)
+            if (obj1.state == State.WaitingToPreventCollision)
             {
-                obj1._state = obj1._stateBeforeWaiting;
+                obj1.state = obj1._stateBeforeWaiting;
                 print(obj1.name + " was waiting");
             }
-            if (obj2._state == State.WaitingToPreventCollision)
+            if (obj2.state == State.WaitingToPreventCollision)
             {
-                obj2._state = obj2._stateBeforeWaiting;
+                obj2.state = obj2._stateBeforeWaiting;
                 print(obj2.name + " was waiting");
             }
         }
@@ -529,7 +530,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
         Vector3 GetVelocity(MyNavMeshAgent obj)
         {
-            return obj._state == State.WaitingToPreventCollision ? obj._velocityBeforeWaiting : obj._ship.velocityEstimator.GetVelocityEstimate();
+            return obj.state == State.WaitingToPreventCollision ? obj._velocityBeforeWaiting : obj._ship.velocityEstimator.GetVelocityEstimate();
         }
     }
 
@@ -538,12 +539,12 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         // EditorApplication.isPaused = true;
         var objectToWait = obj1.GetInstanceID() < obj2.GetInstanceID() ? obj1 : obj2;  // TODO: Ošetřit možnost, když je to kolize s hráčem
 
-        if (objectToWait._state == State.WaitingToPreventCollision)  // already waiting
+        if (objectToWait.state == State.WaitingToPreventCollision)  // already waiting
             return;
 
-        objectToWait._stateBeforeWaiting = objectToWait._state;
+        objectToWait._stateBeforeWaiting = objectToWait.state;
         objectToWait._velocityBeforeWaiting = objectToWait._ship.velocityEstimator.GetVelocityEstimate();  // TODO: Počítá se zbytečně znovu po PredictCollision()
-        objectToWait._state = State.WaitingToPreventCollision;
+        objectToWait.state = State.WaitingToPreventCollision;
 
         objectToWait.SetZeroMoveVector();
 
@@ -606,7 +607,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        if (_state == State.WaitingWhileShooting)
+        if (state == State.WaitingWhileShooting)
             _strafeCoefficient *= -1;
     }
 

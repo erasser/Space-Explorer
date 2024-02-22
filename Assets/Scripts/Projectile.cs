@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using static UniverseController;
+using static Ship;
 
 public abstract class Projectile : CachedMonoBehaviour
 {
@@ -38,7 +39,7 @@ public abstract class Projectile : CachedMonoBehaviour
         // UpdateRotation();
     }
 
-    public void Setup(Vector3 position, float rotationY, LayerMask shootableLayerMask  /*, Vector3 speed*/)
+    public void Setup(Vector3 position, float rotationY, LayerMask shootableLayerMask, Ship originShip  /*, Vector3 speed*/)
     {
         // _speedV3 = speed;
         _sqrRaycastLength = speed * Time.fixedDeltaTime;  // TODO: Myslet na slow-motion, mělo by obsahovat Time.fixedDeltaTime a po přechodu do slow-mo updatovat - to se asi týká jen už vystřelených projektilů  
@@ -47,7 +48,12 @@ public abstract class Projectile : CachedMonoBehaviour
         _shootableLayerMask = shootableLayerMask;
 
         if (autoAim)
-            transform.LookAt(MouseCursorHit.point);
+        {
+            if (originShip.IsPlayer())
+                transform.LookAt(MouseCursorHit.point);
+            else
+                transform.LookAt(ActiveShip.transformCached);
+        }
         else
             transform.rotation = Quaternion.Euler(new(0, rotationY, 0));  // TODO: Nedalo by se to nějak zjednodušit? :D
     }

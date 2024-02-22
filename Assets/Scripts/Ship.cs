@@ -17,7 +17,6 @@ public class Ship : CachedMonoBehaviour
     public float jetAngle = 45;
     // public static readonly List<Ship> ShipList = new();
     public static readonly List<Ship> EnemyShips = new();
-    public bool isEnemy;
     [HideInInspector]
     public Vector3 moveVector;
     float _jetAngleCos;
@@ -64,7 +63,7 @@ public class Ship : CachedMonoBehaviour
         shipCollider = GetComponent<Collider>();
         velocityEstimator = GetComponent<VelocityEstimator>();
 
-        if (isEnemy)
+        if (IsEnemy())
             EnemyShips.Add(this);
 
         if (!shipCollider.enabled)

@@ -10,9 +10,13 @@ using Random = UnityEngine.Random;
 public class UniverseController : MonoBehaviour
 {
     public static UniverseController Uc;
+    [HideInInspector]
     public int shootablePlayerLayer;
+    [HideInInspector]
     public int shootableEnvironmentLayer;
+    [HideInInspector]
     public int shootableShipsNeutralLayer;
+    [HideInInspector]
     public int shootableShipsEnemyLayer;
     public LayerMask raycastPlaneLayer;
     public LayerMask closestShipColliderLayer;  // all ships (my solution for multiple gameObject layers)

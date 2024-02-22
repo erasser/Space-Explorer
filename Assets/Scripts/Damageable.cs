@@ -4,8 +4,10 @@ using UnityEngine;
 public class Damageable : MonoBehaviour
 {
     public float maxArmor = 100;
+    [HideInInspector]
     public float currentArmor;
     public float maxShield = 0;
+    [HideInInspector]
     public float currentShield;
 
     void Start()

@@ -54,7 +54,7 @@ public class Weapon : CachedMonoBehaviour
         }*/
 
         var projectileComponent = newProjectile.GetComponent<Projectile>();
-        projectileComponent.Setup(transformCached.position, transformCached.eulerAngles.y, _ship.shootableLayerMasks);
+        projectileComponent.Setup(transformCached.position, transformCached.eulerAngles.y, _ship.shootableLayerMasks, _ship);
 
         Rocket componentRocket = newProjectile.GetComponent<Rocket>();
         if (componentRocket)

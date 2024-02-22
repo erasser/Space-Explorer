@@ -63,7 +63,7 @@ public class Caption : CachedMonoBehaviour
     public void UpdateText(/*Content content*/)
     {
         // if (!targetShip.velocityEstimator) return;
-        var state = targetShip.GetComponent<MyNavMeshAgent>()?._state;
+        var state = targetShip.GetComponent<MyNavMeshAgent>()?.state;
         // var state = agent
 
         _caption.text = $"<b>{targetShip.name}</b>\n" +
