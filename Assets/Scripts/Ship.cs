@@ -107,7 +107,8 @@ public class Ship : CachedMonoBehaviour
                     _fastestWeaponSpeedMetersPerSecond = highestSpeed;
             }
 
-        predictPositionDummyTransform = Instantiate(Uc.predictPositionDummyPrefab).transform;
+        if (!IsPlayer() || !IsAstronaut())
+            predictPositionDummyTransform = Instantiate(Uc.predictPositionDummyPrefab, UI.transform).transform;
 
         InitCaption();
         
@@ -117,7 +118,10 @@ public class Ship : CachedMonoBehaviour
     public void SetAsActiveShip()
     {
         if (ActiveShip)
+        {
             ActiveShip.gameObject.layer = Uc.shootableShipsNeutralLayer;
+            // ActiveShip.predictPositionDummyTransform  // TODO: Ten predictPositionDummyTransform by nakonec asi mohli mít všichni. Tady to zapínat/vypínat.
+        }
 
         ActiveShip = this;
 
@@ -168,10 +172,8 @@ public class Ship : CachedMonoBehaviour
 
         // UpdatePredictiveCollider();
 
-        // PredictPositionDummyTransform.position = GetPredictedPosition(_theOtherShipTMP, _theOtherShipTMP._fastestWeaponSpeedMetersPerSecond);
-
-        if (ActiveShip != this)
-            predictPositionDummyTransform.position = transformCached.position + GetPredictedPositionOffset(this, rb.velocity, ActiveShip.gameObject, ActiveShip._fastestWeaponSpeedMetersPerSecond);
+        if (predictPositionDummyTransform)
+                predictPositionDummyTransform.position = Uc.mainCamera.WorldToScreenPoint(transformCached.position + GetPredictedPositionOffset(this, rb.velocity, ActiveShip.gameObject, ActiveShip._fastestWeaponSpeedMetersPerSecond));
     }
 
     public float GetForwardSpeed()  // m / s
@@ -300,6 +302,11 @@ public class Ship : CachedMonoBehaviour
     public float GetSqrClosestDistanceToShip(Ship otherShip)
     {
         return GetVectorToClosestPoint(otherShip).sqrMagnitude;
+    }
+
+    bool IsAstronaut()
+    {
+        return this == Astronaut;
     }
 
     public static bool IsAstronautActive()

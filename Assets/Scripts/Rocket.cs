@@ -63,6 +63,6 @@ public class Rocket : Projectile
 
     void OnDestroy()
     {
-        Destroy(_dummyTarget.gameObject);
+        DestroyImmediate(_dummyTarget.gameObject);
     }
 }

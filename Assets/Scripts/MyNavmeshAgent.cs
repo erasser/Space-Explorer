@@ -383,16 +383,6 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         // }
     }
 
-    void OnCollisionExit(Collision other)
-    {
-        if (state != State.StandingStill)
-        {
-            // print("collision: " + other.collider.name);
-            // ReGeneratePath();
-            _needsRegeneratePath = true;
-        }
-    }
-
     public bool ReGeneratePath()
     {
         var result = GeneratePathTo(GetCurrentDestination());
@@ -607,6 +597,16 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     {
         if (state == State.WaitingWhileShooting)
             _strafeCoefficient *= -1;
+    }
+
+    void OnCollisionExit(Collision other)
+    {
+        if (state != State.StandingStill && state != State.WaitingWhileShooting)
+        {
+            // print("collision: " + other.collider.name);
+            // ReGeneratePath();
+            _needsRegeneratePath = true;
+        }
     }
 
     // TODO: Nějak low-level zajistit, aby cíl měl vždy y = 0

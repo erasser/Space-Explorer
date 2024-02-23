@@ -44,7 +44,7 @@ public class UniverseController : MonoBehaviour
     [Tooltip("Will be cleared of disabled ships.")]
     public List<Ship> canBeBoardedList = new();
     // Transform _astronautRangeTransform;
-    public GameObject predictPositionDummyPrefab;
+    public Image predictPositionDummyPrefab;
     // public static Transform PredictPositionDummyTransform;
     public Caption captionPrefab;
     public float staticFixedUpdateDeltaTime = .2f;  // fot purpose of static calls (i.e. not called by each component as it's in FixedUpdate)

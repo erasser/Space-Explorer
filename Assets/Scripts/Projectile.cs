@@ -55,7 +55,7 @@ public abstract class Projectile : CachedMonoBehaviour
         transform.position = position;
         _shootableLayerMask = shootableLayerMask;
 
-        if (autoAimType == AutoAim.None)
+        if (autoAimType == AutoAim.None || !targetShip)
             transform.rotation = Quaternion.Euler(new(0, rotationY, 0));  // TODO: Nedalo by se to nějak zjednodušit? :D
         else if (autoAimType == AutoAim.PositionAutoAim)
         {

@@ -2206,8 +2206,9 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  projectilePrefab: {fileID: 4698057267504606932, guid: 9af9bd514b1a0194791d7bad6bdee625,
+  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
     type: 3}
+  shootDelay: 0.3
 --- !u!1 &7761217256956321192
 GameObject:
   m_ObjectHideFlags: 0
@@ -2318,7 +2319,14 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
+  predictPositionDummyTransform: {fileID: 0}
+  velocityEstimator: {fileID: 0}
+  turnType: 0
+  shootableLayerMasks:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!96 &-6931913766147552067
 TrailRenderer:
   serializedVersion: 3
