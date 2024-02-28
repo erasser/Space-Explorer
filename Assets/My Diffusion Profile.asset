@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   profile:
     scatteringDistance: {r: 1, g: 0, b: 0.2534047, a: 1}
-    scatteringDistanceMultiplier: 1
+    scatteringDistanceMultiplier: 11.08
     transmissionTint: {r: 1, g: 1, b: 1, a: 1}
     texturingMode: 0
     smoothnessMultipliers: {x: 1, y: 1}

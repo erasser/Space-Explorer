@@ -198,7 +198,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
                 _strafeCoefficient = _ship.speed * Random.Range(- .6f, .6f);
 
             _ship.isFiring = true;
-            state = State.WaitingWhileShooting;
+            SetState(State.WaitingWhileShooting);
             _ship.turnType = TurnType.CustomTarget;
             _ship.SetCustomTarget(_target.transformCached.position);  // TODO: Mělo by to mířit na ten nejbližší point
             SetZeroMoveVector();
@@ -206,13 +206,13 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         else if (IsTargetInSqrRange(ShootingSqrRange))
         {
             _ship.isFiring = true;
-            state = State.FollowingEnemy;
+            SetState(State.FollowingEnemy);
             _ship.turnType = TurnType.Velocity;
         }
         else
         {
             _ship.isFiring = false;
-            state = State.FollowingEnemy;
+            SetState(State.FollowingEnemy);
             _ship.turnType = TurnType.Velocity;
         }
     }
@@ -324,7 +324,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             return false;
 
         _destination = target;
-        state = State.GoingToDestination;
+        SetState(State.GoingToDestination);
 
         return true;
     }
@@ -337,7 +337,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         _destinations[0] = target;
         _destinations[1] = transformCached.position;
         _destinationsIndex = 0;
-        state = State.Patrolling;
+        SetState(State.Patrolling);
 
         return true;
     }
@@ -345,7 +345,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     public void SetTargetToFollow(Ship target)
     {
         _target = target;
-        state = State.FollowingEnemy;
+        SetState(State.FollowingEnemy);
 
         GeneratePathTo(target.transformCached.position);
     }
@@ -354,7 +354,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     {
         _pathPoints.Clear();
         _actualPathPointIndex = -1;
-        state = State.StandingStill;
+        SetState(State.StandingStill);
 
         SetZeroMoveVector();
     }
@@ -489,12 +489,12 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             // collision exit
             if (obj1.state == State.WaitingToPreventCollision)
             {
-                obj1.state = obj1._stateBeforeWaiting;
+                obj1.SetState(obj1._stateBeforeWaiting);
                 print(obj1.name + " was waiting");
             }
             if (obj2.state == State.WaitingToPreventCollision)
             {
-                obj2.state = obj2._stateBeforeWaiting;
+                obj2.SetState(obj2._stateBeforeWaiting);
                 print(obj2.name + " was waiting");
             }
         }
@@ -532,7 +532,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
         objectToWait._stateBeforeWaiting = objectToWait.state;
         objectToWait._velocityBeforeWaiting = objectToWait._ship.velocityEstimator.GetVelocityEstimate();  // TODO: Počítá se zbytečně znovu po PredictCollision()
-        objectToWait.state = State.WaitingToPreventCollision;
+        objectToWait.SetState(State.WaitingToPreventCollision);
 
         objectToWait.SetZeroMoveVector();
 
@@ -607,6 +607,11 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             // ReGeneratePath();
             _needsRegeneratePath = true;
         }
+    }
+
+    void SetState(State newState)
+    {
+        state = newState;
     }
 
     // TODO: Nějak low-level zajistit, aby cíl měl vždy y = 0

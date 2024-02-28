@@ -47,25 +47,61 @@ public abstract class Projectile : CachedMonoBehaviour
         // UpdateRotation();
     }
 
-    public void Setup(Vector3 position, float rotationY, LayerMask shootableLayerMask, Ship originShip, Ship targetShip  /*, Vector3 speed*/)
+    public void Setup(Vector3 position, float rotationY, LayerMask shootableLayerMask, Ship originShip /*, Ship targetShip*/  /*, Vector3 speed*/)
     {
         // _speedV3 = speed;
         _sqrRaycastLength = speed * Time.fixedDeltaTime;  // TODO: Myslet na slow-motion, mělo by obsahovat Time.fixedDeltaTime a po přechodu do slow-mo updatovat - to se asi týká jen už vystřelených projektilů  
         _selfDestructAtTime = Time.time + range / (speed/* / Time.fixedDeltaTime*/);
         transform.position = position;
         _shootableLayerMask = shootableLayerMask;
+        Rocket componentRocket = GetComponent<Rocket>();
 
-        if (autoAimType == AutoAim.None || !targetShip)
-            transform.rotation = Quaternion.Euler(new(0, rotationY, 0));  // TODO: Nedalo by se to nějak zjednodušit? :D
-        else if (autoAimType == AutoAim.PositionAutoAim)
+        if (originShip.IsPlayer())
         {
-            if (originShip.IsPlayer())
-                transform.LookAt(MouseCursorHit.point);
+            if (autoAimType == AutoAim.None)
+            {
+                transform.rotation = Quaternion.Euler(new(0, rotationY, 0));
+
+                if (componentRocket)
+                    componentRocket.SetTarget(null);
+            }
+            else if (autoAimType == AutoAim.PositionAutoAim)
+            {
+                var targetShip = originShip.GetClosestShipInRange(EnemyShips).ship;
+
+                if (targetShip)
+                    transform.LookAt(targetShip.transformCached.position);
+                else
+                    transform.LookAt(MouseCursorHit.point);
+
+                if (componentRocket)
+                    componentRocket.SetTarget(targetShip);
+            }
             else
-                transform.LookAt(ActiveShip.transformCached);
+            {
+                var targetShip = originShip.GetClosestShipInRange(EnemyShips).ship;
+
+                if (targetShip)
+                    transform.LookAt(targetShip.transformCached.position + GetPredictedPositionOffset(targetShip, targetShip.velocityEstimator.GetVelocityEstimate(), originShip.gameObject, speed));
+                else
+                    transform.LookAt(MouseCursorHit.point);
+
+                if (componentRocket)
+                    componentRocket.SetTarget(targetShip);
+            }
         }
-        else
-            transform.LookAt(targetShip.transformCached.position + GetPredictedPositionOffset(targetShip, targetShip.velocityEstimator.GetVelocityEstimate(), originShip.gameObject, speed));
+        else  // enemy shooting
+        {
+            if (autoAimType == AutoAim.None)
+                transform.rotation = Quaternion.Euler(new(0, rotationY, 0));    // TODO: Nedalo by se to nějak zjednodušit? :D
+            else if (autoAimType == AutoAim.PositionAutoAim)
+                transform.LookAt(ActiveShip.transformCached);
+            else
+                transform.LookAt(ActiveShip.transformCached.position + GetPredictedPositionOffset(ActiveShip, ActiveShip.velocityEstimator.GetVelocityEstimate(), originShip.gameObject, speed));
+
+            if (componentRocket)
+                componentRocket.SetTarget(ActiveShip);
+        }
     }
 
     void CheckIntersection()

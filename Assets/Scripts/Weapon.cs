@@ -53,14 +53,13 @@ public class Weapon : CachedMonoBehaviour
             return;
         }*/
 
-        Rocket componentRocket = newProjectile.GetComponent<Rocket>();
-        if (componentRocket)
-            componentRocket.SetTarget(_ship.IsPlayer() ? _ship.GetClosestShipInRange(EnemyShips).ship : ActiveShip);
-
-        var targetShip = _ship.IsPlayer() ? _ship.GetClosestShipInRange(EnemyShips).ship : ActiveShip;  // TODO: GetClosestShipInRange() volat jen jednou 
-
+        var targetShip = _ship.IsPlayer() ? _ship.GetClosestShipInRange(EnemyShips).ship : ActiveShip;  // TODO: GetClosestShipInRange() volat jen jednou
         var projectileComponent = newProjectile.GetComponent<Projectile>();
-        projectileComponent.Setup(transformCached.position, transformCached.eulerAngles.y, _ship.shootableLayerMasks, _ship, targetShip);
+        projectileComponent.Setup(transformCached.position, transformCached.eulerAngles.y, _ship.shootableLayerMasks, _ship /*, targetShip*/);
+
+        /*Rocket componentRocket = newProjectile.GetComponent<Rocket>();
+        if (componentRocket)
+            componentRocket.SetTarget(_ship.IsPlayer() ? _ship.GetClosestShipInRange(EnemyShips).ship : ActiveShip);*/
 
     }
 }

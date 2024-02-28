@@ -44,6 +44,7 @@ public class Rocket : Projectile
     {
         _dummyTarget.position = transform.position + transform.forward * range;
         _target = _dummyTarget;
+        // print("Setting dummy target to: " + _dummyTarget.position); // TODO: WTF?
     }
 
     void UpdateRotation()
