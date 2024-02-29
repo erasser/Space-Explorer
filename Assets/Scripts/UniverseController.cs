@@ -51,10 +51,15 @@ public class UniverseController : MonoBehaviour
     float _lastStaticFixedUpdate;
     public BoxCollider predictiveColliderPrefab;
     public LayerMask predictiveColliderLayerMask;  // TODO: Bylo by hezký vytáhnout to z toho predictiveColliderPrefabu
+    public GameObject dockingLightsPrefab;
+
+    void Awake()
+    {
+        Uc = this;
+    }
 
     void Start()
     {
-        Uc = this;
         MainCameraTransform = mainCamera.transform;
         _initialFov = mainCamera.fieldOfView;
         Astronaut = Instantiate(astronautPrefab).GetComponent<Ship>();
