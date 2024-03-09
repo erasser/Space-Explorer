@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -5,7 +6,18 @@ using Random = UnityEngine.Random;
 public class AiPilot : CachedMonoBehaviour
 {
     MyNavMeshAgent _myNavMeshAgent;
-    TravelStance _travelStance;
+    // TravelStance _travelStance;
+    // const float _dockingTime = 10;
+    // bool _docked;
+    // float _dockedAt;
+    // Dictionary<DockingPurpose, float> _dockingTimes = new ();
+    // public DockingPurpose dockingPurpose;
+
+    // public enum DockingPurpose
+    // {
+    //     JustChilling,
+    //     UnloadingOre
+    // }
 
     // enum Will
     // {
@@ -13,18 +25,20 @@ public class AiPilot : CachedMonoBehaviour
     //     Patrol
     // }
 
-
     // What to do when enemy is engaged when travelling
-    public enum TravelStance
-    {
-        PreferDestination,  // Ignore enemy and continue to destination
-        PreferAttackEnemy,  // Attack enemy if in range, destroy him and continue to destination
-        FollowEnemy         // Stand still when enemy is destroyed
-    }
+    // public enum TravelStance
+    // {
+    //     PreferDestination,  // Ignore enemy and continue to destination
+    //     PreferAttackEnemy,  // Attack enemy if in range, destroy him and continue to destination
+    //     FollowEnemy         // Stand still when enemy is destroyed
+    // }
 
     void Start()
     {
         _myNavMeshAgent = GetComponent<MyNavMeshAgent>();
+
+        // _dockingTimes.Add(DockingPurpose.JustChilling, 30);
+        // _dockingTimes.Add(DockingPurpose.UnloadingOre, 10);
     }
 
     void Update()
@@ -49,6 +63,8 @@ public class AiPilot : CachedMonoBehaviour
             _myNavMeshAgent.CheckFollowingEnemyDistance();
         }
 
+        // if (Input.GetKeyDown(KeyCode.M))
+        //     IWantToMine();
     }
 
     public void GoToRandomLocation()
@@ -73,7 +89,7 @@ public class AiPilot : CachedMonoBehaviour
             Debug.LogWarning("• NO VALID PATH FOUND!");
             return;
         }
-        _travelStance = TravelStance.PreferDestination;
+        // _travelStance = TravelStance.PreferDestination;
     }
 
     void IWantToPatrolTo(Vector3 secondPosition /*, TravelStance travelStance = TravelStance.PreferDestination*/)
@@ -85,4 +101,20 @@ public class AiPilot : CachedMonoBehaviour
     {
         _myNavMeshAgent.SetTargetToFollow(ship);
     }
+
+    /*void IWantToMine()
+    {
+        var miningAsteroid = GetNearestMineableAsteroid();
+        if (!miningAsteroid)
+        {
+            print("No asteroid to mine.");
+            return;
+        }
+
+    }
+
+    GameObject GetNearestMineableAsteroid()
+    {
+        return GameObject.Find("asteroid");
+    }*/
 }

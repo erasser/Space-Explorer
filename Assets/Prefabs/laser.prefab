@@ -99,7 +99,7 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  autoAimType: 1
+  autoAimType: 0
   range: 1000
-  speed: 80
+  speed: 90
   velocity: {x: 0, y: 0, z: 0}

@@ -36,7 +36,7 @@ public class Ship : CachedMonoBehaviour
     public Collider shipCollider;
     int _jetCount;
     List<Weapon> _weapons = new();
-    public static float ShootingRange = 200;
+    public static float ShootingRange = 50;
     public static float ShootingSqrRange;
     [HideInInspector]
     public float afterburnerCoefficient = 1;
@@ -107,7 +107,7 @@ public class Ship : CachedMonoBehaviour
                     _fastestWeaponSpeedMetersPerSecond = highestSpeed;
             }
 
-        if (!IsPlayer() || !IsAstronaut())
+        if (!IsPlayer() && !IsAstronaut())
             predictPositionDummyTransform = Instantiate(Uc.predictPositionDummyPrefab, UI.transform).transform;
 
         InitCaption();

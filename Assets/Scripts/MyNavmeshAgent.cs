@@ -15,6 +15,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 {
     public bool showPath = false;
     const float TargetMinDistance = 5;
+    static float _targetSqrMinDistance;
     static readonly float AgentFixedUpdateDeltaTime = .1f;
     const float CollisionPredictionMaxDistance = 50;
     float _lastAgentFixedUpdate;
@@ -22,11 +23,11 @@ public class MyNavMeshAgent : CachedMonoBehaviour
     NavMeshPath _navMeshPath;
     readonly List<Vector3> _pathPoints = new();
     int _actualPathPointIndex = -1;
-    static float _targetSqrMinDistance;
     LineRenderer _lineRenderer;
     GameObject _pointVisualizer;
     // Vector3 _actualPathPoint;
     Vector3 _toActualPathPointDirection;
+    [HideInInspector]
     public State state;
     State _stateBeforeWaiting;
     Vector3 _velocityBeforeWaiting;

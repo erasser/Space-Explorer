@@ -65,29 +65,15 @@ public abstract class Projectile : CachedMonoBehaviour
                 if (componentRocket)
                     componentRocket.SetTarget(null);
             }
-            else if (autoAimType == AutoAim.PositionAutoAim)
-            {
-                var targetShip = originShip.GetClosestShipInRange(EnemyShips).ship;
-
-                if (targetShip)
-                    transform.LookAt(targetShip.transformCached.position);
-                else
-                    transform.LookAt(MouseCursorHit.point);
-
-                if (componentRocket)
-                    componentRocket.SetTarget(targetShip);
-            }
             else
             {
-                var targetShip = originShip.GetClosestShipInRange(EnemyShips).ship;
-
-                if (targetShip)
-                    transform.LookAt(targetShip.transformCached.position + GetPredictedPositionOffset(targetShip, targetShip.velocityEstimator.GetVelocityEstimate(), originShip.gameObject, speed));
-                else
-                    transform.LookAt(MouseCursorHit.point);
+                transform.LookAt(MouseCursorHit.point);
 
                 if (componentRocket)
+                {
+                    var targetShip = originShip.GetClosestShipInRange(EnemyShips).ship;
                     componentRocket.SetTarget(targetShip);
+                }
             }
         }
         else  // enemy shooting

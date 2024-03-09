@@ -101,11 +101,11 @@ MonoBehaviour:
   transformCached: {fileID: 0}
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
-  autoAimType: 0
-  range: 60
+  autoAimType: 1
+  range: 1000
   speed: 40
   velocity: {x: 0, y: 0, z: 0}
-  rotationSpeed: 4
+  rotationSpeed: 2
 --- !u!96 &4388847196733905234
 TrailRenderer:
   serializedVersion: 3
