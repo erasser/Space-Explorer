@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.VFX;
 using static Ship;
+using static AiGeneral;
 using Random = UnityEngine.Random;
 
 public class UniverseController : MonoBehaviour
@@ -154,7 +155,7 @@ public class UniverseController : MonoBehaviour
                     // var shipToAstronautV3 = closestShip.transformCached.position - Astronaut.transformCached.position;
                     // var shipToAstronautV3 =  closestShip.GetComponent<Collider>().ClosestPoint(Astronaut.transformCached.position) - Astronaut.transformCached.position;
                     var shipToAstronautV3 = closestShip.toClosestPointV3;
-Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Color.cyan);
+                    // Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Color.cyan);
                     if (shipToAstronautV3.sqrMagnitude > AstronautBoardingSqrDistanceLimit)
                         Astronaut.rb.AddForce(60 * shipToAstronautV3.normalized, ForceMode.Impulse);  // TODO: Je to uvnitř Update()
                     // else
@@ -162,6 +163,9 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
                 }
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            SpawnEnemies(0, 3);
     }
 
     public void LaunchHitEffect(Vector3 point, Vector3 normal)
@@ -186,10 +190,10 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
     void EjectAstronaut()
     {
         Astronaut.gameObject.SetActive(true);
-        Astronaut.transformCached.position = ActiveShip.transformCached.position;
-        Astronaut.transformCached.rotation = ActiveShip.transformCached.rotation;
+        Astronaut.transform.position = ActiveShip.transform.position;
+        Astronaut.transform.rotation = ActiveShip.transform.rotation;
 
-        Astronaut.rb.AddForce(-10000 * ActiveShip.transformCached.forward, ForceMode.Impulse);
+        Astronaut.rb.AddForce(-10000 * ActiveShip.transform.forward, ForceMode.Impulse);
         ActiveShip.moveVector.x = ActiveShip.moveVector.z = 0;
         Astronaut.SetAsActiveShip();
 
@@ -248,7 +252,7 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
         Vector3 toTarget = Vector3.zero;
         try
         {
-            toTarget =  target.transformCached.position - observer.transform.position;    
+            toTarget =  target.transform.position - observer.transform.position;    
         }
         catch (Exception)
         {
@@ -286,7 +290,7 @@ Debug.DrawRay(Astronaut.rb.position, SetVectorLength(shipToAstronautV3, 10), Col
 
     public static Vector3 GetPredictedPositionOffset2(Ship target, Vector3 targetVelocity, Ship observer, float observerSpeed)  // moje řešení
     {
-        var distanceVector = target.transformCached.position - observer.transformCached.position;
+        var distanceVector = target.transform.position - observer.transform.position;
         var d = distanceVector.magnitude;
         var α = Vector3.Angle(distanceVector, targetVelocity);
         var cosα = Mathf.Cos(α);

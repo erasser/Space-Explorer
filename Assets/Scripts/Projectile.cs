@@ -3,7 +3,7 @@ using UnityEngine.Serialization;
 using static UniverseController;
 using static Ship;
 
-public abstract class Projectile : CachedMonoBehaviour
+public abstract class Projectile : MonoBehaviour
 {
     public AutoAim autoAimType;
     [Tooltip("m")]
@@ -77,9 +77,9 @@ public abstract class Projectile : CachedMonoBehaviour
             if (autoAimType == AutoAim.None)
                 transform.rotation = Quaternion.Euler(new(0, rotationY, 0));    // TODO: Nedalo by se to nějak zjednodušit? :D
             else if (autoAimType == AutoAim.PositionAutoAim)
-                transform.LookAt(ActiveShip.transformCached);
+                transform.LookAt(ActiveShip.transform);
             else
-                transform.LookAt(ActiveShip.transformCached.position + GetPredictedPositionOffset(ActiveShip, ActiveShip.velocityEstimator.GetVelocityEstimate(), originShip.gameObject, speed));
+                transform.LookAt(ActiveShip.transform.position + GetPredictedPositionOffset(ActiveShip, ActiveShip.velocityEstimator.GetVelocityEstimate(), originShip.gameObject, speed));
 
             if (componentRocket)
                 componentRocket.SetTarget(ActiveShip);

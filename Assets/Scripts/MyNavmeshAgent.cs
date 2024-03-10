@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 // ↑ Asi by to v případě kolize chtělo najít nejbližší checkpoint. TODO 
 
 [RequireComponent(typeof(Rigidbody), typeof(LineRenderer))]
-public class MyNavMeshAgent : CachedMonoBehaviour
+public class MyNavMeshAgent : MonoBehaviour
 {
     public bool showPath = false;
     const float TargetMinDistance = 5;
@@ -74,7 +74,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         WaitingWhileShooting
     }
 
-    void Start()
+    void Awake()
     {
         _ship = GetComponent<Ship>();
         _lineRenderer = GetComponent<LineRenderer>();
@@ -123,7 +123,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
             // _toActualPathPointDirection = _actualPathPoint - transformCached.position;
 
-            _toActualPathPointDirection = GetCurrentPathPoint() - transformCached.position;
+            _toActualPathPointDirection = GetCurrentPathPoint() - transform.position;
             // print("_toActualPathPointDirection = " + _toActualPathPointDirection);
             _ship.SetMoveVectorHorizontal(_toActualPathPointDirection.x);
             _ship.SetMoveVectorVertical(_toActualPathPointDirection.z);
@@ -188,7 +188,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     void Strafe()
     {
-        _ship.rb.AddForce(_strafeCoefficient * transformCached.right);
+        _ship.rb.AddForce(_strafeCoefficient * transform.right);
     }
 
     public void CheckFollowingEnemyDistance()
@@ -201,7 +201,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             _ship.SetIsFiring(true);
             SetState(State.WaitingWhileShooting);
             _ship.turnType = TurnType.CustomTarget;
-            _ship.SetCustomTarget(_target.transformCached.position);  // TODO: Mělo by to mířit na ten nejbližší point
+            _ship.SetCustomTarget(_target.transform.position);  // TODO: Mělo by to mířit na ten nejbližší point
             SetZeroMoveVector();
         }
         else
@@ -287,7 +287,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     bool GeneratePathTo(Vector3 targetLocation)
     {
-        var position = transformCached.position;
+        var position = transform.position;
         var result = NavMesh.CalculatePath(new(position.x, 0, position.z), targetLocation, NavMesh.AllAreas, _navMeshPath);
 
         if (!result)
@@ -330,7 +330,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             return false;
 
         _destinations[0] = target;
-        _destinations[1] = transformCached.position;
+        _destinations[1] = transform.position;
         _destinationsIndex = 0;
         SetState(State.Patrolling);
 
@@ -342,7 +342,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         _target = target;
         SetState(State.FollowingEnemy);
 
-        GeneratePathTo(target.transformCached.position);
+        GeneratePathTo(target.transform.position);
     }
 
     public void Stop()
@@ -398,7 +398,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
         if (state == State.Patrolling)
             return _destinations[_destinationsIndex];
         if (state == State.FollowingEnemy || state == State.WaitingWhileShooting)
-            return _target.transformCached.position;
+            return _target.transform.position;
 
         Debug.LogWarning("TODO !");
         if (state == State.RandomRoaming)
@@ -462,18 +462,18 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
         // prepare collider to cast against
         var predictionColliderPosition = GetPredictedPositionOffset(obj2._ship, obj2._ship.velocityEstimator.GetVelocityEstimate(), obj1.gameObject, GetVelocity(obj1).magnitude);
-        _predictiveColliderTransform.position = obj2.transformCached.position + predictionColliderPosition;
-        _predictiveColliderTransform.rotation = Quaternion.Euler(0, obj2.transformCached.rotation.y, 0);
+        _predictiveColliderTransform.position = obj2.transform.position + predictionColliderPosition;
+        _predictiveColliderTransform.rotation = Quaternion.Euler(0, obj2.transform.rotation.y, 0);
         PredictiveCollider.size = obj2._predictiveBoxExtents * 2;
 
         // box cast to be set
         var boxCastCenterOffset = GetPredictedPositionOffset(obj1._ship, GetVelocity(obj1), obj2.gameObject, obj2._ship.velocityEstimator.GetVelocityEstimate().magnitude);
 
-        var rot = Quaternion.Euler(0, obj1.transformCached.rotation.y, 0);
+        var rot = Quaternion.Euler(0, obj1.transform.rotation.y, 0);
 
         Physics.SyncTransforms();  // Možná to není nezbytné? Otestovat s více objekty.
 
-        var size = Physics.OverlapBoxNonAlloc(obj1.transformCached.position + boxCastCenterOffset, obj1._predictiveBoxExtents, CollisionPredictionResults, rot, Uc.predictiveColliderLayerMask);
+        var size = Physics.OverlapBoxNonAlloc(obj1.transform.position + boxCastCenterOffset, obj1._predictiveBoxExtents, CollisionPredictionResults, rot, Uc.predictiveColliderLayerMask);
 
         // InfoText.text = colliders.Length.ToString();
 
@@ -496,9 +496,9 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
         ExtDebug.DrawBox(_predictiveColliderTransform.position, PredictiveCollider.bounds.extents, _predictiveColliderTransform.rotation, Color.magenta);
 
-        ExtDebug.DrawBox(obj1.transformCached.position + boxCastCenterOffset, obj1._predictiveBoxExtents, rot, Color.cyan);
+        ExtDebug.DrawBox(obj1.transform.position + boxCastCenterOffset, obj1._predictiveBoxExtents, rot, Color.cyan);
         
-        Debug.DrawLine(_predictiveColliderTransform.position, obj1.transformCached.position + boxCastCenterOffset, Color.yellow);
+        Debug.DrawLine(_predictiveColliderTransform.position, obj1.transform.position + boxCastCenterOffset, Color.yellow);
         
         // print("• predicted collision between " + obj1.name + " and " + obj2.name + ", distance of boxes: " + (obj1.transformCached.position + boxCastCenterOffset - _predictiveColliderTransform.position).magnitude);
         // print("box 1: center = " + _predictiveColliderTransform.position + ", size = " + _predictiveCollider.size);
@@ -564,13 +564,13 @@ public class MyNavMeshAgent : CachedMonoBehaviour
 
     void SetBounds()
     {
-        var originalRotation = transformCached.rotation;
-        transformCached.rotation = Quaternion.identity;
+        var originalRotation = transform.rotation;
+        transform.rotation = Quaternion.identity;
 
         foreach (var component in transform.GetComponentsInChildren(typeof(MeshFilter)))
         {
             var meshFilterComponent = (MeshFilter)component;
-            var offset = meshFilterComponent.transform.position - transformCached.position;
+            var offset = meshFilterComponent.transform.position - transform.position;
             var boundsSize = new Vector3(meshFilterComponent.sharedMesh.bounds.size.x * meshFilterComponent.transform.lossyScale.x,
             meshFilterComponent.sharedMesh.bounds.size.y * meshFilterComponent.transform.lossyScale.y,
             meshFilterComponent.sharedMesh.bounds.size.z * meshFilterComponent.transform.lossyScale.z) / 2;
@@ -585,7 +585,7 @@ public class MyNavMeshAgent : CachedMonoBehaviour
                 _predictiveBoxExtents.z = boundsSize.z;
         }
 
-        transformCached.rotation = originalRotation;
+        transform.rotation = originalRotation;
     }
 
     void OnCollisionEnter(Collision other)

@@ -1,4 +1,11 @@
-﻿Takový ty _undockAt bude asi potřeba pořešit při implementaci slow-motion 
+﻿TODO!
+• Position prediction nefunguje s VSyncem - mělo by se vyřešit po vyřešení framerate independency.
+    - Ověřit, že tam je použitý VelocityEstimator (btw. nejsem si jistý, jestli te nje framerate independent
+• Velké množství lodí -> got to random location -> začalo to házet errory undefined index
+• Po vyřešení framerate independency rovnou implementovat slow motion
+
+
+Takový ty _undockAt bude asi potřeba pořešit při implementaci slow-motion 
 Kde je Time.fixedDeltaTime ve Start(), tam asi bude problém se slow-motion
 
 Daly by se traily renderovat pod lodí? Možná pomocí sorting layers u trail rendereru? - asi NE :D

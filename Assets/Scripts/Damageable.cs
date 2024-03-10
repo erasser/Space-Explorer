@@ -45,6 +45,12 @@ public class Damageable : MonoBehaviour
         }
 
         if (currentArmor <= 0)
+        {
+            var ship = GetComponent<Ship>();
+            if (ship)
+                Destroy(ship.predictPositionDummyTransform.gameObject);
+
             Destroy(gameObject);
+        }
     }
 }

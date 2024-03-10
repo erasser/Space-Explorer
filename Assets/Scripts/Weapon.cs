@@ -4,7 +4,7 @@ using static Ship;
 
 // This is a weapon socket
 
-public class Weapon : CachedMonoBehaviour
+public class Weapon : MonoBehaviour
 {
     public GameObject projectilePrefab;
     // public float initialShootSpeed = 100f;
@@ -39,6 +39,6 @@ public class Weapon : CachedMonoBehaviour
         _lastShootTime = Time.time + shootDelay;
         shootDelay = 0; // TODO: WIP
 
-        Instantiate(projectilePrefab).GetComponent<Projectile>().Setup(_ship, transformCached.position, transformCached.eulerAngles.y);
+        Instantiate(projectilePrefab).GetComponent<Projectile>().Setup(_ship, transform.position, transform.eulerAngles.y);
     }
 }

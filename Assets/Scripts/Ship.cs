@@ -6,7 +6,7 @@ using static UniverseController;
 // Ship requirements: This script, "ship" layer (to můžu asi udělat dynamicky)
 
 [RequireComponent(typeof(Rigidbody), typeof(Collider))]
-public class Ship : CachedMonoBehaviour
+public class Ship : MonoBehaviour
 {
     public float speed = 10;
     public float rotationSpeed = 3;
@@ -73,7 +73,7 @@ public class Ship : CachedMonoBehaviour
         if (CompareTag("Default Ship"))
         {
             SetAsActiveShip();
-            InitialCameraOffset = MainCameraTransform.position - ActiveShip.transformCached.position;
+            InitialCameraOffset = MainCameraTransform.position - ActiveShip.transform.position;
         }
 
         var jets = transform.Find("JETS");
@@ -174,13 +174,13 @@ public class Ship : CachedMonoBehaviour
         // UpdatePredictiveCollider();
 
         if (predictPositionDummyTransform)
-                predictPositionDummyTransform.position = Uc.mainCamera.WorldToScreenPoint(transformCached.position + GetPredictedPositionOffset(this, rb.velocity, ActiveShip.gameObject, ActiveShip._fastestWeaponSpeedMetersPerSecond));
+                predictPositionDummyTransform.position = Uc.mainCamera.WorldToScreenPoint(transform.position + GetPredictedPositionOffset(this, rb.velocity, ActiveShip.gameObject, ActiveShip._fastestWeaponSpeedMetersPerSecond));
     }
 
     public float GetForwardSpeed()  // m / s
     {
         var velocity = rb.velocity;
-        var forward = transformCached.forward;
+        var forward = transform.forward;
         return Vector2.Dot(new(velocity.x, velocity.z), new(forward.x, forward.z));
     }
 
@@ -213,9 +213,9 @@ public class Ship : CachedMonoBehaviour
     {
         // print("rotating ship");
         // yaw
-        var forward = transformCached.forward;
+        var forward = transform.forward;
         // toTargetV3 = ActiveShip == this ? _userTarget - transformCached.position : rb.velocity;
-        toTargetV3 = IsPlayer() || turnType == TurnType.CustomTarget ? _customTarget - transformCached.position : rb.velocity;
+        toTargetV3 = IsPlayer() || turnType == TurnType.CustomTarget ? _customTarget - transform.position : rb.velocity;
         var toTargetNormalized = toTargetV3.normalized;
         rb.AddTorque(- Vector2.SignedAngle(new(forward.x, forward.z), new(toTargetNormalized.x, toTargetNormalized.z)) * rotationSpeed * Vector3.up, ForceMode.Acceleration);
 
@@ -225,7 +225,7 @@ public class Ship : CachedMonoBehaviour
         // InfoText.text = "angle: " + a;
 
         // roll
-        rb.transform.localEulerAngles = new(0, transformCached.localEulerAngles.y, Mathf.Clamp(- 20 * rb.angularVelocity.y, - maxRollAngle, maxRollAngle));
+        rb.transform.localEulerAngles = new(0, transform.localEulerAngles.y, Mathf.Clamp(- 20 * rb.angularVelocity.y, - maxRollAngle, maxRollAngle));
     }
 
     public void SetCustomTarget(Vector3 target)
@@ -280,10 +280,10 @@ public class Ship : CachedMonoBehaviour
 
     public float GetSqrDistanceFromShipPosition(Ship otherShip, float range = Mathf.Infinity)  // range přesunout výše
     {
-        var thisShipPosition = transformCached.position;
+        var thisShipPosition = transform.position;
         otherShip.shipCollider.enabled = true;
 
-        Physics.Raycast(thisShipPosition, otherShip.transformCached.position - thisShipPosition, out var hit, range, Uc.closestShipColliderLayer);
+        Physics.Raycast(thisShipPosition, otherShip.transform.position - thisShipPosition, out var hit, range, Uc.closestShipColliderLayer);
 
         otherShip.shipCollider.enabled = false;
         return (hit.point - thisShipPosition).sqrMagnitude;
@@ -291,7 +291,7 @@ public class Ship : CachedMonoBehaviour
 
     Vector3 GetVectorToClosestPoint(Ship otherShip)
     {
-        var thisShipPosition = transformCached.position;
+        var thisShipPosition = transform.position;
 
         // var dummy = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         // dummy.transform.position = otherShip._collider.ClosestPoint(thisShipPosition);
@@ -331,10 +331,10 @@ public class Ship : CachedMonoBehaviour
         var target = ship;
         var bulletVelocity = ship.rb.velocity.magnitude;
 
-        var targetTransform = target.transformCached;
+        var targetTransform = target.transform;
         var targetVelocity = target.rb.velocity;
 
-        Vector3 toTarget =  targetTransform.position - transformCached.position;
+        Vector3 toTarget =  targetTransform.position - transform.position;
         float a = Vector3.Dot(targetVelocity, targetVelocity) - bulletVelocity * bulletVelocity;
         float b = 2 * Vector3.Dot(targetVelocity, toTarget);
         float c = Vector3.Dot(toTarget, toTarget);
@@ -385,7 +385,7 @@ public class Ship : CachedMonoBehaviour
     {
         var coef = Input.GetKey(KeyCode.LeftControl) ? .8f : .2f;
 
-        MainCameraTransform.position = ActiveShip.transformCached.position +
+        MainCameraTransform.position = ActiveShip.transform.position +
                                        InitialCameraOffset + // vertical offset
                                        // SetVectorLength(player.toTargetV3, player.toTargetV3.sqrMagnitude / 3);  // horizontal offset  // Fungovalo to, teď problikává obraz
                                        ActiveShip.toTargetV3 * coef; // horizontal offset

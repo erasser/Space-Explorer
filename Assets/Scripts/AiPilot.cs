@@ -3,7 +3,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(MyNavMeshAgent))]
-public class AiPilot : CachedMonoBehaviour
+public class AiPilot : MonoBehaviour
 {
     MyNavMeshAgent _myNavMeshAgent;
     // TravelStance _travelStance;
@@ -33,7 +33,7 @@ public class AiPilot : CachedMonoBehaviour
     //     FollowEnemy         // Stand still when enemy is destroyed
     // }
 
-    void Start()
+    void Awake()
     {
         _myNavMeshAgent = GetComponent<MyNavMeshAgent>();
 
@@ -50,7 +50,7 @@ public class AiPilot : CachedMonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             // if (MyNavMeshAgent.MyNavMeshAgents[0] == _myNavMeshAgent)
-            if (_myNavMeshAgent.transformCached.position.z == -50)
+            if (_myNavMeshAgent.transform.position.z == -50)  // To bylo k testování collision prediction
                 IWantToPatrolTo(new(-100, 0, -75));
             else
                 IWantToPatrolTo(new(-100, 0, -75));
@@ -77,12 +77,12 @@ public class AiPilot : CachedMonoBehaviour
         dummy.GetComponent<Collider>().isTrigger = true;
     }
 
-    void IWantToStandStill()
+    public void IWantToStandStill()
     {
         _myNavMeshAgent.Stop();
     }
 
-    void IWantToGoTo(Vector3 destination)
+    public void IWantToGoTo(Vector3 destination)
     {
         if (!_myNavMeshAgent.SetDestination(destination))
         {
@@ -92,12 +92,12 @@ public class AiPilot : CachedMonoBehaviour
         // _travelStance = TravelStance.PreferDestination;
     }
 
-    void IWantToPatrolTo(Vector3 secondPosition /*, TravelStance travelStance = TravelStance.PreferDestination*/)
+    public void IWantToPatrolTo(Vector3 secondPosition /*, TravelStance travelStance = TravelStance.PreferDestination*/)
     {
         _myNavMeshAgent.SetPatrolTo(secondPosition);
     }
 
-    void IWantToAttack(Ship ship)
+    public void IWantToAttack(Ship ship)
     {
         _myNavMeshAgent.SetTargetToFollow(ship);
     }

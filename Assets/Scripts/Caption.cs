@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using static UniverseController;
 
-public class Caption : CachedMonoBehaviour
+public class Caption : MonoBehaviour
 {
     [HideInInspector]
     public Ship targetShip;
@@ -55,7 +55,7 @@ public class Caption : CachedMonoBehaviour
 
     void UpdatePosition()
     {
-        transformCached.position = Uc.mainCamera.WorldToScreenPoint(targetShip.transformCached.position + targetShip.shipCollider.bounds.extents.z * 2 * Vector3.back);
+        transform.position = Uc.mainCamera.WorldToScreenPoint(targetShip.transform.position + targetShip.shipCollider.bounds.extents.z * 2 * Vector3.back);
     }
 
     public void UpdateText(/*Content content*/)
