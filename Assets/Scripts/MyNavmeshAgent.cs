@@ -198,23 +198,17 @@ public class MyNavMeshAgent : CachedMonoBehaviour
             if (state != State.WaitingWhileShooting)
                 _strafeCoefficient = _ship.speed * Random.Range(- .6f, .6f);
 
-            _ship.isFiring = true;
+            _ship.SetIsFiring(true);
             SetState(State.WaitingWhileShooting);
             _ship.turnType = TurnType.CustomTarget;
             _ship.SetCustomTarget(_target.transformCached.position);  // TODO: Mělo by to mířit na ten nejbližší point
             SetZeroMoveVector();
         }
-        else if (IsTargetInSqrRange(ShootingSqrRange))
-        {
-            _ship.isFiring = true;
-            SetState(State.FollowingEnemy);
-            _ship.turnType = TurnType.Velocity;
-        }
         else
         {
-            _ship.isFiring = false;
             SetState(State.FollowingEnemy);
             _ship.turnType = TurnType.Velocity;
+            _ship.SetIsFiring(IsTargetInSqrRange(ShootingSqrRange));
         }
     }
 

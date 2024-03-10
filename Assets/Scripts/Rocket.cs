@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UniverseController;
 // TODO: Když ztratí target, najít nový
 
 
@@ -10,6 +11,7 @@ public class Rocket : Projectile
     public float rotationSpeed = 2;
     Transform _target;
     Transform _dummyTarget;  // if no target is available
+    Vector3 _toTargetVector;
 
     void Awake()
     {
@@ -29,7 +31,11 @@ public class Rocket : Projectile
 
         base.FixedUpdate();
 
+        _toTargetVector = _target.position - transform.position;
+
         UpdateRotation();
+        
+        UpdatePosition();
     }
 
     public void SetTarget(Ship target)
@@ -50,16 +56,31 @@ public class Rocket : Projectile
     void UpdateRotation()
     {
         // print("target: " + _target);
-        var toTargetVector = _target.position - transform.position;
         // var cross = Vector3.Cross(toTargetVector, transform.forward);
         // _rb.AddTorque(- 2 * cross.magnitude * cross.normalized, ForceMode.Force);  // Force is proportional to the angle
 
-        var angle = Vector3.SignedAngle(toTargetVector, transform.forward, Vector3.down);
+        var angle = Vector3.SignedAngle(_toTargetVector, transform.forward, Vector3.down);
 
         if (angle > - rotationSpeed && angle < rotationSpeed)
             return;
 
         transform.Rotate(Vector3.up, rotationSpeed * Mathf.Sign(angle));
+    }
+
+    void UpdatePosition()
+    {
+        if (_target == _dummyTarget)
+        {
+            transform.Translate(velocity);
+            InfoText.text = velocity.ToString();
+        }
+        else
+        {
+            var vel = velocity * (_toTargetVector.magnitude / 100 + .5f);
+            vel = Vector3.ClampMagnitude(vel, velocity.z);
+            transform.Translate(vel);
+            InfoText.text = vel.ToString();
+        }
     }
 
     void OnDestroy()

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using static Ship;
 
 // This is a weapon socket
@@ -7,7 +8,9 @@ public class Weapon : CachedMonoBehaviour
 {
     public GameObject projectilePrefab;
     // public float initialShootSpeed = 100f;
-    public float shootDelay = .3f;
+    public float shootInterval = .3f;
+    [Tooltip("Used for alternating fire, e.g. left ↔ right.\nSet to 0 for no alternating.\nSet to Shoot 'interval / 2' for regular double alternating.")]
+    public float shootDelay;
     Vector3 _initialShootSpeedV3;           // to get Vector3 from float
     // static Vector3 _actualProjectileSpeed;  // for raycast length calculation
     Vector3 _shootVectorCoefficient;        // for performance optimization
@@ -30,36 +33,12 @@ public class Weapon : CachedMonoBehaviour
 
     void AutoFire()
     {
-        if (!_ship.isFiring || Time.time - _lastShootTime < shootDelay)
+        if (!_ship.isFiring || Time.time - _lastShootTime < shootInterval)
             return;
 
-        _lastShootTime = Time.time;
+        _lastShootTime = Time.time + shootDelay;
+        shootDelay = 0; // TODO: WIP
 
-        var newProjectile = Instantiate(projectilePrefab);
-        // newLaser.GetComponent<Laser>().Setup(
-        //     transformCached.position,
-        //     new(0, transformCached.eulerAngles.y, 0),  // TODO: stačilo by předávat jen float
-        //     _ship.GetForwardSpeed() * _shootVectorCoefficient + _initialShootSpeedV3);  // TODO: stačilo by předávat jen float
-
-        /*Laser componentLaser = newProjectile.GetComponent<Laser>();
-        if (componentLaser)
-        {
-            componentLaser.weapon = this;
-            componentLaser.Setup(
-                transformCached.position,
-                transformCached.eulerAngles.y/*,
-                // _ship.GetForwardSpeed() * _shootVectorCoefficient + _initialShootSpeedV3);  // TODO: stačilo by předávat jen float
-                _initialShootSpeedV3#1#);
-            return;
-        }*/
-
-        var targetShip = _ship.IsPlayer() ? _ship.GetClosestShipInRange(EnemyShips).ship : ActiveShip;  // TODO: GetClosestShipInRange() volat jen jednou
-        var projectileComponent = newProjectile.GetComponent<Projectile>();
-        projectileComponent.Setup(transformCached.position, transformCached.eulerAngles.y, _ship.shootableLayerMasks, _ship /*, targetShip*/);
-
-        /*Rocket componentRocket = newProjectile.GetComponent<Rocket>();
-        if (componentRocket)
-            componentRocket.SetTarget(_ship.IsPlayer() ? _ship.GetClosestShipInRange(EnemyShips).ship : ActiveShip);*/
-
+        Instantiate(projectilePrefab).GetComponent<Projectile>().Setup(_ship, transformCached.position, transformCached.eulerAngles.y);
     }
 }

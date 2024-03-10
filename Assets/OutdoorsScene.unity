@@ -559,6 +559,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1001 &26364052
 PrefabInstance:
@@ -840,6 +841,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  firingStartedAt: 0
   shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
   predictPositionDummyTransform: {fileID: 0}
@@ -1269,6 +1271,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1001 &73892706
 PrefabInstance:
@@ -1424,6 +1427,57 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1111573735}
   m_SourcePrefab: {fileID: 100100000, guid: d0ee9ecd775e34846983a62b384b28da, type: 3}
+--- !u!1 &79591847
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 79591848}
+  - component: {fileID: 79591849}
+  m_Layer: 31
+  m_Name: alternating R
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &79591848
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 79591847}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.403, y: -0.51, z: 1.39}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1917289541}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &79591849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 79591847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transformCached: {fileID: 0}
+  gameObjectCached: {fileID: 0}
+  rigidBodyCached: {fileID: 0}
+  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+    type: 3}
+  shootInterval: 0.3
+  shootDelay: 0.15
 --- !u!1001 &86883223
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2243,6 +2297,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &157207112
 GameObject:
@@ -3681,6 +3736,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &384968281
 GameObject:
@@ -4187,6 +4243,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &416714259
 GameObject:
@@ -4630,6 +4687,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: a30b2614d539af04fa3292afeebb6408,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &497562538
 GameObject:
@@ -4959,6 +5017,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &502866256
 GameObject:
@@ -5261,6 +5320,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1001 &526897408
 PrefabInstance:
@@ -5718,6 +5778,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  firingStartedAt: 0
   shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
   predictPositionDummyTransform: {fileID: 0}
@@ -6899,12 +6960,12 @@ GameObject:
   - component: {fileID: 587562417}
   - component: {fileID: 587562418}
   m_Layer: 28
-  m_Name: 0
+  m_Name: laser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &587562417
 Transform:
   m_ObjectHideFlags: 0
@@ -6937,7 +6998,8 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: a30b2614d539af04fa3292afeebb6408,
     type: 3}
-  shootDelay: 0.3
+  shootInterval: 0.3
+  shootDelay: 0
 --- !u!1 &599897828 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c255eeaec779d148a216fceb6780f9f,
@@ -8004,6 +8066,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: a30b2614d539af04fa3292afeebb6408,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &737138316 stripped
 GameObject:
@@ -8040,6 +8103,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  firingStartedAt: 0
   shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
   predictPositionDummyTransform: {fileID: 0}
@@ -8669,6 +8733,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &770830864
 GameObject:
@@ -9361,6 +9426,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &809295300
 GameObject:
@@ -9411,6 +9477,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: a30b2614d539af04fa3292afeebb6408,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &812287932
 GameObject:
@@ -9461,6 +9528,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &821166769
 GameObject:
@@ -9764,6 +9832,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: a30b2614d539af04fa3292afeebb6408,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &862218302
 GameObject:
@@ -9939,6 +10008,7 @@ MonoBehaviour:
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 0}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &877280034
 GameObject:
@@ -10380,6 +10450,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &941717922
 GameObject:
@@ -10430,6 +10501,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.9
 --- !u!1 &946938457
 GameObject:
@@ -10480,6 +10552,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &956705028
 GameObject:
@@ -10966,6 +11039,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.9
 --- !u!1 &1005768088
 GameObject:
@@ -11257,6 +11331,57 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!1 &1034605029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1034605030}
+  - component: {fileID: 1034605031}
+  m_Layer: 31
+  m_Name: alternating L
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1034605030
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034605029}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.39, y: -0.493, z: 1.768}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1917289541}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1034605031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034605029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transformCached: {fileID: 0}
+  gameObjectCached: {fileID: 0}
+  rigidBodyCached: {fileID: 0}
+  projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
+    type: 3}
+  shootInterval: 0.3
+  shootDelay: 0
 --- !u!1 &1051929123
 GameObject:
   m_ObjectHideFlags: 0
@@ -11797,6 +11922,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  firingStartedAt: 0
   shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
   predictPositionDummyTransform: {fileID: 0}
@@ -12719,6 +12845,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: f57fc13d39d08cc44b28e1a15c934ca3,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &1178996630
 GameObject:
@@ -13213,7 +13340,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1199183133
 Transform:
   m_ObjectHideFlags: 0
@@ -13246,6 +13373,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &1206646554
 GameObject:
@@ -13422,6 +13550,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: a30b2614d539af04fa3292afeebb6408,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!4 &1210020340 stripped
 Transform:
@@ -13617,6 +13746,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  firingStartedAt: 0
   shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
   predictPositionDummyTransform: {fileID: 0}
@@ -13695,6 +13825,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &1272718092
 GameObject:
@@ -13995,6 +14126,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: f57fc13d39d08cc44b28e1a15c934ca3,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &1306125516
 GameObject:
@@ -14470,6 +14602,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &1321883795
 GameObject:
@@ -14520,6 +14653,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &1326775332
 GameObject:
@@ -14753,6 +14887,7 @@ MonoBehaviour:
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 0}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &1335031842
 GameObject:
@@ -15109,6 +15244,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &1395812995
 GameObject:
@@ -15158,6 +15294,7 @@ MonoBehaviour:
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 0}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1001 &1397813330
 PrefabInstance:
@@ -16363,7 +16500,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1544812272
 Transform:
   m_ObjectHideFlags: 0
@@ -16396,6 +16533,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.2
 --- !u!1 &1564235457
 GameObject:
@@ -16855,6 +16993,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &1608235612
 GameObject:
@@ -17232,6 +17371,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &1648226670
 GameObject:
@@ -17500,6 +17640,7 @@ MonoBehaviour:
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 0}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &1680528010
 GameObject:
@@ -17584,6 +17725,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &1688235230
 GameObject:
@@ -17802,6 +17944,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  firingStartedAt: 0
   shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
   predictPositionDummyTransform: {fileID: 0}
@@ -17946,6 +18089,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &1741507459
 GameObject:
@@ -18638,6 +18782,7 @@ MonoBehaviour:
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 0}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1001 &1822010254
 PrefabInstance:
@@ -19026,6 +19171,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &1876456622
 GameObject:
@@ -19871,6 +20017,8 @@ Transform:
   - {fileID: 1544812272}
   - {fileID: 1225453303}
   - {fileID: 1321883796}
+  - {fileID: 1034605030}
+  - {fileID: 79591848}
   m_Father: {fileID: 543450652484722630}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20677,6 +20825,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &1998174336
 GameObject:
@@ -20727,6 +20876,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.9
 --- !u!4 &2009251648 stripped
 Transform:
@@ -20831,6 +20981,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &2019188887
 GameObject:
@@ -21111,6 +21262,7 @@ MonoBehaviour:
   gameObjectCached: {fileID: 0}
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 0}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &2059259092
 GameObject:
@@ -21422,6 +21574,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
+  shootInterval: 0.3
   shootDelay: 0.3
 --- !u!1 &2138673644
 GameObject:
@@ -23093,6 +23246,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   toTargetV3: {x: 0, y: 0, z: 0}
   isFiring: 0
+  firingStartedAt: 0
   shipCollider: {fileID: 0}
   afterburnerCoefficient: 1
   predictPositionDummyTransform: {fileID: 0}

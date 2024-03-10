@@ -103,7 +103,7 @@ MonoBehaviour:
   rigidBodyCached: {fileID: 0}
   autoAimType: 1
   range: 1000
-  speed: 40
+  speed: 70
   velocity: {x: 0, y: 0, z: 0}
   rotationSpeed: 2
 --- !u!96 &4388847196733905234
@@ -313,7 +313,7 @@ VisualEffect:
       - m_Value: 20
         m_Name: speed min
         m_Overridden: 1
-      - m_Value: 40
+      - m_Value: 60
         m_Name: speed max
         m_Overridden: 1
       - m_Value: 0.35
@@ -329,7 +329,7 @@ VisualEffect:
       m_Array: []
     m_Int:
       m_Array:
-      - m_Value: 400
+      - m_Value: 1000
         m_Name: rate
         m_Overridden: 1
     m_Matrix4x4f:

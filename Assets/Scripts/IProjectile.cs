@@ -1,4 +1,4 @@
 ﻿public interface IProjectile
 {
-    new void Start();
+    void UpdatePosition();
 }

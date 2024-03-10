@@ -31,6 +31,7 @@ public class Ship : CachedMonoBehaviour
     readonly List<VisualEffect> _jetsVisualEffects = new();
     [HideInInspector]
     public bool isFiring;
+    public float firingStartedAt;
     // Collider _closestShipCollider;
     [HideInInspector]
     public Collider shipCollider;
@@ -50,10 +51,10 @@ public class Ship : CachedMonoBehaviour
     [HideInInspector]
     public LayerMask shootableLayerMasks;  // All layers that this ship shoots
 
-    public enum TurnType
+    public enum TurnType    // Type of Ship rotation
     {
-        Velocity,
-        CustomTarget
+        Velocity,           // For other ships
+        CustomTarget        // For player & ships with a target
     }
 
     void Start()
@@ -388,6 +389,15 @@ public class Ship : CachedMonoBehaviour
                                        InitialCameraOffset + // vertical offset
                                        // SetVectorLength(player.toTargetV3, player.toTargetV3.sqrMagnitude / 3);  // horizontal offset  // Fungovalo to, teď problikává obraz
                                        ActiveShip.toTargetV3 * coef; // horizontal offset
+    }
+
+    public void SetIsFiring(bool enable)
+    {
+        if (isFiring == enable)
+            return;
+
+        isFiring = enable;
+        firingStartedAt = Time.time;
     }
 
     // public void Highlight()

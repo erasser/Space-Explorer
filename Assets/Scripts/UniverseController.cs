@@ -110,7 +110,7 @@ public class UniverseController : MonoBehaviour
 
     void ProcessKeys()
     {
-        ActiveShip.isFiring = Input.GetMouseButton(0);
+        ActiveShip.SetIsFiring(Input.GetMouseButton(0));
 
         if (Input.GetKey(KeyCode.W))
             ActiveShip.SetMoveVectorVertical(1);

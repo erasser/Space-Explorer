@@ -41,19 +41,15 @@ public abstract class Projectile : CachedMonoBehaviour
         CheckLifeSpan();
 
         CheckIntersection();
-
-        UpdatePosition();
-
-        // UpdateRotation();
     }
 
-    public void Setup(Vector3 position, float rotationY, LayerMask shootableLayerMask, Ship originShip /*, Ship targetShip*/  /*, Vector3 speed*/)
+    public void Setup(Ship originShip, Vector3 position, float rotationY)
     {
         // _speedV3 = speed;
         _sqrRaycastLength = speed * Time.fixedDeltaTime;  // TODO: Myslet na slow-motion, mělo by obsahovat Time.fixedDeltaTime a po přechodu do slow-mo updatovat - to se asi týká jen už vystřelených projektilů  
         _selfDestructAtTime = Time.time + range / (speed/* / Time.fixedDeltaTime*/);
         transform.position = position;
-        _shootableLayerMask = shootableLayerMask;
+        _shootableLayerMask = originShip.shootableLayerMasks;
         Rocket componentRocket = GetComponent<Rocket>();
 
         if (originShip.IsPlayer())
@@ -113,13 +109,13 @@ public abstract class Projectile : CachedMonoBehaviour
             Destroy(gameObject);
     }
 
-    void UpdatePosition()
+    /*void UpdatePosition()
     {
         // print(name + " velocity = " + velocity);
         // transform.Translate(Vector3.forward * 2);
         transform.Translate(velocity);
         // transform.position = new(Random.Range(-50, 50), 0 , 0);
-    }
+    }*/
 
     /*void UpdateRotation()
     {
