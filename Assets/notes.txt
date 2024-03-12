@@ -1,4 +1,5 @@
 ﻿TODO!
+• Když enemy nevidí přes překážku přímo na svůj target, neměl by se chovat jako debil tj. střílet do překážky
 • Position prediction nefunguje s VSyncem - mělo by se vyřešit po vyřešení framerate independency.
     - Ověřit, že tam je použitý VelocityEstimator (btw. nejsem si jistý, jestli te nje framerate independent
 • Velké množství lodí -> got to random location -> začalo to házet errory undefined index

@@ -554,9 +554,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootInterval: 0.3
@@ -826,9 +823,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootInterval: 0.3
@@ -1031,9 +1025,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
     type: 3}
   shootInterval: 0.3
@@ -1818,9 +1809,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootInterval: 0.3
@@ -2860,9 +2848,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
   shootInterval: 0.3
@@ -3367,9 +3352,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
   shootInterval: 0.3
@@ -3945,9 +3927,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
   shootInterval: 0.3
@@ -4122,9 +4101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootInterval: 0.3
@@ -6388,9 +6364,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7baa2c7a02d22847b8a6bf9cac02151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   speed: 50
   rotationSpeed: 0.02
   maxRollAngle: 0
@@ -7024,9 +6997,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
   shootInterval: 0.3
@@ -7717,9 +7687,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootInterval: 0.3
@@ -7768,9 +7735,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: a30b2614d539af04fa3292afeebb6408,
     type: 3}
   shootInterval: 0.3
@@ -7819,9 +7783,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
   shootInterval: 0.3
@@ -8123,9 +8084,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: a30b2614d539af04fa3292afeebb6408,
     type: 3}
   shootInterval: 0.3
@@ -8300,9 +8258,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 0}
   shootInterval: 0.3
   shootDelay: 0.3
@@ -8741,9 +8696,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
   shootInterval: 0.3
@@ -9357,9 +9309,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
     type: 3}
   shootInterval: 0.3
@@ -9859,9 +9808,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7baa2c7a02d22847b8a6bf9cac02151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   speed: 170
   rotationSpeed: 0.25
   maxRollAngle: 70
@@ -10075,9 +10021,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee6c7e9f08313764cab44a4158da9390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
 --- !u!114 &1111573738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10090,9 +10033,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa1d45e9c9609aa43ad65c943373e0c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   showPath: 0
   state: 0
 --- !u!1 &1116165078
@@ -10643,9 +10583,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: f57fc13d39d08cc44b28e1a15c934ca3,
     type: 3}
   shootInterval: 0.3
@@ -11171,9 +11108,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: a30b2614d539af04fa3292afeebb6408,
     type: 3}
   shootInterval: 0.3
@@ -11361,9 +11295,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7baa2c7a02d22847b8a6bf9cac02151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   speed: 200
   rotationSpeed: 0.4
   maxRollAngle: 80
@@ -11446,9 +11377,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootInterval: 0.3
@@ -11602,9 +11530,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: f57fc13d39d08cc44b28e1a15c934ca3,
     type: 3}
   shootInterval: 0.3
@@ -11952,9 +11877,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootInterval: 0.3
@@ -12003,9 +11925,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
   shootInterval: 0.3
@@ -12238,9 +12157,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 0}
   shootInterval: 0.3
   shootDelay: 0.3
@@ -12560,9 +12476,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
   shootInterval: 0.3
@@ -12611,9 +12524,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 0}
   shootInterval: 0.3
   shootDelay: 0.3
@@ -13740,9 +13650,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: fbc65b3e96bcdb94585462ae1a4f0e2a,
     type: 3}
   shootInterval: 0.3
@@ -13781,7 +13688,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4849768282098484, guid: 8c22678d7aa562145804b6f0af7e603a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1054
+      value: 1679
       objectReference: {fileID: 0}
     - target: {fileID: 4849768282098484, guid: 8c22678d7aa562145804b6f0af7e603a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -13789,7 +13696,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4849768282098484, guid: 8c22678d7aa562145804b6f0af7e603a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1282
+      value: 1980
       objectReference: {fileID: 0}
     - target: {fileID: 4849768282098484, guid: 8c22678d7aa562145804b6f0af7e603a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -13871,9 +13778,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17ee53fd4c8570a4a80190be76fa7783, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   rotationSpeed: -0.6
   atmosphereRelativeRotationSpeed: 0.3
   atmosphere: {fileID: 1940823114}
@@ -14166,9 +14070,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootInterval: 0.3
@@ -14418,9 +14319,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootInterval: 0.3
@@ -14688,9 +14586,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 0}
   shootInterval: 0.3
   shootDelay: 0.3
@@ -14738,9 +14633,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootInterval: 0.3
@@ -14789,9 +14681,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
     type: 3}
   shootInterval: 0.3
@@ -15338,9 +15227,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 0}
   shootInterval: 0.3
   shootDelay: 0.3
@@ -15726,9 +15612,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootInterval: 0.3
@@ -16983,9 +16866,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootInterval: 0.3
@@ -17088,9 +16968,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 8219408188620219722, guid: 298e4dce3d2c5174e91d755afa3ca0c4,
     type: 3}
   shootInterval: 0.3
@@ -17370,9 +17247,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   projectilePrefab: {fileID: 0}
   shootInterval: 0.3
   shootDelay: 0.3
@@ -19296,9 +19170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7baa2c7a02d22847b8a6bf9cac02151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   speed: 16
   rotationSpeed: 0.14
   maxRollAngle: 30
@@ -19407,9 +19278,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee6c7e9f08313764cab44a4158da9390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
 --- !u!114 &2388053579360366963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19422,9 +19290,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa1d45e9c9609aa43ad65c943373e0c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   showPath: 0
   state: 0
 --- !u!120 &2388053579360366964

@@ -165,7 +165,14 @@ public class UniverseController : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
-            SpawnEnemies(0, 3);
+        {
+            List<SpawnData> testSequence = new();
+            testSequence.Add(new SpawnData(0, 1, 2));
+            testSequence.Add(new SpawnData(0, 2, 2));
+            testSequence.Add(new SpawnData(0, 3, 2));
+
+            aiGeneral.SpawnSequence(testSequence);
+        }
     }
 
     public void LaunchHitEffect(Vector3 point, Vector3 normal)
