@@ -107,9 +107,10 @@ public class VelocityEstimator : MonoBehaviour
 	private IEnumerator EstimateVelocityCoroutine()
 	{
 		sampleCount = 0;
-// print("• coroutine");
-		Vector3 previousPosition = transform.position;
-		Quaternion previousRotation = transform.rotation;
+
+		var trans = transform;
+		Vector3 previousPosition = trans.position;
+		Quaternion previousRotation = trans.rotation;
 		while ( true )
 		{
 			yield return new WaitForEndOfFrame();
@@ -119,12 +120,12 @@ public class VelocityEstimator : MonoBehaviour
 			int v = sampleCount % velocitySamples.Length;
 			int w = sampleCount % angularVelocitySamples.Length;
 			sampleCount++;
-			// print("• coroutine samplecount ++");
+
 			// Estimate linear velocity
-			velocitySamples[v] = velocityFactor * ( transform.position - previousPosition );
+			velocitySamples[v] = velocityFactor * ( trans.position - previousPosition );
 
 			// Estimate angular velocity
-			Quaternion deltaRotation = transform.rotation * Quaternion.Inverse( previousRotation );
+			Quaternion deltaRotation = trans.rotation * Quaternion.Inverse( previousRotation );
 
 			float theta = 2.0f * Mathf.Acos( Mathf.Clamp( deltaRotation.w, -1.0f, 1.0f ) );
 			if ( theta > Mathf.PI )
@@ -140,8 +141,8 @@ public class VelocityEstimator : MonoBehaviour
 
 			angularVelocitySamples[w] = angularVelocity;
 
-			previousPosition = transform.position;
-			previousRotation = transform.rotation;
+			previousPosition = trans.position;
+			previousRotation = trans.rotation;
 		}
 	}
 }
