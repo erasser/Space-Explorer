@@ -167,9 +167,10 @@ public class UniverseController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             List<SpawnData> testSequence = new();
-            testSequence.Add(new SpawnData(0, 1, 2));
-            testSequence.Add(new SpawnData(0, 2, 2));
-            testSequence.Add(new SpawnData(0, 3, 2));
+            testSequence.Add(new SpawnData(0, 3));
+            testSequence.Add(new SpawnData(0, 3, 4));
+            testSequence.Add(new SpawnData(0, 3, 4));
+            testSequence.Add(new SpawnData(0, 3, 4));
 
             aiGeneral.SpawnSequence(testSequence);
         }

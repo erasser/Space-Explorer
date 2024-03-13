@@ -1,8 +1,11 @@
-﻿public class SpawnData
+﻿using static MyNavMeshAgent;
+
+public class SpawnData
 {
     public int ShipType;
     public int ShipsCount;
     public float DelayBeforeSpawn;
+    public int ListSpawnSequenceIndex;  // Index of the list of the list of spawnData. To be set at SpawnSequence().
 
     public SpawnData(int shipType, int shipsCount, float delayBeforeSpawn = 0)
     {
