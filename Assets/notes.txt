@@ -4,7 +4,9 @@
     - Ověřit, že tam je použitý VelocityEstimator (btw. nejsem si jistý, jestli te nje framerate independent
 • Velké množství lodí -> got to random location -> začalo to házet errory undefined index
 • Po vyřešení framerate independency rovnou implementovat slow motion
+• Ten můj AgentFixedUpdate předělat na coroutine
 
+Implementace CachedMonoBehaviour - mělo by to vyřešit Awake() { base.Awake() }
 
 Takový ty _undockAt bude asi potřeba pořešit při implementaci slow-motion 
 Kde je Time.fixedDeltaTime ve Start(), tam asi bude problém se slow-motion

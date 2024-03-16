@@ -36,7 +36,7 @@ public class Weapon : MonoBehaviour
         if (!_ship.isFiring || Time.time - _lastShootTime < shootInterval)
             return;
 
-        _lastShootTime = Time.time + shootDelay;
+        _lastShootTime = Time.time /*+ shootDelay*/;
         shootDelay = 0; // TODO: WIP
 
         Instantiate(projectilePrefab).GetComponent<Projectile>().Setup(_ship, transform.position, transform.eulerAngles.y);

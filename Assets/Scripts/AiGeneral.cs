@@ -20,16 +20,18 @@ public class AiGeneral : MonoBehaviour
         aiGeneral = this;
     }
 
-   public IEnumerator SpawnEnemies(SpawnData spawnData)  // TODO: Random spawn location from list
+   public IEnumerator SpawnEnemies(SpawnData spawnData)
     {
         yield return new WaitForSeconds(spawnData.DelayBeforeSpawn);
+
+        Transform spawnLocation = spawnLocations[Random.Range(0, spawnLocations.Count)];
 
         int sign = - 1;
 
         for (int i = 0; i < spawnData.ShipsCount; ++i)
         {
-            Vector3 pos = new(aiGeneral.spawnLocations[0].position.x + GetSign() * i * Spacing, 0, aiGeneral.spawnLocations[0].position.z + Random.Range(-Spacing, Spacing));
-            var newShip = Instantiate(aiGeneral.shipsToBeSpawned[spawnData.ShipType], pos, aiGeneral.spawnLocations[0].rotation);
+            Vector3 pos = new(spawnLocation.position.x + GetSign() * i * Spacing, 0, spawnLocation.position.z + Random.Range(- Spacing, Spacing));
+            var newShip = Instantiate(aiGeneral.shipsToBeSpawned[spawnData.ShipType], pos, spawnLocation.rotation);
             newShip.GetComponent<AiPilot>().IWantToAttack(ActiveShip);
         }
 

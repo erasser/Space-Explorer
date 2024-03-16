@@ -57,6 +57,10 @@ public class UniverseController : MonoBehaviour
     void Awake()
     {
         Uc = this;
+        shootablePlayerLayer = LayerMask.NameToLayer("shootablePlayer");
+        shootableEnvironmentLayer = LayerMask.NameToLayer("shootableEnvironment");
+        shootableShipsNeutralLayer = LayerMask.NameToLayer("shootableShipsNeutral");
+        shootableShipsEnemyLayer = LayerMask.NameToLayer("shootableShipsEnemy");
     }
 
     void Start()
@@ -72,10 +76,6 @@ public class UniverseController : MonoBehaviour
         canBeBoardedList.RemoveAll(ship => !ship.gameObject.activeSelf);
         // selectionSprite = Instantiate(selectionSpritePrefab);
         MyNavMeshAgent.CreatePredictiveCollider();
-        shootablePlayerLayer = LayerMask.NameToLayer("shootablePlayer");
-        shootableEnvironmentLayer = LayerMask.NameToLayer("shootableEnvironment");
-        shootableShipsNeutralLayer = LayerMask.NameToLayer("shootableShipsNeutral");
-        shootableShipsEnemyLayer = LayerMask.NameToLayer("shootableShipsEnemy");
     }
 
     void Update()
@@ -166,15 +166,16 @@ public class UniverseController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            List<SpawnData> testSequence1 = new();
-            testSequence1.Add(new SpawnData(0, 1));
-            testSequence1.Add(new SpawnData(0, 2, 5));
-            
-            List<SpawnData> testSequence2 = new();
-            testSequence2.Add(new SpawnData(0, 3, 1));
-            testSequence2.Add(new SpawnData(0, 4, 2));
+            // List<SpawnData> testSequence1 = new();
+            // testSequence1.Add(new SpawnData(0, 1));
+            // testSequence1.Add(new SpawnData(0, 2, 5));
+            // aiGeneral.SpawnSequence(testSequence1);
 
-            aiGeneral.SpawnSequence(testSequence1);
+            List<SpawnData> testSequence2 = new();
+            testSequence2.Add(new SpawnData(0, 1));
+            testSequence2.Add(new SpawnData(0, 2, 1));
+            testSequence2.Add(new SpawnData(0, 2, 2));
+            // testSequence2.Add(new SpawnData(0, 4, 2));
             aiGeneral.SpawnSequence(testSequence2);
         }
     }

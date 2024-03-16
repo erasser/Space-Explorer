@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using static UniverseController;
 // TODO: Když ztratí target, najít nový
@@ -12,6 +13,8 @@ public class Rocket : Projectile
     Transform _target;
     Transform _dummyTarget;  // if no target is available
     Vector3 _toTargetVector;
+    [Tooltip("Trail reference")]
+    public TrailRenderer trail;
 
     void Awake()
     {
@@ -72,19 +75,21 @@ public class Rocket : Projectile
         if (_target == _dummyTarget)
         {
             transform.Translate(velocity);
-            InfoText.text = velocity.ToString();
+            // InfoText.text = velocity.ToString();
         }
         else
         {
             var vel = velocity * (_toTargetVector.magnitude / 100 + .5f);
             vel = Vector3.ClampMagnitude(vel, velocity.z);
             transform.Translate(vel);
-            InfoText.text = vel.ToString();
+            // InfoText.text = vel.ToString();
         }
     }
 
     void OnDestroy()
     {
+        trail.transform.SetParent(null);  // TODO: Totéž udělat lodím
+
         DestroyImmediate(_dummyTarget.gameObject);
     }
 }

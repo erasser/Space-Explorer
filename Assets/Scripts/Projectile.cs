@@ -109,22 +109,8 @@ public abstract class Projectile : MonoBehaviour
             Destroy(gameObject);
     }
 
-    /*void UpdatePosition()
+    void DestroyMe()
     {
-        // print(name + " velocity = " + velocity);
-        // transform.Translate(Vector3.forward * 2);
-        transform.Translate(velocity);
-        // transform.position = new(Random.Range(-50, 50), 0 , 0);
-    }*/
-
-    /*void UpdateRotation()
-    {
-        if (!followTarget)
-            return;
-
-        var toTargetVector = (_target.position - _rb.transform.position).normalized;
-        var cross = Vector3.Cross(toTargetVector, transform.forward);
-        _rb.AddTorque(- 2 * cross.magnitude * cross.normalized, ForceMode.Force);  // Force is proportional to the angle
-    }*/
-
+        Destroy(gameObject);
+    }
 }

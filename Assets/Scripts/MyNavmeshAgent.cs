@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -45,6 +46,7 @@ public class MyNavMeshAgent : MonoBehaviour
     Transform _tmpActivePointDummy;
     static List<State> _turnTypesThatNeedCheckingPathPoints = new() {State.Patrolling, State.FollowingEnemy, State.RandomRoaming, State.GoingToDestination};
     float _strafeCoefficient;
+    static LayerMask _environmentLayerMask;
 
     // TARGETS and DESTINATIONS  (helper class to be created)
     Ship _target;
@@ -90,6 +92,12 @@ public class MyNavMeshAgent : MonoBehaviour
         _tmpActivePointDummy = tmp.transform;
         _tmpActivePointDummy.localScale = new(1, 4, 1);
         DestroyImmediate(_tmpActivePointDummy.GetComponent<SphereCollider>());
+    }
+
+    void Start()
+    {
+        if (_environmentLayerMask == 0)
+            _environmentLayerMask = 1 << Uc.shootableEnvironmentLayer;
     }
 
     void FixedUpdate()
@@ -195,6 +203,14 @@ public class MyNavMeshAgent : MonoBehaviour
     {
         if (IsTargetInSqrRange(ShootingSqrRange * .7f))
         {
+            if (!CanDirectlyShootAtTarget())
+            {
+                // _strafeCoefficient = _ship.speed * GetRandomSign();
+                print("setting new attack point");
+                GeneratePathTo(GetNewAttackPoint());
+                // TODO: Zde jsem skončil. Bud nestrafovat, nebo místo strafování najít attack point
+            }
+
             if (state != State.WaitingWhileShooting)
                 _strafeCoefficient = _ship.speed * Random.Range(- .6f, .6f);
 
@@ -218,6 +234,23 @@ public class MyNavMeshAgent : MonoBehaviour
         // return sqrDistance <= ShootingSqrRange;
 
         return _ship.GetSqrClosestDistanceToShip(_target) <= sqrRange;
+    }
+
+    bool CanDirectlyShootAtTarget()
+    {
+        var result = Physics.Raycast(transform.position, _target.transform.position - transform.position, ShootingRange, _environmentLayerMask);
+
+        return !result;
+    }
+
+    Vector3 GetNewAttackPoint()  // TODO: option 2 if path not generated
+    {
+        var toTarget = _target.transform.position - transform.position;
+        Vector3 toTargetPerpendicular = new(- toTarget.z, 0, toTarget.x);
+        Vector3 middlePoint = transform.position + toTarget / 2;
+        Vector3 newAttackPoint = middlePoint + SetVectorLength(toTargetPerpendicular, ShootingRange * 9);
+
+        return newAttackPoint;
     }
 
     Vector3 GetCurrentPathPoint()
@@ -281,8 +314,8 @@ public class MyNavMeshAgent : MonoBehaviour
             }
         }
 
-        if (_ship != ActiveShip)
-            InfoText.text = $"pathPoints: {_actualPathPointIndex} / {_pathPoints.Count}";
+        // if (_ship != ActiveShip)
+        //     InfoText.text = $"pathPoints: {_actualPathPointIndex} / {_pathPoints.Count}";
     }
 
     bool GeneratePathTo(Vector3 targetLocation)
