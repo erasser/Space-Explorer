@@ -11,13 +11,16 @@ public class AiGeneral : MonoBehaviour
     public static AiGeneral aiGeneral;
     public List<Ship> shipsToBeSpawned;
     public List<Transform> spawnLocations;
+    List<float> _shipsSizes = new();
     const float Spacing = 10;   // TODO: Get from ship size
     static SpawnData _spawnPassedData;
-    // TODO: Ještě celou formaci otočit podle spawnLocation (rotate around point?)
 
     void Start()
     {
         aiGeneral = this;
+
+        foreach (Ship ship in shipsToBeSpawned)
+            _shipsSizes.Add(ship.GetComponent<MeshFilter>().sharedMesh.bounds.extents.magnitude * ship.transform.localScale.x);
     }
 
    public IEnumerator SpawnEnemies(SpawnData spawnData)
@@ -30,8 +33,15 @@ public class AiGeneral : MonoBehaviour
 
         for (int i = 0; i < spawnData.ShipsCount; ++i)
         {
-            Vector3 pos = new(spawnLocation.position.x + GetSign() * i * Spacing, 0, spawnLocation.position.z + Random.Range(- Spacing, Spacing));
-            var newShip = Instantiate(aiGeneral.shipsToBeSpawned[spawnData.ShipType], pos, spawnLocation.rotation);
+            // Vector3 pos = new(spawnLocation.position.x + GetSign() * i * Spacing, 0, spawnLocation.position.z + Random.Range(- Spacing, Spacing));
+            Vector3 pos = new(spawnLocation.position.x + GetSign() * i * _shipsSizes[spawnData.ShipType] * 2, 0, spawnLocation.position.z + Random.Range(- 2, 2));
+
+            aiGeneral.shipsToBeSpawned[spawnData.ShipType].transform.position = pos;
+            aiGeneral.shipsToBeSpawned[spawnData.ShipType].transform.rotation = Quaternion.identity;
+            aiGeneral.shipsToBeSpawned[spawnData.ShipType].transform.RotateAround(spawnLocation.position, Vector3.up, spawnLocation.eulerAngles.y);
+
+            Ship newShip = Instantiate(aiGeneral.shipsToBeSpawned[spawnData.ShipType]/*, spawnLocation.transform, true*/);
+
             newShip.GetComponent<AiPilot>().IWantToAttack(ActiveShip);
         }
 

@@ -172,9 +172,9 @@ public class UniverseController : MonoBehaviour
             // aiGeneral.SpawnSequence(testSequence1);
 
             List<SpawnData> testSequence2 = new();
-            testSequence2.Add(new SpawnData(0, 1));
-            testSequence2.Add(new SpawnData(0, 2, 1));
-            testSequence2.Add(new SpawnData(0, 2, 2));
+            testSequence2.Add(new SpawnData(0, 10));
+            // testSequence2.Add(new SpawnData(0, 2, 1));
+            // testSequence2.Add(new SpawnData(0, 2, 2));
             // testSequence2.Add(new SpawnData(0, 4, 2));
             aiGeneral.SpawnSequence(testSequence2);
         }

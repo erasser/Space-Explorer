@@ -47,6 +47,7 @@ public class MyNavMeshAgent : MonoBehaviour
     static List<State> _turnTypesThatNeedCheckingPathPoints = new() {State.Patrolling, State.FollowingEnemy, State.RandomRoaming, State.GoingToDestination};
     float _strafeCoefficient;
     static LayerMask _environmentLayerMask;
+    float _strafeDistanceCoefficient;
 
     // TARGETS and DESTINATIONS  (helper class to be created)
     Ship _target;
@@ -85,6 +86,7 @@ public class MyNavMeshAgent : MonoBehaviour
         _targetSqrMinDistance = Mathf.Pow(TargetMinDistance, 2);
         _aiPilot = GetComponent<AiPilot>();
         MyNavMeshAgents.Add(this);
+        _strafeDistanceCoefficient = Random.Range(.05f, .7f);
         // _predictiveColliderLayerMask = LayerMask.NameToLayer("predictive collider");
         SetBounds();
 
@@ -201,7 +203,7 @@ public class MyNavMeshAgent : MonoBehaviour
 
     public void CheckFollowingEnemyDistance()
     {
-        if (IsTargetInSqrRange(ShootingSqrRange * .7f))
+        if (IsTargetInSqrRange(ShootingSqrRange * _strafeDistanceCoefficient))
         {
             if (!CanDirectlyShootAtTarget())
             {
@@ -212,7 +214,8 @@ public class MyNavMeshAgent : MonoBehaviour
             }
 
             if (state != State.WaitingWhileShooting)
-                _strafeCoefficient = _ship.speed * Random.Range(- .6f, .6f);
+                // _strafeCoefficient = _ship.speed * Random.Range(- .6f, .6f);
+                _strafeCoefficient = _ship.speed * (.3f + Random.Range(0, .4f));
 
             _ship.SetIsFiring(true);
             SetState(State.WaitingWhileShooting);
@@ -324,7 +327,12 @@ public class MyNavMeshAgent : MonoBehaviour
         var result = NavMesh.CalculatePath(new(position.x, 0, position.z), targetLocation, NavMesh.AllAreas, _navMeshPath);
 
         if (!result)
+        {
+            if (!result)
+                Debug.LogWarning("Path was NOT generated!");
+
             return false;
+        }
 
         _pathPoints.Clear();
         _pathPoints.AddRange(_navMeshPath.corners);
@@ -415,7 +423,7 @@ public class MyNavMeshAgent : MonoBehaviour
     {
         var result = GeneratePathTo(GetCurrentDestination());
         if (!result)
-            Debug.LogWarning("Path was NOT generated!");
+            Debug.LogWarning("Path was NOT re-generated!");
         // else
         // {
         //     print("PATH REGENERATED");            
