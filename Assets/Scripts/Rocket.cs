@@ -1,6 +1,4 @@
-using System.Collections;
 using UnityEngine;
-using static UniverseController;
 // TODO: Když ztratí target, najít nový
 
 

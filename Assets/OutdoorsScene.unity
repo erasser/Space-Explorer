@@ -6429,6 +6429,7 @@ MonoBehaviour:
   shootableLayerMasks:
     serializedVersion: 2
     m_Bits: 0
+  caption: {fileID: 0}
 --- !u!135 &737138319
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9904,6 +9905,7 @@ MonoBehaviour:
   shootableLayerMasks:
     serializedVersion: 2
     m_Bits: 0
+  caption: {fileID: 0}
 --- !u!54 &1111573720
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -11391,6 +11393,7 @@ MonoBehaviour:
   shootableLayerMasks:
     serializedVersion: 2
     m_Bits: 0
+  caption: {fileID: 0}
 --- !u!135 &1223899197
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -11976,7 +11979,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1321883796
 Transform:
   m_ObjectHideFlags: 0
@@ -19332,6 +19335,7 @@ MonoBehaviour:
   shootableLayerMasks:
     serializedVersion: 2
     m_Bits: 0
+  caption: {fileID: 0}
 --- !u!54 &2388053579360366958
 Rigidbody:
   m_ObjectHideFlags: 0

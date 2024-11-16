@@ -50,6 +50,7 @@ public class Ship : MonoBehaviour
     public TurnType turnType;
     [HideInInspector]
     public LayerMask shootableLayerMasks;  // All layers that this ship shoots
+    public Caption caption;
 
     public enum TurnType    // Type of Ship rotation
     {
@@ -166,6 +167,13 @@ public class Ship : MonoBehaviour
         moveVector.z = vertical;
     }
 
+    void Update()
+    {
+        // Debug.DrawLine(transformCached.position, predictPositionDummyTransform.position, Color.magenta);
+
+        UpdateToTargetV3();
+    }
+
     void FixedUpdate()
     {
         Move();
@@ -182,11 +190,6 @@ public class Ship : MonoBehaviour
         var velocity = rb.velocity;
         var forward = transform.forward;
         return Vector2.Dot(new(velocity.x, velocity.z), new(forward.x, forward.z));
-    }
-
-    void Update()
-    {
-        // Debug.DrawLine(transformCached.position,  predictPositionDummyTransform.position, Color.magenta);
     }
 
     void Move()
@@ -214,8 +217,6 @@ public class Ship : MonoBehaviour
         // print("rotating ship");
         // yaw
         var forward = transform.forward;
-        // toTargetV3 = ActiveShip == this ? _userTarget - transformCached.position : rb.velocity;
-        toTargetV3 = IsPlayer() || turnType == TurnType.CustomTarget ? _customTarget - transform.position : rb.velocity;
         var toTargetNormalized = toTargetV3.normalized;
         rb.AddTorque(- Vector2.SignedAngle(new(forward.x, forward.z), new(toTargetNormalized.x, toTargetNormalized.z)) * rotationSpeed * Vector3.up, ForceMode.Acceleration);
 
@@ -226,6 +227,11 @@ public class Ship : MonoBehaviour
 
         // roll
         rb.transform.localEulerAngles = new(0, transform.localEulerAngles.y, Mathf.Clamp(- 20 * rb.angularVelocity.y, - maxRollAngle, maxRollAngle));
+    }
+
+    void UpdateToTargetV3()
+    {
+        toTargetV3 = IsPlayer() || turnType == TurnType.CustomTarget ? _customTarget - transform.position : rb.velocity;
     }
 
     public void SetCustomTarget(Vector3 target)
@@ -377,8 +383,8 @@ public class Ship : MonoBehaviour
 
     void InitCaption()
     {
-        var caption = Instantiate(Uc.captionPrefab, UI.transform);
-        caption.GetComponent<Caption>().Setup(this);    
+        caption = Instantiate(Uc.captionPrefab, UI.transform);
+        caption.GetComponent<Caption>().Setup(this);
     }
 
     public void UpdateCameraPosition()

@@ -63,7 +63,7 @@ public abstract class Projectile : MonoBehaviour
             }
             else
             {
-                transform.LookAt(MouseCursorHit.point);
+                // transform.LookAt(MouseCursorHit.point);
 
                 if (componentRocket)
                 {

@@ -91,9 +91,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c13745e7d71a816488ba09d22d021692, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformCached: {fileID: 0}
-  gameObjectCached: {fileID: 0}
-  rigidBodyCached: {fileID: 0}
   targetShip: {fileID: 0}
 --- !u!1 &5972360865117825201
 GameObject:
@@ -161,7 +158,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '- unit caption -'
+  m_text: '- caption -
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

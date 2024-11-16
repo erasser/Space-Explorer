@@ -53,6 +53,7 @@ public class UniverseController : MonoBehaviour
     public BoxCollider predictiveColliderPrefab;
     public LayerMask predictiveColliderLayerMask;  // TODO: Bylo by hezký vytáhnout to z toho predictiveColliderPrefabu
     public GameObject dockingLightsPrefab;
+    Ship _selectedObject;
 
     void Awake()
     {
@@ -112,6 +113,9 @@ public class UniverseController : MonoBehaviour
     void ProcessKeys()
     {
         ActiveShip.SetIsFiring(Input.GetMouseButton(0));
+
+        if (Input.GetMouseButtonDown(1))
+            SelectObject();
 
         if (Input.GetKey(KeyCode.W))
             ActiveShip.SetMoveVectorVertical(1);
@@ -340,4 +344,19 @@ public class UniverseController : MonoBehaviour
         return Random.value < .5f ? - 1 : 1;
     }
 
+    void SelectObject()
+    {
+        if (Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out var hit, Mathf.Infinity, 1 << shootableShipsEnemyLayer | 1 << shootableShipsNeutralLayer))
+        {
+            print("hit: " + hit.collider.name);
+
+            _selectedObject = hit.collider.gameObject.GetComponent<Ship>();
+            _selectedObject.caption.gameObject.SetActive(true);
+        }
+        else if (_selectedObject)
+        {
+            _selectedObject.caption.gameObject.SetActive(false);
+            _selectedObject = null;
+        }
+    }
 }

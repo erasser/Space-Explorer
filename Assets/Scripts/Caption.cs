@@ -64,10 +64,10 @@ public class Caption : MonoBehaviour
         var state = targetShip.GetComponent<MyNavMeshAgent>()?.state;
         // var state = agent
 
-        _caption.text = $"<b>{targetShip.name}</b>\n" +
-                        $"speed: {Mathf.Round(targetShip.rb.velocity.magnitude)} m/s\n" +
+        _caption.text = $"<b><color=yellow>{targetShip.name}</color></b>\n" +
+                        $"speed: <color=white>{Mathf.Round(targetShip.rb.velocity.magnitude)} m/s</color>\n" +
                         // $"<i>est. speed: {Mathf.Round(targetShip.velocityEstimator.GetVelocityEstimate().magnitude)}</i>";
-                        $"state: <i>{state}</i>";
+                        $"state: <i><color=white>{state}</color></i>";
     }
 
     void UpdateBars()
