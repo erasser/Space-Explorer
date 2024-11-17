@@ -71,7 +71,7 @@ public class UniverseController : MonoBehaviour
         _initialFov = mainCamera.fieldOfView;
         Astronaut = Instantiate(astronautPrefab).GetComponent<Ship>();
         Astronaut.gameObject.SetActive(false);
-        Cursor.SetCursor(mouseCursor, new(mouseCursor.width / 2f, mouseCursor.height / 2f), CursorMode.ForceSoftware);
+        Cursor.SetCursor(mouseCursor, new(mouseCursor.width / 2f, mouseCursor.height / 2f), CursorMode.Auto);
         explosionEffect = Instantiate(explosionEffectPrefab);
         UI = GameObject.Find("UI");
         InfoText = UI.transform.Find("infoText").GetComponent<Text>();
@@ -183,6 +183,9 @@ public class UniverseController : MonoBehaviour
             // testSequence2.Add(new SpawnData(0, 4, 2));
             aiGeneral.SpawnSequence(testSequence2);
         }
+        
+        if (Input.GetKeyDown(KeyCode.Return))
+            SceneController.LoadScene("FPS Scene");
     }
 
     public void LaunchHitEffect(Vector3 point, Vector3 normal)
