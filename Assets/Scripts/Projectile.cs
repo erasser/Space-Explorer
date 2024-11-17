@@ -54,7 +54,7 @@ public abstract class Projectile : MonoBehaviour
 
         if (originShip.IsPlayer())
         {
-            if (autoAimType == AutoAim.None)
+            if (autoAimType == AutoAim.None || componentRocket)
             {
                 transform.rotation = Quaternion.Euler(new(0, rotationY, 0));
 
@@ -63,26 +63,27 @@ public abstract class Projectile : MonoBehaviour
             }
             else
             {
-                // transform.LookAt(MouseCursorHit.point);
-
                 if (componentRocket)
                 {
-                    var targetShip = originShip.GetClosestShipInRange(EnemyShips).ship;
+                    var targetShip = Uc.selectedObject ?? originShip.GetClosestShipInRange(EnemyShips).ship;
                     componentRocket.SetTarget(targetShip);
                 }
+                else
+                    transform.LookAt(MouseCursorHit.point);
             }
         }
         else  // enemy shooting
         {
-            if (autoAimType == AutoAim.None)
-                transform.rotation = Quaternion.Euler(new(0, rotationY, 0));    // TODO: Nedalo by se to nějak zjednodušit? :D
+            if (autoAimType == AutoAim.None || componentRocket)
+            {
+                transform.rotation = Quaternion.Euler(new(0, rotationY, 0));
+                if (componentRocket)
+                    componentRocket.SetTarget(ActiveShip);
+            }
             else if (autoAimType == AutoAim.PositionAutoAim)
                 transform.LookAt(ActiveShip.transform);
             else
                 transform.LookAt(ActiveShip.transform.position + GetPredictedPositionOffset(ActiveShip, ActiveShip.velocityEstimator.GetVelocityEstimate(), originShip.gameObject, speed));
-
-            if (componentRocket)
-                componentRocket.SetTarget(ActiveShip);
         }
     }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DigitalRuby.Tween;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.VFX;
 using static Ship;
@@ -53,7 +54,7 @@ public class UniverseController : MonoBehaviour
     public BoxCollider predictiveColliderPrefab;
     public LayerMask predictiveColliderLayerMask;  // TODO: Bylo by hezký vytáhnout to z toho predictiveColliderPrefabu
     public GameObject dockingLightsPrefab;
-    Ship _selectedObject;
+    public Ship selectedObject;
 
     void Awake()
     {
@@ -176,7 +177,7 @@ public class UniverseController : MonoBehaviour
             // aiGeneral.SpawnSequence(testSequence1);
 
             List<SpawnData> testSequence2 = new();
-            testSequence2.Add(new SpawnData(0, 10));
+            testSequence2.Add(new SpawnData(0, 3));
             // testSequence2.Add(new SpawnData(0, 2, 1));
             // testSequence2.Add(new SpawnData(0, 2, 2));
             // testSequence2.Add(new SpawnData(0, 4, 2));
@@ -346,17 +347,15 @@ public class UniverseController : MonoBehaviour
 
     void SelectObject()
     {
+        if (selectedObject)
+            selectedObject.caption.gameObject.SetActive(false);
+
         if (Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out var hit, Mathf.Infinity, 1 << shootableShipsEnemyLayer | 1 << shootableShipsNeutralLayer))
         {
-            print("hit: " + hit.collider.name);
-
-            _selectedObject = hit.collider.gameObject.GetComponent<Ship>();
-            _selectedObject.caption.gameObject.SetActive(true);
+            selectedObject = hit.collider.gameObject.GetComponent<Ship>();
+            selectedObject.caption.gameObject.SetActive(true);
         }
-        else if (_selectedObject)
-        {
-            _selectedObject.caption.gameObject.SetActive(false);
-            _selectedObject = null;
-        }
+        else
+            selectedObject = null;
     }
 }

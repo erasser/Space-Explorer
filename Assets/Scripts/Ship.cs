@@ -389,7 +389,7 @@ public class Ship : MonoBehaviour
 
     public void UpdateCameraPosition()
     {
-        var coef = Input.GetKey(KeyCode.LeftControl) ? .8f : .2f;
+        var coef = Input.GetKey(KeyCode.LeftControl) ? .8f : .16f;
 
         MainCameraTransform.position = ActiveShip.transform.position +
                                        InitialCameraOffset + // vertical offset

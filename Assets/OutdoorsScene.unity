@@ -13032,6 +13032,7 @@ MonoBehaviour:
     m_Bits: 2048
   dockingLightsPrefab: {fileID: 7863131934082234322, guid: e2e7937649f4e7a49a76e685ecee4a90,
     type: 3}
+  selectedObject: {fileID: 0}
 --- !u!114 &1405392145
 MonoBehaviour:
   m_ObjectHideFlags: 0
