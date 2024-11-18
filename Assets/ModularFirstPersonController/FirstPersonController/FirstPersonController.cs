@@ -156,21 +156,24 @@ public class FirstPersonController : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        if(crosshair)
+        if (crosshairObject)
         {
-            crosshairObject.sprite = crosshairImage;
-            crosshairObject.color = crosshairColor;
-        }
-        else
-        {
-            crosshairObject.gameObject.SetActive(false);
+            if (crosshair)
+            {
+                crosshairObject.sprite = crosshairImage;
+                crosshairObject.color = crosshairColor;
+            }
+            else
+            {
+                crosshairObject.gameObject.SetActive(false);
+            }
         }
 
         #region Sprint Bar
 
         sprintBarCG = GetComponentInChildren<CanvasGroup>();
 
-        if(useSprintBar)
+        if(sprintBarCG && useSprintBar)
         {
             sprintBarBG.gameObject.SetActive(true);
             sprintBar.gameObject.SetActive(true);
@@ -200,7 +203,7 @@ public class FirstPersonController : MonoBehaviour
 
     float camRotation;
 
-    private void Update()
+    void Update()
     {
         #region Camera
 
@@ -420,7 +423,7 @@ public class FirstPersonController : MonoBehaviour
             {
                 isSprinting = false;
 
-                if (hideBarWhenFull && sprintRemaining == sprintDuration)
+                if (sprintBarCG && hideBarWhenFull && sprintRemaining == sprintDuration)
                 {
                     sprintBarCG.alpha -= 3 * Time.deltaTime;
                 }

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 using static UniverseController;
 using static Ship;
 
@@ -10,7 +9,7 @@ public abstract class Projectile : MonoBehaviour
     public float range = 500;
     [Tooltip("m/s")]
     public float speed = 200;
-    float _sqrRaycastLength;
+    float _sqrRaycastLength;  // TODO: why "sqr"?
     float _selfDestructAtTime;
     [HideInInspector]
     public Vector3 velocity;  // m / s
@@ -40,7 +39,7 @@ public abstract class Projectile : MonoBehaviour
     {
         CheckLifeSpan();
 
-        CheckIntersection();
+        CheckCollision();
     }
 
     public void Setup(Ship originShip, Vector3 position, float rotationY)
@@ -87,7 +86,7 @@ public abstract class Projectile : MonoBehaviour
         }
     }
 
-    void CheckIntersection()
+    void CheckCollision()
     {
         // Debug.DrawRay(transform.position, transformCached.forward * _speedV3.z, Color.yellow);
 

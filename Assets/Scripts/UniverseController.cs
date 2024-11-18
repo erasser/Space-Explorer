@@ -82,7 +82,7 @@ public class UniverseController : MonoBehaviour
 
     void Update()
     {
-        ProcessKeys();
+        ProcessControls();
 
         ProcessMouseMove();
 
@@ -111,7 +111,7 @@ public class UniverseController : MonoBehaviour
         // MyNavMeshAgent.PredictCollisions();
     }
 
-    void ProcessKeys()
+    void ProcessControls()
     {
         ActiveShip.SetIsFiring(Input.GetMouseButton(0));
 
