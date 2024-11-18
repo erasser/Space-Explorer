@@ -5,7 +5,7 @@ public class FPSProjectile : MonoBehaviour
     [Tooltip("m/s")]
     public float speed = 40;
     [Tooltip("s")]
-    public float delay = .5f;
+    public float delay = .2f;
     [HideInInspector]
     public Vector3 velocity;
     float _raycastLength;

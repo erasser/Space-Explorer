@@ -14,10 +14,13 @@ public class FPSPlayer : MonoBehaviour
     Coroutine _shootCoroutine;
     float _lastShootTime;
 
-    void Start()
+    void Awake()
     {
         fpsPlayer = this;
+    }
 
+    void Start()
+    {
         foreach (Transform tr in transform.Find("Joint/PlayerCamera/weapons"))
             _weapons.Add(tr.GetComponent<FPSWeapon>());
 

@@ -143,7 +143,7 @@ public class MyNavMeshAgent : MonoBehaviour
         // }
     }
 
-    void ProcessAgentFixedUpdateDeltaTime()
+    void ProcessAgentFixedUpdateDeltaTime()  // TODO: Use coroutine
     {
         if (Time.time > _lastAgentFixedUpdate + AgentFixedUpdateDeltaTime)
         {
