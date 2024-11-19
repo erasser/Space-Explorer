@@ -37,12 +37,10 @@ public class WorldController : MonoBehaviour
         fpsPlayer.isShooting = Input.GetMouseButton(0);
     }
 
-    public void LaunchHitEffect(Vector3 point, Vector3 direction)  // TODO: Zrušit vizuální efekt po přehrání
+    public void LaunchHitEffect(Vector3 point, Vector3 direction)
     {
         bulletExplosionEffect.SetVector3("position", point);
         bulletExplosionEffect.SetVector3("direction", direction);
         bulletExplosionEffect.SendEvent("OnStart");
-
-        // GameObject.Find("dummy").transform.position = hit.point;  // only for debug
     }
 }
