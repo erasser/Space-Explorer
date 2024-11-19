@@ -33,9 +33,9 @@ public class FPSProjectile : MonoBehaviour
         if (Time.time > _destroyAt)
             Destroy(gameObject);
 
-        transform.Translate(velocity);
-
         CheckCollision();
+
+        transform.Translate(velocity);
     }
 
     void CheckCollision()

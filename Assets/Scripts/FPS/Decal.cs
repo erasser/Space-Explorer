@@ -5,8 +5,8 @@ using UnityEngine.Rendering.HighDefinition;
 public class Decal : MonoBehaviour
 {
     public static List<DecalProjector> Decals = new();
-    const int MaxCount = 200;
-    const float Lifespan = 60;
+    const int MaxCount = 100;
+    const float Lifespan = 30;
     float _destroyAt;
 
     void Start()
@@ -17,7 +17,10 @@ public class Decal : MonoBehaviour
     void Update()
     {
         if (Time.time > _destroyAt)
+        {
             Destroy(gameObject);
+            Decals.Remove(GetComponent<DecalProjector>());
+        }
 
         if (Decals.Count > MaxCount)
         {

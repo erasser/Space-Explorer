@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using static WorldController;
-using static FPSPlayer;
 
 public class FPSWeapon : MonoBehaviour
 {
@@ -21,7 +20,7 @@ public class FPSWeapon : MonoBehaviour
 
     void Update()
     {
-        UpdateWeaponRotation();
+        UpdateWeaponOrientation();
     }
 
     public void Shoot()
@@ -38,15 +37,12 @@ public class FPSWeapon : MonoBehaviour
         _fireEffect.SetActive(false);
     }
 
-    void UpdateWeaponRotation()
+    void UpdateWeaponOrientation()  // TODO: RotateTowards / SLERP pro zjemnění
     {
         var pointInWorld = FPSCamera.ScreenToWorldPoint(ScreenHalfResolution);
 
         if (Physics.Raycast(pointInWorld, FPSCamera.transform.forward, out var hit))
-        {
-            // _tmpHelper.position = hit.point;
             transform.LookAt(hit.point);
-        }
         else
             transform.localRotation = Quaternion.identity;
 
