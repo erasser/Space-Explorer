@@ -97,5 +97,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 50
-  delay: 0.2
+  delay: 0.1
   velocity: {x: 0, y: 0, z: 0}
+  decalPrefab: {fileID: 3382876408469110029, guid: 0a0b6c4c92b010049824ee8193734925,
+    type: 3}
+  explosionEffectPrefab: {fileID: 7722132138461419938, guid: 1e5fce19206ad3241a8898fa30016408,
+    type: 3}
+  kineticEnergy: 2000
+  lifespan: 10

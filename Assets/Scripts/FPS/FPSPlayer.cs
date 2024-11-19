@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,6 +15,7 @@ public class FPSPlayer : MonoBehaviour
     void Awake()
     {
         fpsPlayer = this;
+        WorldController.FPSCamera = transform.Find("Joint/PlayerCamera").GetComponent<Camera>();
     }
 
     void Start()
