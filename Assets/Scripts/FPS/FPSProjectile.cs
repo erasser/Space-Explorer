@@ -18,6 +18,9 @@ public class FPSProjectile : MonoBehaviour
     float _decalDepth;
     public float lifespan = 10;
     float _destroyAt;
+    public int bouncesCount;
+    int _bouncesDone;
+    public float damage = 10;
 
     void Start()
     {
@@ -42,23 +45,30 @@ public class FPSProjectile : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, transform.forward, out var hit, _raycastLength))  // Layers must correspond with Raycast in FPSWeapon.Shoot()
         {
-            hit.collider.gameObject.GetComponent<FPSDamageable>()?.TakeDamage(10);
+            ++_bouncesDone;
+
+            hit.collider.gameObject.GetComponent<FPSDamageable>()?.TakeDamage(damage / (_bouncesDone + 1));
             
             var rb = hit.collider.gameObject.GetComponent<Rigidbody>();
             if (rb)
-                rb.AddForceAtPosition(kineticEnergy * hit.normal, hit.point);
+                rb.AddForceAtPosition(kineticEnergy / (_bouncesDone + 1) * hit.normal, hit.point);
 
-            CreateDecal(hit);
+            var reflectionVector = Vector3.Reflect(transform.forward, hit.normal);
 
-            Wc.LaunchHitEffect(hit.point, Vector3.Reflect(transform.forward, hit.normal));
+            CreateDecal(hit, reflectionVector);
 
-            Destroy(gameObject);
+            Wc.LaunchHitEffect(hit.point, reflectionVector);
+
+            if (_bouncesDone > bouncesCount)
+                Destroy(gameObject);
+            else
+                transform.LookAt(transform.position + reflectionVector);
         }
     }
 
-    void CreateDecal(RaycastHit hit)
+    void CreateDecal(RaycastHit hit, Vector3 dir)
     {
-        var decal = Instantiate(decalPrefab, hit.point, Quaternion.LookRotation(- hit.normal));
+        var decal = Instantiate(decalPrefab, hit.point, Quaternion.LookRotation(- dir));
         var decalProjector = decal.GetComponent<DecalProjector>();
 
         decal.transform.eulerAngles = new (decal.transform.eulerAngles.x, decal.transform.eulerAngles.y, Random.Range(0, 360));

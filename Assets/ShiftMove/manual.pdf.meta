@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bbff573a15ba47d42a709762d909674a
+timeCreated: 1517093775
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110072
+  packageName: ShiftMove - clone objects
+  packageVersion: 0.9.3.3
+  assetPath: Assets/ShiftMove/manual.pdf
+  uploadId: 388840

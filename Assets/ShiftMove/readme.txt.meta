@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2764d56ec2292cc49ad1303c409b4ad7
+timeCreated: 1517093931
+licenseType: Store
+TextScriptImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110072
+  packageName: ShiftMove - clone objects
+  packageVersion: 0.9.3.3
+  assetPath: Assets/ShiftMove/readme.txt
+  uploadId: 388840

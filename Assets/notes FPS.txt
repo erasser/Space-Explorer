@@ -1,0 +1,8 @@
+﻿• Player se může přichytit na zeď, když ve skoku jde směrem proti zdi
+
+• Nedořešil jsem toto. Sice to funguje, ale nefunguje pak jump, ale co je horší - objekt se pak chová jako kinematický, tj. ignoruje kolize.
+
+// Prevent not moving character from sliding
+rb.maxLinearVelocity = !isWalking && isGrounded ? 0 : Mathf.Infinity;
+
+• Playerovo střely hitují playera (když má projektil bounces). To asi nevadí, jen pak nesmí obdržet damage. Promyslet, až přijde čas. 

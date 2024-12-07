@@ -5,6 +5,7 @@
 • Velké množství lodí -> got to random location -> začalo to házet errory undefined index
 • Po vyřešení framerate independency rovnou implementovat slow motion
 • Ten můj AgentFixedUpdate předělat na coroutine
+• Z rozbitých lodí by se mohlo kouřit
 
 Implementace CachedMonoBehaviour - mělo by to vyřešit Awake() { base.Awake() }
 

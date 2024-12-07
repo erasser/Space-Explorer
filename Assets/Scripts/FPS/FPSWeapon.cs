@@ -1,31 +1,26 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using static WorldController;
 
-public class FPSWeapon : MonoBehaviour
+public class FPSWeapon : MonoBehaviour  // TODO: Rozšířit na EnemyWeapon and PlayerWeapon
 {
     public FPSProjectile projectilePrefab;
-    Transform _barrel;
+    public Transform barrel;
     GameObject _fireEffect;
+    public float weaponOrientationSpeed = 10;
+    public float recoilAngle = 5;
 
     void Start()
     {
-        _barrel = transform.Find("barrel");
+        barrel = transform.Find("barrel");
         _fireEffect = transform.Find("fire effect").gameObject;
         _fireEffect.SetActive(false);
-
-        // _tmpHelper = GameObject.CreatePrimitive(PrimitiveType.Sphere).transform;
-        // Destroy(_tmpHelper.gameObject.GetComponent<SphereCollider>());
-    }
-
-    void Update()
-    {
-        UpdateWeaponOrientation();
     }
 
     public void Shoot()
     {
-        Instantiate(projectilePrefab, _barrel.position, _barrel.rotation);
+        ApplyRecoil(Instantiate(projectilePrefab, barrel.position, barrel.rotation));
         _fireEffect.SetActive(true);
         _fireEffect.transform.localEulerAngles = new(0, 0, Random.Range(0, 360));
         StartCoroutine(WaitAndHideEffect());
@@ -33,18 +28,17 @@ public class FPSWeapon : MonoBehaviour
 
     IEnumerator WaitAndHideEffect()
     {
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(.08f);
         _fireEffect.SetActive(false);
     }
 
-    void UpdateWeaponOrientation()  // TODO: RotateTowards / SLERP pro zjemnění
+    void ApplyRecoil(FPSProjectile shot)
     {
-        var pointInWorld = FPSCamera.ScreenToWorldPoint(ScreenHalfResolution);
+        if (transform.root.name == "PLAYER")  // TODO
+            return;
 
-        if (Physics.Raycast(pointInWorld, FPSCamera.transform.forward, out var hit))
-            transform.LookAt(hit.point);
-        else
-            transform.localRotation = Quaternion.identity;
-
+        var tr = shot.transform;
+        tr.Rotate(tr.right, Random.Range(- recoilAngle, recoilAngle));
+        tr.Rotate(tr.up, Random.Range(- recoilAngle, recoilAngle));
     }
 }
