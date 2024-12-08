@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: 5b51f7f6fd9170d41955ad49df755ba3
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 9801397f829a1ed42984340315cbf362, type: 3}
+  iesMetaData:
+    FileFormatVersion: LM-63-1995
+    IESPhotometricType: Type C
+    IESMaximumIntensity: 337.2
+    IESMaximumIntensityUnit: Candelas
+    Manufacturer: BEGA Copyright LUMCat V
+    LuminaireCatalogNumber: 
+    LuminaireDescription: 50975.6K3 (Preliminary)
+    LampCatalogNumber: LED  7,9W
+    LampDescription: 321 lm,9 W
+    PrefabLightType: 0
+    SpotAngle: 120
+    iesSize: 128
+    ApplyLightAttenuation: 1
+    UseIESMaximumIntensity: 1
+    CookieCompression: 2
+    LightAimAxisRotation: -90

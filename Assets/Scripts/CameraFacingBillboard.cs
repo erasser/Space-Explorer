@@ -3,16 +3,15 @@
 //	modified by Hayden Scott-Baron (Dock) - http://starfruitgames.com
 //  allows specified orientation axis
  
- 
 using UnityEngine;
-using System.Collections;
  
 public class CameraFacingBillboard : MonoBehaviour
 {
+    [Header ("Use Quad as billboard")]
     public Camera referenceCamera;
  
     public enum Axis {up, down, left, right, forward, back};
-    public bool reverseFace = false; 
+    public bool reverseFace = true; 
     public Axis axis = Axis.up; 
  
     // return a direction based upon chosen axis

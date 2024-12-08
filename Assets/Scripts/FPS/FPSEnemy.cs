@@ -1,5 +1,7 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 using static FPSPlayer;
 using static WorldController;
 
@@ -15,7 +17,8 @@ public class FPSEnemy : MonoBehaviour
     Transform _tr;
     [HideInInspector]
     public bool isShooting;
-    bool _canSeePlayerAndIsInShootingRange;
+    bool _canSeePlayer;
+    bool _isPlayerInShootingRange;
     public FPSWeapon weapon;
     Transform _weaponTransform;
     float _lastShootTime;
@@ -29,7 +32,7 @@ public class FPSEnemy : MonoBehaviour
     float _verticalToTargetAngle;
     float _verticalToTargetAngleSigned;
     public float weaponOrientationSpeed = 5;
-    float _strafeDirAndSpeed;  // 'dir' is negative or absolute value 
+    public float horizontalAimingSpeed = 4;
 
     enum State
     {
@@ -43,10 +46,11 @@ public class FPSEnemy : MonoBehaviour
     {
         _agent = GetComponent<NavMeshAgent>();
         SetStateRandomRoaming(true);
-        _sqrShootingRange = Mathf.Sqrt(shootingRange);
+        _sqrShootingRange = Mathf.Pow(shootingRange, 2);
         _tr = transform;
-        _keepingDistanceFromPlayer = shootingRange * Random.Range(.4f, .7f);
-        _initialStoppingDistance = _agent.stoppingDistance;
+        // _keepingDistanceFromPlayer = shootingRange * Random.Range(.4f, .7f);
+        _keepingDistanceFromPlayer = 3;
+        // _initialStoppingDistance = _agent.stoppingDistance;
         _weaponTransform = weapon.transform;
     }
 
@@ -56,6 +60,7 @@ public class FPSEnemy : MonoBehaviour
         CalculateValues();
 
         CheckCanSeePlayer();
+        CheckIsPlayerInShootingRange();
 
         CheckContactWithPlayer();
 
@@ -66,8 +71,8 @@ public class FPSEnemy : MonoBehaviour
 
     void CalculateValues()
     {
-        _toTarget = fpsPlayerTransform.position - _tr.position;
-        _weaponToTarget = fpsPlayerTransform.position - weapon.transform.position;
+        _toTarget = FPSCameraTransform.position - _tr.position;
+        _weaponToTarget = FPSCameraTransform.position - weapon.transform.position;
         _horizontalToTargetAngleSigned = Vector2.SignedAngle(new(_toTarget.normalized.x, _toTarget.normalized.z), new(_tr.forward.x, _tr.forward.z));
         _horizontalToTargetAngle = Mathf.Abs(_horizontalToTargetAngleSigned);
     }
@@ -90,55 +95,50 @@ public class FPSEnemy : MonoBehaviour
 
         if (_state == State.FightingPlayer)
         {
-            isShooting = _canSeePlayerAndIsInShootingRange;
+            isShooting = _canSeePlayer && _isPlayerInShootingRange;
 
-            ApproachEnemy();
-
-            AimOrResetWeapon();
+            FightingManeuver();
         }
-        else
-            AimOrResetWeapon(true);
+
+        AimOrResetWeapon(_state != State.FightingPlayer);
     }
 
-    void ApproachEnemy()
+    void FightingManeuver()
     {
-        //var fightingTmpLocation = (transform.position + 5 * transform.right) - fpsPlayerTransform.position
-    }
+        var resultVector = Vector3.RotateTowards(transform.forward, _toTarget, Time.deltaTime * horizontalAimingSpeed, 0);
+        transform.LookAt(transform.position + resultVector);
+        transform.localEulerAngles = new(0, transform.localEulerAngles.y, 0);
 
-    void ApproachEnemyOld()  // TODO: Chci použít _strafeDirAndSpeed
-    {
-        if (_toTarget.magnitude > _keepingDistanceFromPlayer)
-            _agent.SetDestination(fpsPlayerTransform.position);  // TODO: Stačí aktualizovat méně často
-        else
+        if (_agent.remainingDistance <= _agent.stoppingDistance)
+            SetFightingDestination(110);
+
+        if (!_isPlayerInShootingRange)
+            SetFightingDestination(20);
+
+        void SetFightingDestination(float halfAngle)  // halfAngle = 0 => to player
         {
-            var angle = Mathf.Min(Time.deltaTime * _agent.angularSpeed, _horizontalToTargetAngle) * (_horizontalToTargetAngleSigned > 0 ? 1 : -1);
+            var direction = Quaternion.Euler(0, Random.Range(- halfAngle, halfAngle), 0) * new Vector3(_toTarget.x, 0, _toTarget.z).normalized;
+            var distance = Random.Range(3f, 15f);
 
-            _tr.Rotate(Vector3.up, angle);
+            SetDestination(transform.position + direction * distance);
         }
-    }
-
-    void StrafeAroundEnemy()  // TODO: To nepoužiju, odstranit, až bude movement hotovej
-    {
-        transform.Translate(_strafeDirAndSpeed * Time.deltaTime * Vector3.right);
     }
 
     void SetStateRandomRoaming(bool setNewDestination = false)
     {
-        var a = 40;
+        var a = 50f;
         _state = State.RandomRoaming;
-        _agent.stoppingDistance = _initialStoppingDistance;
+        // _agent.stoppingDistance = _initialStoppingDistance;
 
         if (!setNewDestination)
             return;
 
-        Vector3 dest = new(Random.Range(-a, a), 1000, Random.Range(-a, a));
+        SetDestination(Random.Range(- a, a), Random.Range(- a, a));
+    }
 
-        if (Physics.Raycast(dest, Vector3.down, out var hit, Mathf.Infinity, Wc.groundLayer))
-            dest = new(dest.x, hit.point.y, dest.z);
-        else
-            print("no ground hit");
-        
-        var result = _agent.SetDestination(dest);
+    void SetDestination(float x, float z)
+    {
+        var result = _agent.SetDestination(GetNavmeshPoint(x, z));
 
         if (!result)
         {
@@ -147,19 +147,33 @@ public class FPSEnemy : MonoBehaviour
         }
     }
 
+    void SetDestination(Vector3 dest)
+    {
+        SetDestination(dest.x, dest.z);
+    }
+
     void SetStateFightingPlayer()
     {
         if (_state == State.FightingPlayer)
             return;
 
         _state = State.FightingPlayer;
+    }
 
-        _agent.stoppingDistance = _keepingDistanceFromPlayer;
+    Vector3 GetNavmeshPoint(float x, float z)
+    {
+        if (Physics.Raycast(new(x, 1000, z), Vector3.down, out var hit, Mathf.Infinity, Wc.groundLayer))
+        {
+            return new(x, hit.point.y, z);
+        }
+
+        print("No ground hit, returning 0, 0, 0");
+        return Vector3.zero;
     }
 
     void CheckContactWithPlayer()
     {
-        if (_canSeePlayerAndIsInShootingRange)
+        if (_canSeePlayer)
             SetStateFightingPlayer();
     }
 
@@ -170,10 +184,14 @@ public class FPSEnemy : MonoBehaviour
 
     void CheckCanSeePlayer()
     {
-        _canSeePlayerAndIsInShootingRange = _horizontalToTargetAngle < maxHorizontalSightAngle &&
+        _canSeePlayer = _horizontalToTargetAngle < maxHorizontalSightAngle &&
                                             _verticalToTargetAngle < maxVerticalSightAngle;
-
         //!Physics.Raycast(weapon.barrel.position, _tr.forward, _sqrShootingRange);
+    }
+
+    void CheckIsPlayerInShootingRange()
+    {
+        _isPlayerInShootingRange = _toTarget.sqrMagnitude < _sqrShootingRange;
     }
 
     void ProcessShooting()
@@ -190,6 +208,9 @@ public class FPSEnemy : MonoBehaviour
 
     void AimOrResetWeapon(bool reset = false)
     {
+        if (reset && _weaponTransform.localEulerAngles == Vector3.zero)
+            return;
+
         var targetVector = reset ? Vector3.zero : _weaponToTarget;
         var resultVector = Vector3.RotateTowards(_weaponTransform.forward, targetVector, Time.deltaTime * weaponOrientationSpeed, 0);
         _weaponTransform.LookAt(_weaponTransform.position + resultVector);

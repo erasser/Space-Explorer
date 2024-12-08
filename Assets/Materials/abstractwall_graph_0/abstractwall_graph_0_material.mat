@@ -29,6 +29,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _DISABLE_SSR_TRANSPARENT
+  - _EMISSIVE_COLOR_MAP
   - _HEIGHTMAP
   - _MAPPING_TRIPLANAR
   - _MASKMAP
@@ -75,7 +76,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissiveColorMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 9de99a8331c4d4a4787384198fa38bae, type: 3}
         m_Scale: {x: 0.02, y: 0.02}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
