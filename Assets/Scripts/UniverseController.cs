@@ -269,15 +269,7 @@ public class UniverseController : MonoBehaviour
         if (targetVelocity == Vector3.zero || observerSpeed == 0)
             return Vector3.zero;
 
-        Vector3 toTarget = Vector3.zero;
-        try
-        {
-            toTarget =  target.transform.position - observer.transform.position;    
-        }
-        catch (Exception)
-        {
-            print("ERROR! " + target + ", " + observer);
-        }
+        var toTarget =  target.transform.position - observer.transform.position;    
         
         float a = Vector3.Dot(targetVelocity, targetVelocity) - observerSpeed * observerSpeed;
         float b = 2 * Vector3.Dot(targetVelocity, toTarget);

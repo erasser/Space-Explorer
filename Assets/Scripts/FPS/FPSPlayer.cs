@@ -14,6 +14,9 @@ public class FPSPlayer : MonoBehaviour
     Transform _activeWeaponTransform;
     Coroutine _shootCoroutine;
     float _lastShootTime;
+    [Tooltip("It's meant to be targeted by enemies")]
+    public Transform targetTransform;
+    public float weaponOrientationSpeed = 10;
 
     void Awake()
     {
@@ -62,8 +65,8 @@ public class FPSPlayer : MonoBehaviour
         {
             var startVector = _activeWeapon.transform.forward;
             var endVector = hit.point - _activeWeapon.transform.position;
-            var resultVector = Vector3.RotateTowards(startVector, endVector, Time.deltaTime * _activeWeapon.weaponOrientationSpeed, 0);
-            _activeWeapon.transform.LookAt(_activeWeapon.transform.position + resultVector);
+            var resultVector = Vector3.RotateTowards(startVector, endVector, Time.deltaTime * weaponOrientationSpeed, 0);
+             _activeWeapon.transform.LookAt(_activeWeapon.transform.position + resultVector);
         }
         else
             _activeWeapon.transform.localRotation = Quaternion.identity;

@@ -1,9 +1,10 @@
-using UnityEditor;
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
 using static FPSPlayer;
 using static WorldController;
+using Random = UnityEngine.Random;
 
 public class FPSEnemy : MonoBehaviour
 {
@@ -25,14 +26,15 @@ public class FPSEnemy : MonoBehaviour
     [Tooltip("Angles which can an enemy see the player within")]
     public float maxHorizontalSightAngle = 8;
     public float maxVerticalSightAngle = 60;
-    float _keepingDistanceFromPlayer;
-    float _initialStoppingDistance;
     float _horizontalToTargetAngle;
     float _horizontalToTargetAngleSigned;
     float _verticalToTargetAngle;
     float _verticalToTargetAngleSigned;
-    public float weaponOrientationSpeed = 5;
-    public float horizontalAimingSpeed = 4;
+    public float verticalAimingSpeed = 1;
+    public float horizontalAimingSpeed = 2;
+    static Rigidbody _playerRb;
+    public bool predictiveShooting;
+    float _projectileSpeed;
 
     enum State
     {
@@ -48,10 +50,15 @@ public class FPSEnemy : MonoBehaviour
         SetStateRandomRoaming(true);
         _sqrShootingRange = Mathf.Pow(shootingRange, 2);
         _tr = transform;
-        // _keepingDistanceFromPlayer = shootingRange * Random.Range(.4f, .7f);
-        _keepingDistanceFromPlayer = 3;
-        // _initialStoppingDistance = _agent.stoppingDistance;
         _weaponTransform = weapon.transform;
+        GetProjectileSpeed();
+        _playerRb = fpsPlayer.GetComponent<FirstPersonController>().rb;
+    }
+
+    void GetProjectileSpeed()
+    {
+        var projectile = Instantiate(_weaponTransform.GetComponent<FPSWeapon>().projectilePrefab);
+        _projectileSpeed = projectile.GetComponent<FPSProjectile>().speed;
     }
 
     // Některé věci by stačilo checkovat třeba 10× za sekundu
@@ -71,10 +78,17 @@ public class FPSEnemy : MonoBehaviour
 
     void CalculateValues()
     {
-        _toTarget = FPSCameraTransform.position - _tr.position;
-        _weaponToTarget = FPSCameraTransform.position - weapon.transform.position;
+        var targetPosition = GetTargetPosition();
+
+        _toTarget = targetPosition - _tr.position;
+        _weaponToTarget = targetPosition - weapon.transform.position;
         _horizontalToTargetAngleSigned = Vector2.SignedAngle(new(_toTarget.normalized.x, _toTarget.normalized.z), new(_tr.forward.x, _tr.forward.z));
         _horizontalToTargetAngle = Mathf.Abs(_horizontalToTargetAngleSigned);
+    }
+
+    Vector3 GetTargetPosition()
+    {
+        return predictiveShooting ? fpsPlayer.targetTransform.position + GetPredictedPositionOffset() : fpsPlayer.targetTransform.position;
     }
 
     void ProcessStates()
@@ -212,8 +226,32 @@ public class FPSEnemy : MonoBehaviour
             return;
 
         var targetVector = reset ? Vector3.zero : _weaponToTarget;
-        var resultVector = Vector3.RotateTowards(_weaponTransform.forward, targetVector, Time.deltaTime * weaponOrientationSpeed, 0);
+        // var resultVector = Vector3.RotateTowards(_weaponTransform.forward, targetVector, Time.deltaTime * weaponOrientationSpeed, 0);
+        var resultVector = Vector3.RotateTowards(_weaponTransform.forward, targetVector, Time.deltaTime * verticalAimingSpeed, 0);
         _weaponTransform.LookAt(_weaponTransform.position + resultVector);
         _weaponTransform.localEulerAngles = new(_weaponTransform.localEulerAngles.x, 0, 0);
     }
+    
+    Vector3 GetPredictedPositionOffset()
+    {
+        if (_playerRb.velocity == Vector3.zero || _projectileSpeed == 0)
+            return Vector3.zero;
+
+        float a = Vector3.Dot(_playerRb.velocity, _playerRb.velocity) - Mathf.Pow(_projectileSpeed, 2);
+        float b = 2 * Vector3.Dot(_playerRb.velocity, _toTarget);
+        float c = Vector3.Dot(_toTarget, _toTarget);
+        float p = - b / (2 * a);
+        float q = Mathf.Sqrt(Mathf.Abs(b * b - 4 * a * c)) / (2 * a);
+        float t1 = p - q;
+        float t2 = p + q;
+        float t;
+
+        if (t1 > t2 && t2 > 0)
+            t = t2;
+        else
+            t = t1;
+
+        return _playerRb.velocity * Mathf.Abs(t);
+    }
+
 }

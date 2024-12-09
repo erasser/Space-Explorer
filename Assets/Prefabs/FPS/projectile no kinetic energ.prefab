@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b6a677a2a579f04c9198f0f23a9af4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50
+  speed: 100
   delay: 0.1
   velocity: {x: 0, y: 0, z: 0}
   decalPrefab: {fileID: 3382876408469110029, guid: 0a0b6c4c92b010049824ee8193734925,

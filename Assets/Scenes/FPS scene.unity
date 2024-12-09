@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.51876634, g: 0.65290684, b: 0.9370023, a: 1}
+  m_IndirectSpecularColor: {r: 0.523951, g: 0.6578594, b: 0.94217503, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -388,7 +388,6 @@ MonoBehaviour:
   projectilePrefab: {fileID: 7996127983247211102, guid: bb1037b79f7067d4e8f655310453e0cd,
     type: 3}
   barrel: {fileID: 1004908171}
-  weaponOrientationSpeed: 5
   recoilAngle: 3
 --- !u!1 &161442245
 GameObject:
@@ -1135,13 +1134,23 @@ PrefabInstance:
     - target: {fileID: 4459864850019384736, guid: 6bacecc4f3df9584198879c73a6b6c36,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4459864850019384736, guid: 6bacecc4f3df9584198879c73a6b6c36,
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 6b17274157b33bc45b6a40e7d4ff51fe, type: 2}
+      objectReference: {fileID: 2100000, guid: 12e188d20200db34fa3f08fd5dbfe314, type: 2}
+    - target: {fileID: 4459864850019384737, guid: 6bacecc4f3df9584198879c73a6b6c36,
+        type: 3}
+      propertyPath: m_Height
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459864850019384737, guid: 6bacecc4f3df9584198879c73a6b6c36,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 4459864850019384737, guid: 6bacecc4f3df9584198879c73a6b6c36,
         type: 3}
       propertyPath: m_Enabled
@@ -1320,6 +1329,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4459864850019384738, guid: 6bacecc4f3df9584198879c73a6b6c36,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2141266002}
     - targetCorrespondingSourceObject: {fileID: 4459864851310106429, guid: 6bacecc4f3df9584198879c73a6b6c36,
         type: 3}
       insertIndex: -1
@@ -1730,7 +1743,6 @@ MonoBehaviour:
   projectilePrefab: {fileID: 7996127983247211102, guid: 53ceaaf9c5389eb44bd72df582ce4e16,
     type: 3}
   barrel: {fileID: 0}
-  weaponOrientationSpeed: 10
   recoilAngle: 1
 --- !u!1001 &593052801
 PrefabInstance:
@@ -2807,7 +2819,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &794187098
 Transform:
   m_ObjectHideFlags: 0
@@ -2842,8 +2854,9 @@ MonoBehaviour:
   weapon: {fileID: 158703686}
   maxHorizontalSightAngle: 8
   maxVerticalSightAngle: 60
-  weaponOrientationSpeed: 5
+  verticalAimingSpeed: 5
   horizontalAimingSpeed: 4
+  predictiveShooting: 0
 --- !u!195 &794187100
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3728,7 +3741,7 @@ MonoBehaviour:
   bulletExplosionEffectPrefab: {fileID: 7722132138461419938, guid: 1e5fce19206ad3241a8898fa30016408,
     type: 3}
   bulletExplosionEffect: {fileID: 0}
-  tmpDummy: {fileID: 2089243282}
+  tmpDummy: {fileID: 1010693758}
   groundLayer:
     serializedVersion: 2
     m_Bits: 16777216
@@ -4123,12 +4136,12 @@ GameObject:
   - component: {fileID: 1010693760}
   - component: {fileID: 1010693759}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: dummy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1010693758
 Transform:
   m_ObjectHideFlags: 0
@@ -4137,12 +4150,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1010693757}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.82, z: 0}
-  m_LocalScale: {x: 0.4, y: 10, z: 0.4}
+  m_LocalPosition: {x: 15.286124, y: 12.062, z: 12.74}
+  m_LocalScale: {x: 1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2089243282}
-  m_RootOrder: -1
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1010693759
 MeshRenderer:
@@ -4423,7 +4436,7 @@ RectTransform:
   m_Children:
   - {fileID: 161442246}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5067,8 +5080,9 @@ MonoBehaviour:
   weapon: {fileID: 0}
   maxHorizontalSightAngle: 8
   maxVerticalSightAngle: 60
-  weaponOrientationSpeed: 5
+  verticalAimingSpeed: 5
   horizontalAimingSpeed: 4
+  predictiveShooting: 0
 --- !u!195 &1152021610
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5200,7 +5214,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1164868977
 GameObject:
@@ -5311,7 +5325,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1197389113 stripped
 GameObject:
@@ -6099,14 +6113,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1490886500}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 11.547117, y: -0.5065689, z: 5.926758}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 147472278}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &1490886503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6755,6 +6769,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flashLight: {fileID: 628030784}
   isShooting: 0
+  targetTransform: {fileID: 2141266002}
+  weaponOrientationSpeed: 10
+--- !u!4 &1561622660 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4459864850019384738, guid: 6bacecc4f3df9584198879c73a6b6c36,
+    type: 3}
+  m_PrefabInstance: {fileID: 398800421}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1567767447
 GameObject:
   m_ObjectHideFlags: 0
@@ -6948,7 +6970,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1750225377
 GameObject:
@@ -8043,7 +8065,7 @@ Transform:
   - {fileID: 2086925821}
   - {fileID: 794187098}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1974681235
 GameObject:
@@ -8460,8 +8482,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 7996127983247211102, guid: bb1037b79f7067d4e8f655310453e0cd,
     type: 3}
   barrel: {fileID: 1510519058}
-  weaponOrientationSpeed: 5
-  recoilAngle: 3
+  recoilAngle: 1
 --- !u!1001 &2077266563
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8611,7 +8632,6 @@ MonoBehaviour:
   projectilePrefab: {fileID: 7996127983247211102, guid: bb1037b79f7067d4e8f655310453e0cd,
     type: 3}
   barrel: {fileID: 1974681236}
-  weaponOrientationSpeed: 5
   recoilAngle: 3
 --- !u!1 &2086925820
 GameObject:
@@ -8631,7 +8651,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2086925821
 Transform:
   m_ObjectHideFlags: 0
@@ -8666,8 +8686,9 @@ MonoBehaviour:
   weapon: {fileID: 2078102815}
   maxHorizontalSightAngle: 8
   maxVerticalSightAngle: 60
-  weaponOrientationSpeed: 5
+  verticalAimingSpeed: 5
   horizontalAimingSpeed: 4
+  predictiveShooting: 0
 --- !u!195 &2086925823
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -8711,38 +8732,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.8
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &2089243281
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2089243282}
-  m_Layer: 0
-  m_Name: dummy
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2089243282
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2089243281}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.286124, y: 6.59, z: 12.74}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1010693758}
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2109194145
 GameObject:
   m_ObjectHideFlags: 0
@@ -9040,6 +9029,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2141266001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2141266002}
+  m_Layer: 23
+  m_Name: target (it's meant to be targeted by enemies)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2141266002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141266001}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1561622660}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &305822763013230734
 GameObject:
@@ -10419,7 +10439,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 6
+  m_Speed: 0
   m_Acceleration: 10
   avoidancePriority: 50
   m_AngularSpeed: 80
@@ -10443,13 +10463,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8d1bbed7b34a26459dd90cfb9f3684f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootingRange: 30
+  shootingRange: 100
   isShooting: 0
   weapon: {fileID: 2075848823}
   maxHorizontalSightAngle: 8
   maxVerticalSightAngle: 60
-  weaponOrientationSpeed: 5
-  horizontalAimingSpeed: 4
+  verticalAimingSpeed: 1
+  horizontalAimingSpeed: 2
+  predictiveShooting: 1
 --- !u!4 &7849513603456451592
 Transform:
   m_ObjectHideFlags: 0

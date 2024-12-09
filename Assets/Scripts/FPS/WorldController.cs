@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.VFX;
 using static FPSPlayer;
+using Random = UnityEngine.Random;
 
 public class WorldController : MonoBehaviour
 {
@@ -29,7 +31,6 @@ public class WorldController : MonoBehaviour
         bulletExplosionEffect = Instantiate(bulletExplosionEffectPrefab);
         InfoText = GameObject.Find("info text").GetComponent<Text>();
         FPSCamera = fpsPlayerTransform.Find("Joint/PlayerCamera").GetComponent<Camera>();
-        FPSCamera = fpsPlayerTransform.Find("Joint/PlayerCamera").GetComponent<Camera>();
         FPSCameraTransform = FPSCamera.transform;
     }
 
@@ -46,6 +47,9 @@ public class WorldController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
             fpsPlayer.flashLight.SetActive(!fpsPlayer.flashLight.activeSelf);
 
+        if (Input.GetKeyDown(KeyCode.P))
+            Debug.Break();
+
         fpsPlayer.isShooting = Input.GetMouseButton(0);
     }
 
@@ -60,4 +64,6 @@ public class WorldController : MonoBehaviour
     {
         return Random.value < .5f ? - 1 : 1;
     }
+
+
 }

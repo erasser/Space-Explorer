@@ -7,7 +7,7 @@ using static WorldController;
 public class FPSProjectile : MonoBehaviour
 {
     [Tooltip("m/s")]
-    public float speed = 40;
+    public float speed = 100;
     [Tooltip("s")]
     public float delay = .2f;
     [HideInInspector]
@@ -21,12 +21,12 @@ public class FPSProjectile : MonoBehaviour
     public int bouncesCount;
     int _bouncesDone;
     public float damage = 10;
+    public 
 
     void Start()
     {
-        _raycastLength = speed * Time.fixedDeltaTime;
-        velocity = _raycastLength * Vector3.forward;
-        kineticEnergy *= -1;
+
+        kineticEnergy *= - 1;
         _decalDepth = decalPrefab.GetComponent<DecalProjector>().size.z;
         _destroyAt = Time.time + lifespan;
     }
@@ -38,24 +38,28 @@ public class FPSProjectile : MonoBehaviour
 
         CheckCollision();
 
-        transform.Translate(velocity);
+        velocity = speed * Vector3.forward; // TODO: Move to Start()
+        transform.Translate(velocity * Time.deltaTime);
     }
 
     void CheckCollision()
     {
+        _raycastLength = speed * Time.deltaTime * 2;  // TODO: Možná by se to dalo raycastovat od poslední pozice?
+
         if (Physics.Raycast(transform.position, transform.forward, out var hit, _raycastLength))  // Layers must correspond with Raycast in FPSWeapon.Shoot()
         {
             ++_bouncesDone;
 
-            hit.collider.gameObject.GetComponent<FPSDamageable>()?.TakeDamage(damage / (_bouncesDone + 1));
-            
+            // hit.collider.gameObject.GetComponent<FPSDamageable>()?.TakeDamage(damage / (_bouncesDone + 1));  // TODO: Spíš udělám nadtřídu pro FPSPlayer a FPSEnemy
+
             var rb = hit.collider.gameObject.GetComponent<Rigidbody>();
             if (rb)
                 rb.AddForceAtPosition(kineticEnergy / (_bouncesDone + 1) * hit.normal, hit.point);
 
             var reflectionVector = Vector3.Reflect(transform.forward, hit.normal);
 
-            CreateDecal(hit, reflectionVector);
+            if (hit.collider.gameObject.name != "PLAYER")
+                CreateDecal(hit, reflectionVector);
 
             Wc.LaunchHitEffect(hit.point, reflectionVector);
 

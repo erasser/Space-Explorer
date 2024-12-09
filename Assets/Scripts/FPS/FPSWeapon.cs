@@ -8,7 +8,6 @@ public class FPSWeapon : MonoBehaviour  // TODO: Rozšířit na EnemyWeapon and 
     public FPSProjectile projectilePrefab;
     public Transform barrel;
     GameObject _fireEffect;
-    public float weaponOrientationSpeed = 10;
     public float recoilAngle = 5;
 
     void Start()
