@@ -1,7 +1,5 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
 using static FPSPlayer;
 using static WorldController;
 using Random = UnityEngine.Random;
@@ -31,10 +29,11 @@ public class FPSEnemy : MonoBehaviour
     float _verticalToTargetAngle;
     float _verticalToTargetAngleSigned;
     public float verticalAimingSpeed = 1;
-    public float horizontalAimingSpeed = 2;
     static Rigidbody _playerRb;
     public bool predictiveShooting;
     float _projectileSpeed;
+    float _debugLastYRotation;
+    float _initialAngularSpeed;  // TODO: Zde jsem skončil
 
     enum State
     {
@@ -74,6 +73,9 @@ public class FPSEnemy : MonoBehaviour
         ProcessStates();
 
         ProcessShooting();
+
+        InfoText.text = Mathf.Abs(transform.eulerAngles.y - _debugLastYRotation) + "\n" + _agent.angularSpeed * Time.deltaTime;
+        _debugLastYRotation = transform.eulerAngles.y;
     }
 
     void CalculateValues()
@@ -119,7 +121,7 @@ public class FPSEnemy : MonoBehaviour
 
     void FightingManeuver()
     {
-        var resultVector = Vector3.RotateTowards(transform.forward, _toTarget, Time.deltaTime * horizontalAimingSpeed, 0);
+        var resultVector = Vector3.RotateTowards(transform.forward, _toTarget, _agent.angularSpeed * Time.deltaTime, 0);
         transform.LookAt(transform.position + resultVector);
         transform.localEulerAngles = new(0, transform.localEulerAngles.y, 0);
 
@@ -150,6 +152,14 @@ public class FPSEnemy : MonoBehaviour
         SetDestination(Random.Range(- a, a), Random.Range(- a, a));
     }
 
+    void SetStateFightingPlayer()
+    {
+        if (_state == State.FightingPlayer)
+            return;
+
+        _state = State.FightingPlayer;
+    }
+
     void SetDestination(float x, float z)
     {
         var result = _agent.SetDestination(GetNavmeshPoint(x, z));
@@ -164,14 +174,6 @@ public class FPSEnemy : MonoBehaviour
     void SetDestination(Vector3 dest)
     {
         SetDestination(dest.x, dest.z);
-    }
-
-    void SetStateFightingPlayer()
-    {
-        if (_state == State.FightingPlayer)
-            return;
-
-        _state = State.FightingPlayer;
     }
 
     Vector3 GetNavmeshPoint(float x, float z)
@@ -226,12 +228,11 @@ public class FPSEnemy : MonoBehaviour
             return;
 
         var targetVector = reset ? Vector3.zero : _weaponToTarget;
-        // var resultVector = Vector3.RotateTowards(_weaponTransform.forward, targetVector, Time.deltaTime * weaponOrientationSpeed, 0);
         var resultVector = Vector3.RotateTowards(_weaponTransform.forward, targetVector, Time.deltaTime * verticalAimingSpeed, 0);
         _weaponTransform.LookAt(_weaponTransform.position + resultVector);
         _weaponTransform.localEulerAngles = new(_weaponTransform.localEulerAngles.x, 0, 0);
     }
-    
+
     Vector3 GetPredictedPositionOffset()
     {
         if (_playerRb.velocity == Vector3.zero || _projectileSpeed == 0)

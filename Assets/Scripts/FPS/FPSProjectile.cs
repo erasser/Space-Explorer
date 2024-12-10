@@ -21,11 +21,11 @@ public class FPSProjectile : MonoBehaviour
     public int bouncesCount;
     int _bouncesDone;
     public float damage = 10;
-    public 
+    Vector3 _lastPosition;  // Raycastuje se z poslední pozice po uplynutí deltaTime
 
     void Start()
     {
-
+        velocity = speed * Vector3.forward;
         kineticEnergy *= - 1;
         _decalDepth = decalPrefab.GetComponent<DecalProjector>().size.z;
         _destroyAt = Time.time + lifespan;
@@ -38,15 +38,12 @@ public class FPSProjectile : MonoBehaviour
 
         CheckCollision();
 
-        velocity = speed * Vector3.forward; // TODO: Move to Start()
         transform.Translate(velocity * Time.deltaTime);
     }
 
     void CheckCollision()
     {
-        _raycastLength = speed * Time.deltaTime * 2;  // TODO: Možná by se to dalo raycastovat od poslední pozice?
-
-        if (Physics.Raycast(transform.position, transform.forward, out var hit, _raycastLength))  // Layers must correspond with Raycast in FPSWeapon.Shoot()
+        if (Physics.Raycast(_lastPosition, transform.forward, out var hit, speed * Time.deltaTime))  // Layers must correspond with Raycast in FPSWeapon.Shoot()
         {
             ++_bouncesDone;
 
@@ -68,6 +65,8 @@ public class FPSProjectile : MonoBehaviour
             else
                 transform.LookAt(transform.position + reflectionVector);
         }
+
+        _lastPosition = transform.position;
     }
 
     void CreateDecal(RaycastHit hit, Vector3 dir)

@@ -198,10 +198,10 @@ VisualEffect:
       - m_Value: 20
         m_Name: speed min
         m_Overridden: 1
-      - m_Value: 60
+      - m_Value: 30
         m_Name: speed max
         m_Overridden: 1
-      - m_Value: 0.35
+      - m_Value: 0.4
         m_Name: size multiplier
         m_Overridden: 1
     m_Vector2f:

@@ -31,7 +31,6 @@ public class Ship : MonoBehaviour
     readonly List<VisualEffect> _jetsVisualEffects = new();
     [HideInInspector]
     public bool isFiring;
-    public float firingStartedAt;
     // Collider _closestShipCollider;
     [HideInInspector]
     public Collider shipCollider;
@@ -50,6 +49,7 @@ public class Ship : MonoBehaviour
     public TurnType turnType;
     [HideInInspector]
     public LayerMask shootableLayerMasks;  // All layers that this ship shoots
+    [HideInInspector]
     public Caption caption;
 
     public enum TurnType    // Type of Ship rotation
@@ -403,7 +403,6 @@ public class Ship : MonoBehaviour
             return;
 
         isFiring = enable;
-        firingStartedAt = Time.time;
     }
 
     // public void Highlight()
