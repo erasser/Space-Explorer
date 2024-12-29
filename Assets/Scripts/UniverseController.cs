@@ -43,8 +43,12 @@ public class UniverseController : MonoBehaviour
     public static Text InfoText;
     const float AstronautBoardingDistanceLimit = 4;
     static readonly float AstronautBoardingSqrDistanceLimit = Mathf.Pow(AstronautBoardingDistanceLimit, 2);
+    [Space]
+    [Tooltip("Ship the player begins with")]
+    public Ship initialShip;
     [Tooltip("Will be cleared of disabled ships.")]
     public List<Ship> canBeBoardedList = new();
+    [Space]
     // Transform _astronautRangeTransform;
     public Image predictPositionDummyPrefab;
     // public static Transform PredictPositionDummyTransform;
@@ -54,7 +58,9 @@ public class UniverseController : MonoBehaviour
     public BoxCollider predictiveColliderPrefab;
     public LayerMask predictiveColliderLayerMask;  // TODO: Bylo by hezký vytáhnout to z toho predictiveColliderPrefabu
     public GameObject dockingLightsPrefab;
+    [HideInInspector]
     public Ship selectedObject;
+    int _zoomLevel;
 
     void Awake()
     {
@@ -78,6 +84,8 @@ public class UniverseController : MonoBehaviour
         canBeBoardedList.RemoveAll(ship => !ship.gameObject.activeSelf);
         // selectionSprite = Instantiate(selectionSpritePrefab);
         MyNavMeshAgent.CreatePredictiveCollider();
+        initialShip.SetAsActiveShip();  // TODO: Pokud není initialShip, nastavit astronauta?
+        InitialCameraOffset = MainCameraTransform.position - ActiveShip.transform.position;
     }
 
     void Update()
@@ -186,6 +194,16 @@ public class UniverseController : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Return))
             SceneController.LoadScene("FPS Scene");
+
+        AdjustScrollWheelZoom(Input.mouseScrollDelta.y);
+    }
+
+    void AdjustScrollWheelZoom(float x)
+    {
+        _zoomLevel += (int) x;  // zoom value is inverted, so it doesn't have to be inverted again
+        _zoomLevel = Mathf.Min(Mathf.Max(- 10, _zoomLevel), 10);
+        // print(_zoomLevel);
+        MainCameraTransform.Translate(InitialCameraOffset * _zoomLevel);
     }
 
     public void LaunchHitEffect(Vector3 point, Vector3 normal)

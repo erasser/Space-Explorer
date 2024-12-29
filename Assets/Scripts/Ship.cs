@@ -71,12 +71,6 @@ public class Ship : MonoBehaviour
         if (!shipCollider.enabled)
             Debug.LogWarning("-- Disabled collider! --");
 
-        if (CompareTag("Default Ship"))
-        {
-            SetAsActiveShip();
-            InitialCameraOffset = MainCameraTransform.position - ActiveShip.transform.position;
-        }
-
         var jets = transform.Find("JETS");
         if (jets)
         {
@@ -209,7 +203,12 @@ public class Ship : MonoBehaviour
         //     InfoText.text += "\n" + rb.velocity.magnitude;
         // }
 
-        rb.AddForce(SetVectorLength(moveVector, speed * afterburnerCoefficient), ForceMode.Acceleration);
+        var forwardness = Vector3.Dot(transform.forward, rb.velocity.normalized) / 4 + .75f;  // .5f .. 1
+        
+        rb.AddForce(SetVectorLength(moveVector, speed * afterburnerCoefficient * forwardness), ForceMode.Acceleration);
+
+        if (this == ActiveShip)
+            InfoText.text = forwardness + "\n" + rb.velocity.magnitude;
     }
 
     void Rotate()

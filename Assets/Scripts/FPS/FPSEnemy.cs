@@ -74,8 +74,8 @@ public class FPSEnemy : MonoBehaviour
 
         ProcessShooting();
 
-        InfoText.text = Mathf.Abs(transform.eulerAngles.y - _debugLastYRotation) + "\n" + _agent.angularSpeed * Time.deltaTime;
-        _debugLastYRotation = transform.eulerAngles.y;
+        // InfoText.text = Mathf.Abs(transform.eulerAngles.y - _debugLastYRotation) + "\n" + _agent.angularSpeed * Time.deltaTime;
+        _debugLastYRotation = transform.eulerAngles.y;  // TODO: Jak to dopadlo?
     }
 
     void CalculateValues()

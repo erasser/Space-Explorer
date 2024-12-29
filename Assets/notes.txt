@@ -6,6 +6,8 @@
 • Po vyřešení framerate independency rovnou implementovat slow motion
 • Ten můj AgentFixedUpdate předělat na coroutine
 • Z rozbitých lodí by se mohlo kouřit
+• Loď by nemusela střílet skrz sebe - stačilo by asi pořešit dot product zbraně a lodi
+• Ty collidery by snad šly udělat jednoduššeji - třeba s pevně předsunutým colliderem?
 
 Implementace CachedMonoBehaviour - mělo by to vyřešit Awake() { base.Awake() }
 

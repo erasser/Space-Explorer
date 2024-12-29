@@ -1,9 +1,9 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.VFX;
 using static FPSPlayer;
 using Random = UnityEngine.Random;
+using static FPSTerrainController;
 
 public class WorldController : MonoBehaviour
 {
@@ -37,6 +37,11 @@ public class WorldController : MonoBehaviour
     void Update()
     {
         ProcessControls();
+    }
+
+    void FixedUpdate()
+    {
+        fpsTerrainController.CheckTerrains();
     }
 
     void ProcessControls()
