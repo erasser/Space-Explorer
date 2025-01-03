@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.VFX;
 using static UniverseController;
@@ -29,12 +30,12 @@ public class Ship : MonoBehaviour
     public static Ship ActiveShip;
     readonly List<Transform> _jetsTransforms = new();
     readonly List<VisualEffect> _jetsVisualEffects = new();
+    readonly List<VelocityEstimator> _jetsVelocityEstimators = new();
     [HideInInspector]
     public bool isFiring;
     // Collider _closestShipCollider;
     [HideInInspector]
     public Collider shipCollider;
-    int _jetCount;
     List<Weapon> _weapons = new();
     public static float ShootingRange = 50;
     public static float ShootingSqrRange;
@@ -71,18 +72,6 @@ public class Ship : MonoBehaviour
         if (!shipCollider.enabled)
             Debug.LogWarning("-- Disabled collider! --");
 
-        var jets = transform.Find("JETS");
-        if (jets)
-        {
-            foreach (Transform jetTransform in jets.transform)
-            {
-                _jetsTransforms.Add(jetTransform);
-                _jetsVisualEffects.Add(jetTransform.GetComponent<VisualEffect>());
-            }
-            _jetCount = _jetsTransforms.Count;
-            _jetAngleCos = - Mathf.Cos(jetAngle * Mathf.Deg2Rad);
-        }
-
         var weapons = transform.Find("WEAPON_SLOTS");
         if (weapons)
             foreach (Transform weapon in weapons)
@@ -107,8 +96,10 @@ public class Ship : MonoBehaviour
             predictPositionDummyTransform = Instantiate(Uc.predictPositionDummyPrefab, UI.transform).transform;
 
         InitCaption();
-        
+
         UpdateShootableLayerMasks();
+
+        PrepareJets();
     }
 
     public void SetAsActiveShip()
@@ -163,15 +154,16 @@ public class Ship : MonoBehaviour
 
     void Update()
     {
-        // Debug.DrawLine(transformCached.position, predictPositionDummyTransform.position, Color.magenta);
-
         UpdateToTargetV3();
+        UpdateJets();  // Move to fixedUpdate
     }
 
     void FixedUpdate()
     {
         Move();
         Rotate();
+
+        // DisableJets();
 
         // UpdatePredictiveCollider();
 
@@ -189,26 +181,11 @@ public class Ship : MonoBehaviour
     void Move()
     {
         if (moveVector is { x: 0, z: 0 })
-        {
-            DisableJets();
-            
             return;
-        }
-
-        UpdateJets();
-
-        // if (name == "ship_StarSparrow11")
-        // {
-        //     InfoText.text = SetVectorLength(moveVector, speed) .ToString();
-        //     InfoText.text += "\n" + rb.velocity.magnitude;
-        // }
 
         var forwardness = Vector3.Dot(transform.forward, rb.velocity.normalized) / 4 + .75f;  // .5f .. 1
-        
-        rb.AddForce(SetVectorLength(moveVector, speed * afterburnerCoefficient * forwardness), ForceMode.Acceleration);
 
-        if (this == ActiveShip)
-            InfoText.text = forwardness + "\n" + rb.velocity.magnitude;
+        rb.AddForce(SetVectorLength(moveVector, speed * afterburnerCoefficient * forwardness), ForceMode.Acceleration);
     }
 
     void Rotate()
@@ -238,15 +215,41 @@ public class Ship : MonoBehaviour
         _customTarget = target;
     }
 
+    void PrepareJets()
+    {
+        var jets = transform.Find("JETS");
+        if (jets)
+        {
+            foreach (Transform jetTransform in jets.transform)
+            {
+                _jetsTransforms.Add(jetTransform);
+                _jetsVisualEffects.Add(jetTransform.GetComponent<VisualEffect>());
+                _jetsVelocityEstimators.Add(jetTransform.AddComponent<VelocityEstimator>());
+            }
+            _jetAngleCos = - Mathf.Cos(jetAngle * Mathf.Deg2Rad);
+        }
+    }
+
     void UpdateJets()
     {
-        var movement = moveVector.normalized;
-
-        for (int i = 0; i < _jetCount; ++i)
+        var count = _jetsTransforms.Count;
+        for (int i = 0; i < count; ++i)
         {
+            var movement = _jetsVelocityEstimators[i].GetVelocityEstimate();
+
+            if (movement.sqrMagnitude < .05f)
+            {
+                _jetsVisualEffects[i].SetBool("jet enabled", false);
+                continue;
+            }
+
             var jetForward = _jetsTransforms[i].forward;
 
-            _jetsVisualEffects[i].SetBool("jet enabled", Vector3.Dot(new(movement.x, movement.z), new(jetForward.x, jetForward.z)) < _jetAngleCos);
+            Vector2 v1 = new(movement.x, movement.z);
+            Vector2 v2 = new(jetForward.x, jetForward.z);
+            v1.Normalize();
+
+            _jetsVisualEffects[i].SetBool("jet enabled", Vector2.Dot(v1, v2) < _jetAngleCos);
         }
     }
 
