@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class Ship : MonoBehaviour
 {
     public float speed = 10;
     public float rotationSpeed = 3;
+    Vector3 _rotationSpeedVector;
     [Range(0, 90)]
     public float maxRollAngle = 80;
     [Tooltip("Jet to ship angle in degrees.\nIt affects individual jet activation condition.\nHigher value => more jets\n\nDO NOT change in playmode!")]
@@ -24,6 +26,7 @@ public class Ship : MonoBehaviour
     Vector3 _customTarget;
     [HideInInspector]
     public Rigidbody rb;
+    Transform _rbTransform;
     [HideInInspector]
     public Vector3 toTargetV3;
     // public static Ship DefaultShip;
@@ -52,6 +55,8 @@ public class Ship : MonoBehaviour
     public LayerMask shootableLayerMasks;  // All layers that this ship shoots
     [HideInInspector]
     public Caption caption;
+    float _forwardToTargetAngle;
+    // float _collidedWithOtherShipAt;
 
     public enum TurnType    // Type of Ship rotation
     {
@@ -65,6 +70,11 @@ public class Ship : MonoBehaviour
         ShootingSqrRange = Mathf.Pow(ShootingRange, 2);
         shipCollider = GetComponent<Collider>();
         velocityEstimator = GetComponent<VelocityEstimator>();
+        _rotationSpeedVector = rotationSpeed * Vector3.up;
+        // rb.automaticCenterOfMass = false;
+        // rb.automaticInertiaTensor = false;
+        // rb.centerOfMass = Vector3.zero;
+        // rb.inertiaTensorRotation = Quaternion.identity;
 
         if (IsEnemy())
             EnemyShips.Add(this);
@@ -72,25 +82,7 @@ public class Ship : MonoBehaviour
         if (!shipCollider.enabled)
             Debug.LogWarning("-- Disabled collider! --");
 
-        var weapons = transform.Find("WEAPON_SLOTS");
-        if (weapons)
-            foreach (Transform weapon in weapons)
-            {
-                var weaponComponent = weapon.GetComponent<Weapon>();
-
-                if (!weaponComponent.enabled)
-                    continue;
-
-                _weapons.Add(weaponComponent);
-
-                var projectilePrefab = weaponComponent.projectilePrefab;
-                var laserComponent = projectilePrefab.GetComponent<Laser>();
-                float highestSpeed = laserComponent ? laserComponent.speed : 0;
-                // speed = laserComponent ? laserComponent.speed : weaponComponent.GetComponent<Rocket>().speed;
-
-                if (highestSpeed > _fastestWeaponSpeedMetersPerSecond)
-                    _fastestWeaponSpeedMetersPerSecond = highestSpeed;
-            }
+        PrepareWeapons();
 
         if (!IsPlayer() && !IsAstronaut())
             predictPositionDummyTransform = Instantiate(Uc.predictPositionDummyPrefab, UI.transform).transform;
@@ -100,6 +92,61 @@ public class Ship : MonoBehaviour
         UpdateShootableLayerMasks();
 
         PrepareJets();
+    }
+
+    void OnEnable()
+    {
+        rb = GetComponent<Rigidbody>();
+        _rbTransform = rb.transform;
+    }
+
+    void Update()
+    {
+        UpdateToTargetV3();
+    }
+
+    void FixedUpdate()
+    {
+        Move();
+        Rotate();
+        UpdateJets();
+        ProcessConstraints();
+
+        // UpdatePredictiveCollider();
+
+        if (predictPositionDummyTransform)
+            predictPositionDummyTransform.position = Uc.mainCamera.WorldToScreenPoint(transform.position + GetPredictedPositionOffset(this, rb.velocity, ActiveShip.gameObject, ActiveShip._fastestWeaponSpeedMetersPerSecond));
+    }
+
+    void ProcessConstraints()
+    {
+        // Rotation X and position Y constraints don't work together. This pushes object to position Y.
+        rb.AddForce(200 * _rbTransform.position.y * Time.fixedDeltaTime * Vector3.down, ForceMode.Acceleration);
+    }
+
+    void PrepareWeapons()
+    {
+        var weapons = transform.Find("WEAPON_SLOTS");
+        if (!weapons)
+            return;
+
+        foreach (Transform weapon in weapons)
+        {
+            var weaponComponent = weapon.GetComponent<Weapon>();
+
+            if (!weaponComponent.enabled)
+                continue;
+
+            _weapons.Add(weaponComponent);
+
+            var projectilePrefab = weaponComponent.projectilePrefab;
+            var laserComponent = projectilePrefab.GetComponent<Laser>();
+            float highestSpeed = laserComponent ? laserComponent.speed : 0;
+            // speed = laserComponent ? laserComponent.speed : weaponComponent.GetComponent<Rocket>().speed;
+
+            if (highestSpeed > _fastestWeaponSpeedMetersPerSecond)
+                _fastestWeaponSpeedMetersPerSecond = highestSpeed;
+        }
     }
 
     public void SetAsActiveShip()
@@ -137,11 +184,6 @@ public class Ship : MonoBehaviour
         return gameObject.layer == Uc.shootableShipsEnemyLayer;
     }
 
-    void OnEnable()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
-
     public void SetMoveVectorHorizontal(float horizontal)
     {
         moveVector.x = horizontal;
@@ -150,25 +192,6 @@ public class Ship : MonoBehaviour
     public void SetMoveVectorVertical(float vertical)
     {
         moveVector.z = vertical;
-    }
-
-    void Update()
-    {
-        UpdateToTargetV3();
-        UpdateJets();  // Move to fixedUpdate
-    }
-
-    void FixedUpdate()
-    {
-        Move();
-        Rotate();
-
-        // DisableJets();
-
-        // UpdatePredictiveCollider();
-
-        if (predictPositionDummyTransform)
-                predictPositionDummyTransform.position = Uc.mainCamera.WorldToScreenPoint(transform.position + GetPredictedPositionOffset(this, rb.velocity, ActiveShip.gameObject, ActiveShip._fastestWeaponSpeedMetersPerSecond));
     }
 
     public float GetForwardSpeed()  // m / s
@@ -194,20 +217,23 @@ public class Ship : MonoBehaviour
         // yaw
         var forward = transform.forward;
         var toTargetNormalized = toTargetV3.normalized;
-        rb.AddTorque(- Vector2.SignedAngle(new(forward.x, forward.z), new(toTargetNormalized.x, toTargetNormalized.z)) * rotationSpeed * Vector3.up, ForceMode.Acceleration);
+        _forwardToTargetAngle = - Vector2.SignedAngle(new(forward.x, forward.z), new(toTargetNormalized.x, toTargetNormalized.z));
+        rb.AddTorque(_forwardToTargetAngle * _rotationSpeedVector, ForceMode.Acceleration);
 
-        // var a = - Vector2.SignedAngle(new(forward.x, forward.z), new(toTargetNormalized.x, toTargetNormalized.z));
         // var b = a >= 3 ? 10 : a <= -3 ? -10 : 0;
         // rb.AddTorque(b * rotationSpeed * Vector3.up, ForceMode.Acceleration);
-        // InfoText.text = "angle: " + a;
+
+        // if (this == ActiveShip)
+        //     InfoText.text = "angle: " + _forwardToTargetAngle;
 
         // roll
-        rb.transform.localEulerAngles = new(0, transform.localEulerAngles.y, Mathf.Clamp(- 20 * rb.angularVelocity.y, - maxRollAngle, maxRollAngle));
+        _rbTransform.localEulerAngles = new(0, transform.localEulerAngles.y, Mathf.Clamp(- 20 * rb.angularVelocity.y, - maxRollAngle, maxRollAngle));
     }
 
     void UpdateToTargetV3()
     {
         toTargetV3 = IsPlayer() || turnType == TurnType.CustomTarget ? _customTarget - transform.position : rb.velocity;
+        Debug.DrawRay(transform.position, toTargetV3.normalized * 100, Color.cyan);
     }
 
     public void SetCustomTarget(Vector3 target)
@@ -218,20 +244,29 @@ public class Ship : MonoBehaviour
     void PrepareJets()
     {
         var jets = transform.Find("JETS");
-        if (jets)
+        if (!jets)
+            return;
+
+        foreach (Transform jetTransform in jets.transform)
         {
-            foreach (Transform jetTransform in jets.transform)
-            {
-                _jetsTransforms.Add(jetTransform);
-                _jetsVisualEffects.Add(jetTransform.GetComponent<VisualEffect>());
-                _jetsVelocityEstimators.Add(jetTransform.AddComponent<VelocityEstimator>());
-            }
-            _jetAngleCos = - Mathf.Cos(jetAngle * Mathf.Deg2Rad);
+            _jetsTransforms.Add(jetTransform);
+            _jetsVisualEffects.Add(jetTransform.GetComponent<VisualEffect>());
+            _jetsVelocityEstimators.Add(jetTransform.AddComponent<VelocityEstimator>());
         }
+        _jetAngleCos = - Mathf.Cos(jetAngle * Mathf.Deg2Rad);
     }
 
     void UpdateJets()
     {
+        // if (!IsPlayer())
+        //     InfoText.text = moveVector + "\n" + Mathf.Abs(_forwardToTargetAngle);  
+
+        // if (moveVector is { x: 0, z: 0 } /*&& Mathf.Abs(_forwardToTargetAngle) < 1*/)
+        // {
+        //     DisableJets();
+        //     return;
+        // }
+
         var count = _jetsTransforms.Count;
         for (int i = 0; i < count; ++i)
         {
@@ -248,6 +283,7 @@ public class Ship : MonoBehaviour
             Vector2 v1 = new(movement.x, movement.z);
             Vector2 v2 = new(jetForward.x, jetForward.z);
             v1.Normalize();
+            v2.Normalize();
 
             _jetsVisualEffects[i].SetBool("jet enabled", Vector2.Dot(v1, v2) < _jetAngleCos);
         }
@@ -395,15 +431,11 @@ public class Ship : MonoBehaviour
 
         MainCameraTransform.position = ActiveShip.transform.position +
                                        InitialCameraOffset + // vertical offset
-                                       // SetVectorLength(player.toTargetV3, player.toTargetV3.sqrMagnitude / 3);  // horizontal offset  // Fungovalo to, teď problikává obraz
                                        ActiveShip.toTargetV3 * coef; // horizontal offset
     }
 
     public void SetIsFiring(bool enable)
     {
-        if (isFiring == enable)
-            return;
-
         isFiring = enable;
     }
 
@@ -412,4 +444,19 @@ public class Ship : MonoBehaviour
     //     universeController.selectionSprite.transform.position = transformCached.position;
     // }
 
+    /*void OnCollisionEnter(Collision other)
+    {
+        if (IsPlayer() && moveVector is not { x: 0, z: 0 })
+            return;
+
+        _collidedWithOtherShipAt = Time.time;
+
+        DisableJets();
+    }
+
+    void CheckCollidedWithOtherShipAt()
+    {
+        if (_collidedWithOtherShipAt == 0)
+            return;
+    }*/
 }

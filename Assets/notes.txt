@@ -1,4 +1,5 @@
 ﻿TODO!
+• V Ship Move() a Rotate() by to asi chtělo přidat fixedDeltaTime
 • Když enemy nevidí přes překážku přímo na svůj target, neměl by se chovat jako debil tj. střílet do překážky
 • Position prediction nefunguje s VSyncem - mělo by se vyřešit po vyřešení framerate independency.
     - Ověřit, že tam je použitý VelocityEstimator (btw. nejsem si jistý, jestli te nje framerate independent
@@ -9,6 +10,7 @@
 • Loď by nemusela střílet skrz sebe - stačilo by asi pořešit dot product zbraně a lodi
 • Ty collidery by snad šly udělat jednoduššeji - třeba s pevně předsunutým colliderem?
 • ship position constraint Y po kolizi nedrží >:-[
+• Jak funguje ten GPU instancing? Automaticky, nebo to musim nascriptovat?
 
 Implementace CachedMonoBehaviour - mělo by to vyřešit Awake() { base.Awake() }
 

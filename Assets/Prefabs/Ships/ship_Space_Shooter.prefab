@@ -485,7 +485,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3411028352990692992}
   m_LocalRotation: {x: -0, y: 0.8891795, z: -0, w: 0.45755857}
-  m_LocalPosition: {x: -172.4938, y: 0, z: 63.690815}
+  m_LocalPosition: {x: -170.05269, y: 0, z: 61.946976}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1196,8 +1196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a53a98f0d5f47b3869a1fdb31d24cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 3910103185545590103, guid: 0e4bc8f93bffd484691e4484651800a4,
-    type: 3}
+  projectilePrefab: {fileID: 8705553933006027784}
   shootInterval: 0.9
   shootDelay: 0
 --- !u!1 &8989198655225997420

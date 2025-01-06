@@ -42,7 +42,8 @@ public class VelocityEstimator : MonoBehaviour
 	{
 		// Compute average velocity
 		Vector3 velocity = Vector3.zero;
-		// print("samplecount: " + sampleCount + ", velocitySamples: " + velocitySamples);
+		// print("samplecount: " + sampleCount);
+		// print("velocitySamples: " + velocitySamples);
 		int velocitySampleCount = Mathf.Min( sampleCount, velocitySamples.Length );
 		if ( velocitySampleCount != 0 )
 		{
@@ -81,14 +82,11 @@ public class VelocityEstimator : MonoBehaviour
 			if ( i < 2 )
 				continue;
 
-			int first = i - 2;
-			int second = i - 1;
-
-			Vector3 v1 = velocitySamples[first % velocitySamples.Length];
-			Vector3 v2 = velocitySamples[second % velocitySamples.Length];
+			Vector3 v1 = velocitySamples[(i - 2) % velocitySamples.Length];
+			Vector3 v2 = velocitySamples[(i - 1) % velocitySamples.Length];
 			average += v2 - v1;
 		}
-		average *= ( 1.0f / Time.deltaTime );
+		average *= 1.0f / Time.deltaTime;
 		return average;
 	}
 

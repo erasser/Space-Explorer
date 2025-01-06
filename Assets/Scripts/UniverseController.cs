@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using DigitalRuby.Tween;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.VFX;
 using static Ship;
@@ -195,7 +194,7 @@ public class UniverseController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return))
             SceneController.LoadScene("FPS Scene");
 
-        AdjustScrollWheelZoom(Input.mouseScrollDelta.y);
+        //AdjustScrollWheelZoom(Input.mouseScrollDelta.y);
     }
 
     void AdjustScrollWheelZoom(float x)

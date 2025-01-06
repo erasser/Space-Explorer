@@ -8,5 +8,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Initial Scene.unity
     guid: 8124e5870f4fd4c779e7a5f994e84ad1
+  - enabled: 1
+    path: Assets/Scenes/FPS scene.unity
+    guid: 5582aa251f8fc2147b4350f19e0c046b
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
