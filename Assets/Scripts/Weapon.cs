@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
-using static Ship;
 
 // This is a weapon socket
 
@@ -10,7 +8,6 @@ public class Weapon : MonoBehaviour
     // public float initialShootSpeed = 100f;
     public float shootInterval = .3f;
     [Tooltip("Used for alternating fire, e.g. left ↔ right.\nSet to 0 for no alternating.\nSet to Shoot 'interval / 2' for regular double alternating.")]
-    public float shootDelay;
     Vector3 _initialShootSpeedV3;           // to get Vector3 from float
     // static Vector3 _actualProjectileSpeed;  // for raycast length calculation
     Vector3 _shootVectorCoefficient;        // for performance optimization
@@ -36,8 +33,7 @@ public class Weapon : MonoBehaviour
         if (!_ship.isFiring || Time.time - _lastShootTime < shootInterval)
             return;
 
-        _lastShootTime = Time.time /*+ shootDelay*/;
-        shootDelay = 0; // TODO: WIP
+        _lastShootTime = Time.time;
 
         Instantiate(projectilePrefab).GetComponent<Projectile>().Setup(_ship, transform.position, transform.eulerAngles.y);
     }

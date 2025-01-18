@@ -1,0 +1,190 @@
+<!doctype html>
+<html >
+<head>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!--[if lt IE 9]>
+                <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+        <![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <!-- <link rel="stylesheet" type="text/css" href="template.css" /> -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/template.css" />
+
+    <link href="https://vjs.zencdn.net/5.4.4/video-js.css" rel="stylesheet" />
+
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <!-- <script type='text/javascript' src='menu/js/jquery.cookie.js'></script> -->
+    <!-- <script type='text/javascript' src='menu/js/jquery.hoverIntent.minified.js'></script> -->
+    <!-- <script type='text/javascript' src='menu/js/jquery.dcjqaccordion.2.7.min.js'></script> -->
+
+    <!-- <link href="menu/css/skins/blue.css" rel="stylesheet" type="text/css" /> -->
+    <!-- <link href="menu/css/skins/graphite.css" rel="stylesheet" type="text/css" /> -->
+    <!-- <link href="menu/css/skins/grey.css" rel="stylesheet" type="text/css" /> -->
+  
+    <!-- <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+        
+  
+    <!-- <script src="script.js"></script> -->
+  
+    <!-- <script src="jquery.sticky-kit.js "></script> -->
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/menu/js/jquery.cookie.js'></script>
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/menu/js/jquery.hoverIntent.minified.js'></script>
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/menu/js/jquery.dcjqaccordion.2.7.min.js'></script>
+
+    <link href="https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/menu/css/skins/blue.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/menu/css/skins/graphite.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/menu/css/skins/grey.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/ryangrose/easy-pandoc-templates@948e28e5/css/elegant_bootstrap.css" rel="stylesheet" type="text/css" />
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+    <script src="https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/script.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/jquery.sticky-kit.js"></script>
+    <meta name="generator" content="pandoc" />
+  <title>Readme</title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+
+    
+    <div class="container">
+    <div class="row">
+            <div id="TOC" class="span3">
+        <div class="well toc">
+
+        <ul>
+        <li><a href="#getting-started">Getting Started</a></li>
+        <li><a href="#generate-the-path-using-one-of-the-utility-scripts">Generate the path using one of the utility scripts</a></li>
+        <li><a href="#generating-a-mesh-along-the-path">Generating a mesh along the path</a>
+        <ul>
+        <li><a href="#soulercoaster-types">SoulerCoaster Types</a></li>
+        </ul></li>
+        <li><a href="#mesh-material">Mesh Material</a></li>
+        <li><a href="#spline-support">Spline Support</a></li>
+        <li><a href="#mesh-in-particle-system">Mesh in Particle System</a></li>
+        <li><a href="#performance">Performance</a></li>
+        <li><a href="#mesh-internals">Mesh Internals</a>
+        <ul>
+        <li><a href="#faq">FAQ</a>
+        <ul>
+        <li><a href="#i-dont-see-a-generated-mesh">I don’t see a generated mesh</a></li>
+        <li><a href="#the-mesh-doesnt-align-with-the-linerenderer">The mesh doesn’t align with the LineRenderer</a></li>
+        <li><a href="#my-editor-is-slow-and-laggy-since-i-use-the-soulercoaster-generator">My editor is slow and laggy since I use the SoulerCoaster Generator</a></li>
+        </ul></li>
+        </ul></li>
+        <li><a href="#known-bugs">Known Bugs</a>
+        <ul>
+        <li><a href="#weird-axis-rotation-in-builtinrenderpipeline">Weird axis rotation in BuiltinRenderPipeline</a></li>
+        </ul></li>
+        </ul>
+
+        </div>
+      </div>
+            <div class="span9">
+
+      
+      <p><img src="cover.png" alt="cover" /> This documentation covers all components from the Line Mesh Generator Lite. Line Meshes are sometimes called <code>Swooshmesh</code> or <code>SoulerCoaster</code>. SoulerCoasters are great for visualizing magic or energy effects. This package helps you create those.</p>
+<h1 id="getting-started">Getting Started</h1>
+<p>Just open the example scene and look at the effects. For URP and HDRP use <strong>SoulerCoasterExampleSceneURP</strong> for BuiltIn: <strong>SoulerCoasterExampleSceneBuiltIn</strong>.</p>
+<p>Video Tutorial on Youtube: https://youtu.be/s4WuQoop-gY</p>
+<p>The main Component of this package is the SoulerCoaster. This part creates your mesh. The SoulerCoaster creates this mesh from a <strong>LineRenderer</strong>. The LineRenderer holds the path as well as the width curve. The SoulerCoaster also uses the parameter <code>Loop</code> of the LineRenderer.</p>
+<p>To generate the mesh, <strong>right-click</strong> on the SoulerCoaster component and select <strong>generate</strong>.</p>
+<h1 id="generate-the-path-using-one-of-the-utility-scripts">Generate the path using one of the utility scripts</h1>
+<p>The LineRenderer stores the positions and the width curve.</p>
+<p>You can fill the LineRenderer positions on your own or use one of the utility scripts of this package:</p>
+<ul>
+<li>BezierLine - Creates a Bezier curve between 3 points.</li>
+<li>CircularLine - Creates a line in a circle with a given axis, arc, and radius.</li>
+<li>CircularSinusLine - Creates a line in a circle with a given axis, radius, and sinusoid height distortion.</li>
+<li>Connector - Creates a line between two or more transforms.</li>
+<li>LightningPath - Generates a random line between two transforms. You can configure strength, frequency, and animation speed. You can call the <code>animateArc</code> method to animate changing lightnings.</li>
+<li>EpicycleCircularLine - Creates a path with two circles displacing along a circular base circle.</li>
+<li>EpicycloidLine - Generates an epicycloid path in 2D space. his generates a spirograph-like effect.</li>
+<li>HelixAlongPath - Used to create a helix along an existing path. Can be combined with other path generators</li>
+<li>HelixCircularLine - Generates a helix along a circular path.</li>
+<li>HelixLine - Creates a helix between the given points. You can customize the radius and the rotations.</li>
+</ul>
+<p>Every util component has a method called <strong>generate</strong>. You can execute it by right-clicking on the component. The util component will fill the line renderer it is attached to. You don’t need to enable the LineRenderer component. The SoulerCoaster will only use its positions to render the mesh.</p>
+<p>To avoid confusion, I advise you to deactivate the “Use World Space” setting of the LineRenderer.</p>
+<h1 id="generating-a-mesh-along-the-path">Generating a mesh along the path</h1>
+<p>The SoulerCoaster component has options to modify its behavior.</p>
+<ul>
+<li>Width - General width of the mesh along the LineRenderer</li>
+<li>Skew - Skew the plane by this angle from point to point.</li>
+<li>Use Line Renderer Width Curve - If this is enabled, the mesh’s width will follow the LineRenderer Width Curve multiplied by the Width property of the SoulerCoaster.</li>
+<li>Generate Mesh on Enable - The meshes don’t get stored by default. To see them in Play Mode you need to generate them on demand. Alternatively, if you want to reuse a Mesh you can right-click on the SoulerCoaster component to save it as an asset.</li>
+<li>Cheap Edges - More performant mesh generation but edges may look odd</li>
+<li>Dont Skew Normals - This creates a mesh with correct normals. You can’t use the SoulerCoaster shader with this option activated. The SoulerCoaster shader uses the normal values to implement axis rotation and skewing.</li>
+<li>Type - SoulerCoaster types are explained below.</li>
+<li>New Vertice For Each Edge - Create distinct points for each quad segment. Useful if you have sharp turns. (PolyLine or LineConnector)</li>
+<li>One Sided - Create only one side of the mesh. This can help you if want to light transparent textures.</li>
+<li>Prevent Mesh Saving - Generated meshes can consume a lot of storage. This prevents the storing of the mesh into the scene or prefab. There is a small helper script <code>PreventMeshSaving</code> that nulls the mesh before saving. After saving the mesh gets generated again.</li>
+</ul>
+<p>Only relevant for the SOULERCOASTER_NGON type - N Gon Count - Set the edge count for the polygon (Minimum of 3) - Quad Width Factor - Used to extrude the planes of the regular polygon.</p>
+<p>After generating the mesh you can animate them using the provided SoulerCoaster shader.</p>
+<h2 id="soulercoaster-types">SoulerCoaster Types</h2>
+<p>These are the types you can choose from. They all share, that the UV map of all planes is the same.</p>
+<ul>
+<li>VERTICAL_QUAD: Generates a vertical quad plane along the path</li>
+<li>HORIZONTAL_QUAD: Generates a horizontal quad plane along the path</li>
+<li>SOULERCOASTER: Generates a horizontal and a vertical quad plane along the path</li>
+<li>SOULERCOASTER_N_GON: Generates multiple planes that form a regular polygon in a diameter.</li>
+<li>CUSTOM_PLANE_CONFIGURATION: Create every plane configuration you like. You can configure the planes through the <code>Custom Plane Configuration</code> behaviour.</li>
+</ul>
+<h1 id="mesh-material">Mesh Material</h1>
+<p>This package contains a shader for animating SoulerCoasters. Its basic behavior is to scroll over the provided texture.</p>
+<p>You can look at the materials used in the ExampleScene for inspiration.</p>
+<p>These are the shader parameters:</p>
+<ul>
+<li>MainColor: The starting color for the mesh</li>
+<li>EndColor: The ending color for the mesh. It gets blended with the MainColor along the path.</li>
+<li>texture: Texture used for the mesh. This texture needs to be repeated. You can achieve the best looks by selecting a vertically oriented texture.</li>
+<li>Tiling: Texture Tiling along the mesh. Normally, the Y amount should be higher than the Y amount.</li>
+<li>xOffset: Offset the texture on the x-axis. Useful if you set an X-Tiling below one or have a de-centered texture.</li>
+<li>gradientOnMeshStart: Enables you to fade out the mesh start</li>
+<li>gradientOnMeshEnd: Enables you to fade out the mesh end</li>
+<li>gradientOnTile: Enables a gradient on each texture tile.</li>
+<li>gradientOnBorder: Used to fade out the edges of the mesh</li>
+<li>speed: Speed by which the shader scrolls over the texture. You can change the direction by making the speed negative.</li>
+<li>axisRotation: This lets you rotate along the path axis over time.</li>
+<li>skew: This lets you twist the mesh along the path.</li>
+<li>sideBySide: The generated meshes have two UV channels. The second contains a UV map where each plane has its own space. Useful with the SOULERCASTER_N_GON type.</li>
+<li>particleSupport: This deactivates the following features: color, axisRotation, and skew. That enables you to use the mesh in a ParticleSystem.</li>
+<li>repeatTexture: Doesn’t repeat the texture on tiling. Useful for projectiles. Beware that the texture is clamped instead (repeats the last pixel on the sides).</li>
+</ul>
+<h1 id="spline-support">Spline Support</h1>
+<p>Splines are a package to edit curves in the Unity Editor. The package supports Unity Editors since version 22. If you want to use the SoulerCoaster component to generate a mesh along a Spline, you can unpack the unitypackage in: <code>/soulercoaster/scripts/spline/splinesupport.unitypackage</code>. This adds the script <code>SplineSampler</code>. You can use this script to sample a LineRenderer path along the Spline. You can use this LineRenderer to generate a Mesh.</p>
+<h1 id="mesh-in-particle-system">Mesh in Particle System</h1>
+<p>You can also use the generated mesh in a Particle System. For this, you need to save the mesh as an Asset. To do that, right-click on the SoulerCoaster component, and click on <code>saveMesh</code>. Then you choose a filename and save the mesh.</p>
+<p>You can then use the mesh in a ParticleSystem. For the particle system, you need to use the <strong>particleSupport</strong> option on the SoulerCaster-shader. It has no support for rotating along the axis. It will also ignore the color and skew of the shader.</p>
+<h1 id="performance">Performance</h1>
+<p>The generated meshes can have a lot of vertices. If you want to use them repeatedly, you can save them as an asset. To do that, you can right-click on the SoulerCoaster component and click on <code>saveMesh</code>. You will be prompted to choose a filename. The MeshFilter will automatically reference your newly created file. After saving, you need to deactivate the “Generate Mesh on Enable”-parameter. So the SoulerCoaster doesn’t generate a new one on the scene start.</p>
+<h1 id="mesh-internals">Mesh Internals</h1>
+<p>The generated mesh uses some caveats to enable features of the SoulerCoaster shader. The mesh normals are not usable because they store the path position of a vertex. The tangent space is used to save the delta-direction of each vertex. The SoulerCaster shader uses both of these information to implement the axis rotation.</p>
+<p>There are two sets of UV maps provided.</p>
+<p>The first is the classic SoulerCoaster one. Each quadplane of the SoulerCoaster has the same UV space.</p>
+<p>The second contains all planes side by side in the UV map.</p>
+<h2 id="faq">FAQ</h2>
+<h3 id="i-dont-see-a-generated-mesh">I don’t see a generated mesh</h3>
+<ul>
+<li>Check if you have a <code>MeshRenderer</code> attached to your GameObject.</li>
+<li>Modify the normal vector slightly. (This happens when the first line segment aligns with the default normal vector.)</li>
+</ul>
+<h3 id="the-mesh-doesnt-align-with-the-linerenderer">The mesh doesn’t align with the LineRenderer</h3>
+<p>Mesh generation can only work with non-local LineRenderers. So if you deactivate <code>Use World Space</code> it should line up properly.</p>
+<h3 id="my-editor-is-slow-and-laggy-since-i-use-the-soulercoaster-generator">My editor is slow and laggy since I use the SoulerCoaster Generator</h3>
+<p>If you use the <code>PreventMeshSaving</code> feature of the SoulerCoaster component you might observe some laggy behaviour. The script will set all SoulerCoaster <code>MeshFilter</code> meshes to null before saving. After saving it will regenerate all those meshes again and set them properly. This can cause unresponsiveness.<br />
+You can just disable <code>Prevent Mesh Saving</code> and just save the meshes into the scene.</p>
+<h1 id="known-bugs">Known Bugs</h1>
+<h2 id="weird-axis-rotation-in-builtinrenderpipeline">Weird axis rotation in BuiltinRenderPipeline</h2>
+<p>If you use axisRotation or skew in the builtin render pipeline, it can occur that the mesh rotates in a strange way. Workaround: Increase the pathGenerators resolution and regenerate the mesh.</p>
+            </div>
+    </div>
+  </div>
+  <script src="https://vjs.zencdn.net/5.4.4/video.js"></script>
+
+</body>
+</html>

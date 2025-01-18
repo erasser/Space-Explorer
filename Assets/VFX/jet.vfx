@@ -24,6 +24,18 @@ MonoBehaviour:
     contents: 
     theme: Classic
     textSize: Medium
+  - title: TODO
+    position:
+      serializedVersion: 2
+      x: 1289
+      y: -999
+      width: 1282
+      height: 432
+    contents: "\u2022 size multiplier for smoke\n\u2022 D\xE9lku by mo\u017En\xE1
+      bylo vhodn\u011Bj\u0161\xED \u0159e\u0161it pomoc\xED lifetime ne\u017E pomoc\xED
+      speed\n"
+    theme: Classic
+    textSize: Huge
   categories: []
   uiBounds:
     serializedVersion: 2

@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 22e845d86f3b43548f93741654c00829
+timeCreated: 1705680182
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291007
+  packageName: Magic/Energy Line Generator Lite
+  packageVersion: 1.0
+  assetPath: Assets/magicEnergyLineGeneratorLite/scripts/pathGenerators/CircularSinusLine.cs
+  uploadId: 682333

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ab8631844298fb240a5bd57c86e15bdf
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291007
+  packageName: Magic/Energy Line Generator Lite
+  packageVersion: 1.0
+  assetPath: Assets/magicEnergyLineGeneratorLite/materials/thunder.mat
+  uploadId: 682333

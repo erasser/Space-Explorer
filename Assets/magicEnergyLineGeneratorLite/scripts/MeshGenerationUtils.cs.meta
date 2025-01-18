@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: c98243d3b54b44a8b34f3a6b6998b14a
+timeCreated: 1705853908
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291007
+  packageName: Magic/Energy Line Generator Lite
+  packageVersion: 1.0
+  assetPath: Assets/magicEnergyLineGeneratorLite/scripts/MeshGenerationUtils.cs
+  uploadId: 682333

@@ -12,7 +12,8 @@ public class CameraFacingBillboard : MonoBehaviour
  
     public enum Axis {up, down, left, right, forward, back};
     public bool reverseFace = true; 
-    public Axis axis = Axis.up; 
+    public Axis axis = Axis.up;
+    public bool randomRotation;
  
     // return a direction based upon chosen axis
     public Vector3 GetAxis (Axis refAxis)
@@ -48,6 +49,8 @@ public class CameraFacingBillboard : MonoBehaviour
         Vector3 targetPos = transform.position + referenceCamera.transform.rotation * (reverseFace ? Vector3.forward : Vector3.back) ;
         Vector3 targetOrientation = referenceCamera.transform.rotation * GetAxis(axis);
         transform.LookAt (targetPos, targetOrientation);
-        print("huh");
+
+        if (randomRotation)
+            transform.Rotate(Vector3.forward, Random.Range(0, 360), Space.Self);
     }
 }

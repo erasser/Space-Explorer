@@ -134,7 +134,7 @@ public class Ship : MonoBehaviour
         {
             var weaponComponent = weapon.GetComponent<Weapon>();
 
-            if (!weaponComponent.enabled)
+            if (!weaponComponent || !weaponComponent.enabled)
                 continue;
 
             _weapons.Add(weaponComponent);

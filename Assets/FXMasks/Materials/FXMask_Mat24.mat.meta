@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8fd39509ed07bfe47996793961e40d03
+timeCreated: 1473463591
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 71311
+  packageName: Free Shader FX Masks
+  packageVersion: 1.0
+  assetPath: Assets/FXMasks/Materials/FXMask_Mat24.mat
+  uploadId: 136458

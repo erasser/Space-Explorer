@@ -1,4 +1,5 @@
 ﻿TODO!
+• U shipů je ten VelocityEstimator snad zbytečnej, je to (skoro) totéž jako rb.velocity
 • V Ship Move() a Rotate() by to asi chtělo přidat fixedDeltaTime
 • Když enemy nevidí přes překážku přímo na svůj target, neměl by se chovat jako debil tj. střílet do překážky
 • Position prediction nefunguje s VSyncem - mělo by se vyřešit po vyřešení framerate independency.

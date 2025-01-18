@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DigitalRuby.Tween;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.VFX;
 using static Ship;
@@ -60,6 +61,10 @@ public class UniverseController : MonoBehaviour
     [HideInInspector]
     public Ship selectedObject;
     int _zoomLevel;
+    // public Transform starMapBackgroundTransform;
+    // Material _starMapMaterial;
+    // public float starSpeed = .0001f;
+    // Vector3 _initialCameraToBackgroundOffset;
 
     void Awake()
     {
@@ -85,6 +90,8 @@ public class UniverseController : MonoBehaviour
         MyNavMeshAgent.CreatePredictiveCollider();
         initialShip.SetAsActiveShip();  // TODO: Pokud není initialShip, nastavit astronauta?
         InitialCameraOffset = MainCameraTransform.position - ActiveShip.transform.position;
+        // _starMapMaterial = starMapBackgroundTransform.GetComponent<Renderer>().material;
+        // _initialCameraToBackgroundOffset = starMapBackgroundTransform.position - MainCameraTransform.position;
     }
 
     void Update()
@@ -98,10 +105,17 @@ public class UniverseController : MonoBehaviour
         ActiveShip.UpdateCameraPosition();
 
         ProcessStaticFixedDeltaTime();
-
         // MyNavMeshAgent.PredictCollisions();
 
         // _rangeSprite.transform.position = Astronaut.transformCached.position;
+
+        // UpdateBackgroundTexture();
+    }
+
+    void UpdateBackgroundTexture()
+    {
+        // starMapBackgroundTransform.position = MainCameraTransform.position + _initialCameraToBackgroundOffset;
+        // _starMapMaterial.mainTextureOffset = new Vector2(MainCameraTransform.position.x, MainCameraTransform.position.z) * starSpeed;
     }
 
     void ProcessStaticFixedDeltaTime()

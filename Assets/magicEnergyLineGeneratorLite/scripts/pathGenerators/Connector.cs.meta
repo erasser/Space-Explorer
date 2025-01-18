@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 42c4bf33861d4d92a847cee01225445d
+timeCreated: 1712507858
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291007
+  packageName: Magic/Energy Line Generator Lite
+  packageVersion: 1.0
+  assetPath: Assets/magicEnergyLineGeneratorLite/scripts/pathGenerators/Connector.cs
+  uploadId: 682333
