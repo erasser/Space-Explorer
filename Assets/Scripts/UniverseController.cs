@@ -65,6 +65,9 @@ public class UniverseController : MonoBehaviour
     // Material _starMapMaterial;
     // public float starSpeed = .0001f;
     // Vector3 _initialCameraToBackgroundOffset;
+    public Transform starFieldCameraTransform;
+    public SS_Starfield2D starField;
+    bool _warp;
 
     void Awake()
     {
@@ -89,7 +92,7 @@ public class UniverseController : MonoBehaviour
         // selectionSprite = Instantiate(selectionSpritePrefab);
         MyNavMeshAgent.CreatePredictiveCollider();
         initialShip.SetAsActiveShip();  // TODO: Pokud není initialShip, nastavit astronauta?
-        InitialCameraOffset = MainCameraTransform.position - ActiveShip.transform.position;
+        InitialCameraOffset = MainCameraTransform.position - ActiveShipTransform.position;
         // _starMapMaterial = starMapBackgroundTransform.GetComponent<Renderer>().material;
         // _initialCameraToBackgroundOffset = starMapBackgroundTransform.position - MainCameraTransform.position;
     }
@@ -110,6 +113,8 @@ public class UniverseController : MonoBehaviour
         // _rangeSprite.transform.position = Astronaut.transformCached.position;
 
         // UpdateBackgroundTexture();
+
+        UpdateStarFieldCamera();
     }
 
     void UpdateBackgroundTexture()
@@ -154,7 +159,7 @@ public class UniverseController : MonoBehaviour
             ActiveShip.SetMoveVectorHorizontal(0);
 
         if (Input.GetKey(KeyCode.LeftShift))
-            ActiveShip.afterburnerCoefficient = 2;
+            ActiveShip.afterburnerCoefficient = 10;
         else
             ActiveShip.afterburnerCoefficient = 1;
 
@@ -208,6 +213,9 @@ public class UniverseController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return))
             SceneController.LoadScene("FPS Scene");
 
+        if (Input.GetKeyDown(KeyCode.P))
+            Time.timeScale = Time.timeScale > 0 ? 0 : 1;
+
         //AdjustScrollWheelZoom(Input.mouseScrollDelta.y);
     }
 
@@ -241,10 +249,10 @@ public class UniverseController : MonoBehaviour
     void EjectAstronaut()
     {
         Astronaut.gameObject.SetActive(true);
-        Astronaut.transform.position = ActiveShip.transform.position;
-        Astronaut.transform.rotation = ActiveShip.transform.rotation;
+        Astronaut.transform.position = ActiveShipTransform.position;
+        Astronaut.transform.rotation = ActiveShipTransform.rotation;
 
-        Astronaut.rb.AddForce(-10000 * ActiveShip.transform.forward, ForceMode.Impulse);
+        Astronaut.rb.AddForce(- 10000 * ActiveShipTransform.forward, ForceMode.Impulse);
         ActiveShip.moveVector.x = ActiveShip.moveVector.z = 0;
         Astronaut.SetAsActiveShip();
 
@@ -383,5 +391,31 @@ public class UniverseController : MonoBehaviour
         }
         else
             selectedObject = null;
+    }
+
+    void UpdateStarFieldCamera()
+    {
+        var pos = MainCameraTransform.position;
+        starFieldCameraTransform.position = new(pos.x, pos.z, 0);
+    }
+
+    void UpdateWarpEffect()  // velocity 100 .. 400
+    {
+        // _warp = enable;
+
+        // if (enable)
+        // {
+
+        var c = Mathf.Max(ActiveShipVelocityEstimate.magnitude - 100, 0) / 300;
+            
+            starField.warp = .2f * c;
+            starField.rotation = Vector2.Angle(
+                new Vector2(ActiveShipVelocityEstimate.x, ActiveShipVelocityEstimate.z),
+                Vector2.right) * Mathf.Deg2Rad;
+
+            return;
+        // }
+
+        starField.warp = 0;
     }
 }

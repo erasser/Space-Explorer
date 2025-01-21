@@ -6,6 +6,7 @@ public class WeaponBeam : MonoBehaviour
     public float chargingTime;
     public float lifeTime;
     public float shootInterval;
+    public GameObject beamGameObject;
 
     float _shotAt;
 
@@ -21,12 +22,13 @@ public class WeaponBeam : MonoBehaviour
 
     void CheckFire()
     {
+        beamGameObject.SetActive(_ship.isFiring);
+        return;
+        
         if (!_ship.isFiring)
             return;
-
         
         _shotAt = Time.time;
 
-        
     }
 }

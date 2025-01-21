@@ -80,9 +80,9 @@ public abstract class Projectile : MonoBehaviour
                     componentRocket.SetTarget(ActiveShip);
             }
             else if (autoAimType == AutoAim.PositionAutoAim)
-                transform.LookAt(ActiveShip.transform);
+                transform.LookAt(ActiveShipTransform);
             else
-                transform.LookAt(ActiveShip.transform.position + GetPredictedPositionOffset(ActiveShip, ActiveShip.velocityEstimator.GetVelocityEstimate(), originShip.gameObject, speed));
+                transform.LookAt(ActiveShipTransform.position + GetPredictedPositionOffset(ActiveShip, ActiveShipVelocityEstimate, originShip.gameObject, speed));
         }
     }
 

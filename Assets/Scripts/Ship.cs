@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -31,6 +30,7 @@ public class Ship : MonoBehaviour
     public Vector3 toTargetV3;
     // public static Ship DefaultShip;
     public static Ship ActiveShip;
+    public static Transform ActiveShipTransform;
     readonly List<Transform> _jetsTransforms = new();
     readonly List<VisualEffect> _jetsVisualEffects = new();
     readonly List<VelocityEstimator> _jetsVelocityEstimators = new();
@@ -57,6 +57,7 @@ public class Ship : MonoBehaviour
     public Caption caption;
     float _forwardToTargetAngle;
     // float _collidedWithOtherShipAt;
+    public static Vector3 ActiveShipVelocityEstimate;
 
     public enum TurnType    // Type of Ship rotation
     {
@@ -112,6 +113,9 @@ public class Ship : MonoBehaviour
         UpdateJets();
         ProcessConstraints();
 
+        if (IsPlayer())
+            ActiveShipVelocityEstimate = velocityEstimator.GetVelocityEstimate();
+
         // UpdatePredictiveCollider();
 
         if (predictPositionDummyTransform)
@@ -158,6 +162,7 @@ public class Ship : MonoBehaviour
         }
 
         ActiveShip = this;
+        ActiveShipTransform = ActiveShip.transform;
 
         gameObject.layer = Uc.shootablePlayerLayer;
 
@@ -270,6 +275,9 @@ public class Ship : MonoBehaviour
         var count = _jetsTransforms.Count;
         for (int i = 0; i < count; ++i)
         {
+            if (!_jetsTransforms[i].gameObject.activeSelf)  // For the case when jets are disabled
+                continue;
+
             var movement = _jetsVelocityEstimators[i].GetVelocityEstimate();
 
             if (movement.sqrMagnitude < .05f)
@@ -429,7 +437,7 @@ public class Ship : MonoBehaviour
     {
         var coef = Input.GetKey(KeyCode.LeftControl) ? .8f : .16f;
 
-        MainCameraTransform.position = ActiveShip.transform.position +
+        MainCameraTransform.position = ActiveShipTransform.position +
                                        InitialCameraOffset + // vertical offset
                                        ActiveShip.toTargetV3 * coef; // horizontal offset
     }
