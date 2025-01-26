@@ -23,7 +23,7 @@ public class UniverseController : MonoBehaviour
     public LayerMask raycastPlaneLayer;
     public LayerMask closestShipColliderLayer;  // all ships (my solution for multiple gameObject layers)
     // public LayerMask predictiveCollidersLayer;
-    public static RaycastHit MouseCursorHit;
+    public static Vector3 MouseCursorHitPoint;
     public Camera mainCamera;
     public static Transform MainCameraTransform;
     public static Vector3 InitialCameraOffset;
@@ -68,6 +68,15 @@ public class UniverseController : MonoBehaviour
     public Transform starFieldCameraTransform;
     public SS_Starfield2D starField;
     bool _warp;
+    static Plane _raycastPlane = new (Vector3.up, Vector3.zero);
+    Vector3 _debugV3;
+    public Transform debugDummy;
+    Vector3 _lastCamPos;
+    Vector3 _debugVelocity = Vector3.zero;
+    public float _dampSpeed = 1;
+    List<Vector3> _mouseHitPositions = new();
+    float _maxCursorDistance = 100f;
+    public Transform distanceRing;
 
     void Awake()
     {
@@ -95,17 +104,17 @@ public class UniverseController : MonoBehaviour
         InitialCameraOffset = MainCameraTransform.position - ActiveShipTransform.position;
         // _starMapMaterial = starMapBackgroundTransform.GetComponent<Renderer>().material;
         // _initialCameraToBackgroundOffset = starMapBackgroundTransform.position - MainCameraTransform.position;
+
+        distanceRing.transform.localScale = new(_maxCursorDistance, 1, _maxCursorDistance);
     }
 
     void Update()
     {
         ProcessControls();
 
-        ProcessMouseMove();
+        ActiveShip.SetCustomTarget(MouseCursorHitPoint);
 
-        ActiveShip.SetCustomTarget(MouseCursorHit.point);
-
-        ActiveShip.UpdateCameraPosition();
+        UpdateCameraPosition();
 
         ProcessStaticFixedDeltaTime();
         // MyNavMeshAgent.PredictCollisions();
@@ -159,7 +168,7 @@ public class UniverseController : MonoBehaviour
             ActiveShip.SetMoveVectorHorizontal(0);
 
         if (Input.GetKey(KeyCode.LeftShift))
-            ActiveShip.afterburnerCoefficient = 10;
+            ActiveShip.afterburnerCoefficient = 50;
         else
             ActiveShip.afterburnerCoefficient = 1;
 
@@ -259,9 +268,51 @@ public class UniverseController : MonoBehaviour
         mainCamera.fieldOfView = _initialFov / 2;
     }
 
-    void ProcessMouseMove()
+    void UpdateCameraPosition()
     {
-        Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out MouseCursorHit, Mathf.Infinity, raycastPlaneLayer);
+        // distanceRing.position = ActiveShipTransform.position;
+
+        MainCameraTransform.position = ActiveShipTransform.position + InitialCameraOffset;
+
+        var ray = ScreenPointToRay(mainCamera, Input.mousePosition);
+        _raycastPlane.Raycast(ray, out var distance);
+        var hitPoint = ray.GetPoint(distance);
+
+        // debugDummy.position = hitPoint;
+
+        var toCursor = hitPoint - ActiveShipTransform.position;
+        toCursor = new(toCursor.x, 0, toCursor.z);
+
+        var coef = Input.GetKey(KeyCode.LeftControl) ? .8f : .16f;
+        MainCameraTransform.Translate(toCursor * coef, Space.World);
+    }
+
+    public static Ray ScreenPointToRay(Camera camera, Vector3 screenPos) {
+        // Remap so (0, 0) is the center of the window,
+        // and the edges are at -0.5 and +0.5.
+        Vector2 relative = new Vector2(
+            screenPos.x / Screen.width - .5f,
+            screenPos.y / Screen.height - .5f
+        );
+
+        // Angle in radians from the view axis
+        // to the top plane of the view pyramid.
+        float verticalAngle = 0.5f * Mathf.Deg2Rad * camera.fieldOfView;
+
+        // World space height of the view pyramid
+        // measured at 1 m depth from the camera.
+        float worldHeight = 2f * Mathf.Tan(verticalAngle);
+
+        // Convert relative position to world units.
+        Vector3 worldUnits = relative * worldHeight;
+        worldUnits.x *= camera.aspect;
+        worldUnits.z = 1;
+
+        // Rotate to match camera orientation.
+        Vector3 direction = camera.transform.rotation * worldUnits;
+
+        // Output a ray from camera position, along this direction.
+        return new Ray(camera.transform.position, direction);
     }
 
     void SetCameraHeight(float multiplier)
@@ -270,8 +321,7 @@ public class UniverseController : MonoBehaviour
         // var endPos = SetVectorLength(startPos, multiplier * startPos.y);
         var endPos = startPos - Vector3.up * 10;
 
-        MainCameraTransform.gameObject.Tween("Zoom", startPos, endPos, 1.5f, TweenScaleFunctions.SineEaseInOut,
-            Bubu);
+        MainCameraTransform.gameObject.Tween("Zoom", startPos, endPos, 1.5f, TweenScaleFunctions.SineEaseInOut, Bubu);
 
         void Bubu(ITween<Vector3> t)
         {

@@ -68,7 +68,7 @@ public abstract class Projectile : MonoBehaviour
                     componentRocket.SetTarget(targetShip);
                 }
                 else
-                    transform.LookAt(MouseCursorHit.point);
+                    transform.LookAt(MouseCursorHitPoint);
             }
         }
         else  // enemy shooting

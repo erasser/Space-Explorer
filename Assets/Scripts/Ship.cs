@@ -104,10 +104,14 @@ public class Ship : MonoBehaviour
     void Update()
     {
         UpdateToTargetV3();
+        
+        // transform.Translate(Time.deltaTime * 400 * Vector3.right);
     }
 
     void FixedUpdate()
     {
+        // return;
+        
         Move();
         Rotate();
         UpdateJets();
@@ -214,6 +218,7 @@ public class Ship : MonoBehaviour
         var forwardness = Vector3.Dot(transform.forward, rb.velocity.normalized) / 4 + .75f;  // .5f .. 1
 
         rb.AddForce(SetVectorLength(moveVector, speed * afterburnerCoefficient * forwardness), ForceMode.Acceleration);
+        // transform.Translate(Vector3.right * Time.deltaTime * 1000);
     }
 
     void Rotate()
@@ -237,8 +242,9 @@ public class Ship : MonoBehaviour
 
     void UpdateToTargetV3()
     {
+        // TODO: Pokud je to player, transform.position bych nahradil za ActiveShipTransform
         toTargetV3 = IsPlayer() || turnType == TurnType.CustomTarget ? _customTarget - transform.position : rb.velocity;
-        Debug.DrawRay(transform.position, toTargetV3.normalized * 100, Color.cyan);
+        toTargetV3 = new(toTargetV3.x, 0, toTargetV3.z);
     }
 
     public void SetCustomTarget(Vector3 target)
@@ -431,15 +437,6 @@ public class Ship : MonoBehaviour
     {
         caption = Instantiate(Uc.captionPrefab, UI.transform);
         caption.GetComponent<Caption>().Setup(this);
-    }
-
-    public void UpdateCameraPosition()
-    {
-        var coef = Input.GetKey(KeyCode.LeftControl) ? .8f : .16f;
-
-        MainCameraTransform.position = ActiveShipTransform.position +
-                                       InitialCameraOffset + // vertical offset
-                                       ActiveShip.toTargetV3 * coef; // horizontal offset
     }
 
     public void SetIsFiring(bool enable)
