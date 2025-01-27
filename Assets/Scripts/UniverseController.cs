@@ -75,8 +75,11 @@ public class UniverseController : MonoBehaviour
     Vector3 _debugVelocity = Vector3.zero;
     public float _dampSpeed = 1;
     List<Vector3> _mouseHitPositions = new();
-    float _maxCursorDistance = 100f;
-    public Transform distanceRing;
+    float _maxCamTranslation = 40;
+    float _camTranslationFuncParam; 
+    float _camTranslationFuncParamSqr; 
+    float _camTranslationFuncParamSqrHalf; 
+    float _camTranslationFuncParamSqrQuarter; 
 
     void Awake()
     {
@@ -104,8 +107,10 @@ public class UniverseController : MonoBehaviour
         InitialCameraOffset = MainCameraTransform.position - ActiveShipTransform.position;
         // _starMapMaterial = starMapBackgroundTransform.GetComponent<Renderer>().material;
         // _initialCameraToBackgroundOffset = starMapBackgroundTransform.position - MainCameraTransform.position;
-
-        distanceRing.transform.localScale = new(_maxCursorDistance, 1, _maxCursorDistance);
+        _camTranslationFuncParam = 2 * Mathf.Sqrt(_maxCamTranslation);
+        _camTranslationFuncParamSqr = Mathf.Pow(_camTranslationFuncParam, 2);
+        _camTranslationFuncParamSqrHalf = _camTranslationFuncParamSqr / 2;
+        _camTranslationFuncParamSqrQuarter = _camTranslationFuncParamSqrHalf / 2;
     }
 
     void Update()
@@ -124,6 +129,13 @@ public class UniverseController : MonoBehaviour
         // UpdateBackgroundTexture();
 
         UpdateStarFieldCamera();
+    }
+
+    void UpdateMouseCursorHitPoint()
+    {
+        var ray = ScreenPointToRay(mainCamera, Input.mousePosition);
+        _raycastPlane.Raycast(ray, out var distance);
+        MouseCursorHitPoint = ray.GetPoint(distance);
     }
 
     void UpdateBackgroundTexture()
@@ -270,21 +282,25 @@ public class UniverseController : MonoBehaviour
 
     void UpdateCameraPosition()
     {
-        // distanceRing.position = ActiveShipTransform.position;
-
         MainCameraTransform.position = ActiveShipTransform.position + InitialCameraOffset;
 
-        var ray = ScreenPointToRay(mainCamera, Input.mousePosition);
-        _raycastPlane.Raycast(ray, out var distance);
-        var hitPoint = ray.GetPoint(distance);
+        UpdateMouseCursorHitPoint();  // This have to be right here, so camera movement is smooth.
 
-        // debugDummy.position = hitPoint;
+        var shipToCursor = MouseCursorHitPoint - ActiveShipTransform.position;
+        shipToCursor = new(shipToCursor.x, 0, shipToCursor.z);
 
-        var toCursor = hitPoint - ActiveShipTransform.position;
-        toCursor = new(toCursor.x, 0, toCursor.z);
+        var shipToCursorMagnitude = shipToCursor.magnitude;
 
-        var coef = Input.GetKey(KeyCode.LeftControl) ? .8f : .16f;
-        MainCameraTransform.Translate(toCursor * coef, Space.World);
+        shipToCursor = shipToCursorMagnitude < _camTranslationFuncParamSqrHalf ?
+            SetVectorLength(shipToCursor, shipToCursorMagnitude - Mathf.Pow(shipToCursorMagnitude / _camTranslationFuncParam, 2)) :
+            SetVectorLength(shipToCursor, _camTranslationFuncParamSqrQuarter);
+ 
+        var coef = Input.GetKey(KeyCode.LeftControl) ? 5f : 1f;
+        var translateAmount = shipToCursor * coef;
+
+        MainCameraTransform.Translate(translateAmount, Space.World);
+
+        InfoText.text = shipToCursor.magnitude.ToString();
     }
 
     public static Ray ScreenPointToRay(Camera camera, Vector3 screenPos) {
@@ -348,6 +364,14 @@ public class UniverseController : MonoBehaviour
     public static Vector3 SetVectorLength(Vector3 vector, float length)
     {
         return vector.normalized * length;
+    }
+
+    public static Vector3 ClampVectorToSqrLength(Vector3 vector, float maxSqrLength)
+    {
+        if (vector.sqrMagnitude > maxSqrLength)
+            return SetVectorLength(vector, Mathf.Sqrt(maxSqrLength));
+
+        return vector;
     }
 
     // Target's velocity is predicted, observer is checking collision / shooting with observerVelocity

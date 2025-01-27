@@ -230,6 +230,8 @@ public class Ship : MonoBehaviour
         _forwardToTargetAngle = - Vector2.SignedAngle(new(forward.x, forward.z), new(toTargetNormalized.x, toTargetNormalized.z));
         rb.AddTorque(_forwardToTargetAngle * _rotationSpeedVector, ForceMode.Acceleration);
 
+        // InfoText.text = toTargetV3.ToString();
+
         // var b = a >= 3 ? 10 : a <= -3 ? -10 : 0;
         // rb.AddTorque(b * rotationSpeed * Vector3.up, ForceMode.Acceleration);
 
@@ -240,7 +242,7 @@ public class Ship : MonoBehaviour
         _rbTransform.localEulerAngles = new(0, transform.localEulerAngles.y, Mathf.Clamp(- 20 * rb.angularVelocity.y, - maxRollAngle, maxRollAngle));
     }
 
-    void UpdateToTargetV3()
+    public void UpdateToTargetV3()
     {
         // TODO: Pokud je to player, transform.position bych nahradil za ActiveShipTransform
         toTargetV3 = IsPlayer() || turnType == TurnType.CustomTarget ? _customTarget - transform.position : rb.velocity;
