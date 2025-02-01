@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 using static Decal;
@@ -36,9 +37,12 @@ public class FPSProjectile : MonoBehaviour
         if (Time.time > _destroyAt)
             Destroy(gameObject);
 
-        CheckCollision();
-
         transform.Translate(velocity * Time.deltaTime);
+    }
+
+    void FixedUpdate()
+    {
+        CheckCollision();
     }
 
     void CheckCollision()

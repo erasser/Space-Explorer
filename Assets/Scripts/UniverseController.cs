@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using DigitalRuby.Tween;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.VFX;
 using static Ship;
@@ -20,7 +19,6 @@ public class UniverseController : MonoBehaviour
     public int shootableShipsNeutralLayer;
     [HideInInspector]
     public int shootableShipsEnemyLayer;
-    public LayerMask raycastPlaneLayer;
     public LayerMask closestShipColliderLayer;  // all ships (my solution for multiple gameObject layers)
     // public LayerMask predictiveCollidersLayer;
     public static Vector3 MouseCursorHitPoint;
@@ -70,12 +68,8 @@ public class UniverseController : MonoBehaviour
     bool _warp;
     static Plane _raycastPlane = new (Vector3.up, Vector3.zero);
     Vector3 _debugV3;
-    public Transform debugDummy;
     Vector3 _lastCamPos;
-    Vector3 _debugVelocity = Vector3.zero;
-    public float _dampSpeed = 1;
-    List<Vector3> _mouseHitPositions = new();
-    float _maxCamTranslation = 40;
+    float _maxCamTranslation = 20;
     float _camTranslationFuncParam; 
     float _camTranslationFuncParamSqr; 
     float _camTranslationFuncParamSqrHalf; 
@@ -180,7 +174,7 @@ public class UniverseController : MonoBehaviour
             ActiveShip.SetMoveVectorHorizontal(0);
 
         if (Input.GetKey(KeyCode.LeftShift))
-            ActiveShip.afterburnerCoefficient = 50;
+            ActiveShip.afterburnerCoefficient = 4;
         else
             ActiveShip.afterburnerCoefficient = 1;
 
@@ -299,8 +293,6 @@ public class UniverseController : MonoBehaviour
         var translateAmount = shipToCursor * coef;
 
         MainCameraTransform.Translate(translateAmount, Space.World);
-
-        InfoText.text = shipToCursor.magnitude.ToString();
     }
 
     public static Ray ScreenPointToRay(Camera camera, Vector3 screenPos) {

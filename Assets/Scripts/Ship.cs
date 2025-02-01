@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -58,6 +59,10 @@ public class Ship : MonoBehaviour
     float _forwardToTargetAngle;
     // float _collidedWithOtherShipAt;
     public static Vector3 ActiveShipVelocityEstimate;
+    PidController _angleController;
+    PidController _angularVelocityController;
+    float _debugMaxAngularVelocity;
+    float _hasCollidedAt;
 
     public enum TurnType    // Type of Ship rotation
     {
@@ -93,6 +98,10 @@ public class Ship : MonoBehaviour
         UpdateShootableLayerMasks();
 
         PrepareJets();
+
+        // InitiatePids();
+
+        // rb.maxAngularVelocity = .1f;
     }
 
     void OnEnable()
@@ -103,7 +112,7 @@ public class Ship : MonoBehaviour
 
     void Update()
     {
-        UpdateToTargetV3();
+        UpdateToTargetV3();  // TODO: Má to smysl mít tady? Možná jen pro playera; pak to možná rozdělit?
         
         // transform.Translate(Time.deltaTime * 400 * Vector3.right);
     }
@@ -114,6 +123,8 @@ public class Ship : MonoBehaviour
         
         Move();
         Rotate();
+        // PidRotate();
+
         UpdateJets();
         ProcessConstraints();
 
@@ -124,12 +135,20 @@ public class Ship : MonoBehaviour
 
         if (predictPositionDummyTransform)
             predictPositionDummyTransform.position = Uc.mainCamera.WorldToScreenPoint(transform.position + GetPredictedPositionOffset(this, rb.velocity, ActiveShip.gameObject, ActiveShip._fastestWeaponSpeedMetersPerSecond));
+
+        if (_hasCollidedAt > 0 && Time.time - _hasCollidedAt > 1)
+            _hasCollidedAt = 0;
     }
 
     void ProcessConstraints()
     {
-        // Rotation X and position Y constraints don't work together. This pushes object to position Y.
-        rb.AddForce(200 * _rbTransform.position.y * Time.fixedDeltaTime * Vector3.down, ForceMode.Acceleration);
+        InfoText.text = "not applying Y constraint";
+        if (_hasCollidedAt == 0)
+            // Rotation X and position Y constraints don't work together. This pushes object to position Y.
+        {
+            rb.AddForce(200 * _rbTransform.position.y * Time.fixedDeltaTime * Vector3.down, ForceMode.Acceleration);
+            InfoText.text = "applying Y constraint";
+        }
     }
 
     void PrepareWeapons()
@@ -223,14 +242,15 @@ public class Ship : MonoBehaviour
 
     void Rotate()
     {
-        // print("rotating ship");
         // yaw
         var forward = transform.forward;
         var toTargetNormalized = toTargetV3.normalized;
         _forwardToTargetAngle = - Vector2.SignedAngle(new(forward.x, forward.z), new(toTargetNormalized.x, toTargetNormalized.z));
         rb.AddTorque(_forwardToTargetAngle * _rotationSpeedVector, ForceMode.Acceleration);
 
-        // InfoText.text = toTargetV3.ToString();
+        // InfoText.text = rb.angularVelocity.magnitude.ToString();
+        // InfoText.text = (_forwardToTargetAngle > 0).ToString();
+
 
         // var b = a >= 3 ? 10 : a <= -3 ? -10 : 0;
         // rb.AddTorque(b * rotationSpeed * Vector3.up, ForceMode.Acceleration);
@@ -240,6 +260,39 @@ public class Ship : MonoBehaviour
 
         // roll
         _rbTransform.localEulerAngles = new(0, transform.localEulerAngles.y, Mathf.Clamp(- 20 * rb.angularVelocity.y, - maxRollAngle, maxRollAngle));
+
+        // _debugMaxAngularVelocity = Mathf.Max(_debugMaxAngularVelocity, rb.angularVelocity.magnitude);
+        
+        // • Aplikovat konstantní sílu
+        // • Spočítat Δv na 1° úhlu a zobrazit si to, jestli je to konstantní
+        
+
+    }
+
+    void InitiatePids()
+    {
+        _angleController = new(10, .6f);
+        _angularVelocityController = new(33, .25f);
+
+        PidController.TargetAngle = transform.eulerAngles.y;
+    }
+
+    void PidRotate()
+    {
+        var forward = transform.forward;
+        var toTargetNormalized = toTargetV3.normalized;
+        PidController.TargetAngle = - Vector2.SignedAngle(new(forward.x, forward.z), new(toTargetNormalized.x, toTargetNormalized.z));
+        
+        float angleError = Mathf.DeltaAngle(transform.eulerAngles.y, PidController.TargetAngle);
+        float torqueCorrectionForAngle = _angleController.GetOutput(angleError, Time.fixedDeltaTime);
+        
+        float angularVelocityError = - rb.angularVelocity.y;
+        float torqueCorrectionForAngularVelocity = _angularVelocityController.GetOutput(angularVelocityError, Time.fixedDeltaTime);
+        
+        PidController.Torque = 100 * transform.up * (torqueCorrectionForAngle + torqueCorrectionForAngularVelocity);
+        rb.AddTorque(PidController.Torque);
+
+        InfoText.text = "torque = " + PidController.Torque;
     }
 
     public void UpdateToTargetV3()
@@ -459,9 +512,14 @@ public class Ship : MonoBehaviour
         _collidedWithOtherShipAt = Time.time;
 
         DisableJets();
+    }*/
+
+    void OnCollisionStay(Collision other)
+    {
+        _hasCollidedAt = Time.time;
     }
 
-    void CheckCollidedWithOtherShipAt()
+    /*void CheckCollidedWithOtherShipAt()
     {
         if (_collidedWithOtherShipAt == 0)
             return;

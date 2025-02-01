@@ -47,6 +47,6 @@ public class Floating : MonoBehaviour
             transform.Translate(moveBy, translationSpace);
         }
         
-        transform.Rotate(constantRotation, rotationSpace);
+        transform.Rotate(constantRotation, rotationSpeed * Time.deltaTime, rotationSpace);
     }
 }
