@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using static FPSPlayer;
+using static MyMath;
 
 // TODO: Terrainy mimo dosah disablovat
 
@@ -145,10 +146,9 @@ public class FPSTerrainController : MonoBehaviour
     void CreateTerrainAtCoords(Vector2 coord)
     {
         var terrain = Instantiate(_terrainPrefabStatic);
-        Vector2 pos = TerrainCoordinatesToWorldPosition(coord);
 
         var terrainTransform = terrain.transform;
-        terrainTransform.position = new(pos.x, 0, pos.y);
+        terrainTransform.position = SetVectorYToZero(TerrainCoordinatesToWorldPosition(coord));
         terrain.xCoordinate = (int)coord.x;
         terrain.zCoordinate = (int)coord.y;
 

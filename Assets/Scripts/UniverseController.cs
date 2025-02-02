@@ -7,6 +7,7 @@ using UnityEngine.VFX;
 using static Ship;
 using static AiGeneral;
 using Random = UnityEngine.Random;
+using static MyMath;
 
 public class UniverseController : MonoBehaviour
 {
@@ -282,8 +283,7 @@ public class UniverseController : MonoBehaviour
 
         UpdateMouseCursorHitPoint();  // This have to be right here, so camera movement is smooth.
 
-        var shipToCursor = MouseCursorHitPoint - ActiveShipTransform.position;
-        shipToCursor = new(shipToCursor.x, 0, shipToCursor.z);
+        var shipToCursor = SetVectorYToZero(MouseCursorHitPoint - ActiveShipTransform.position);
 
         var shipToCursorMagnitude = shipToCursor.magnitude;
 
@@ -353,27 +353,6 @@ public class UniverseController : MonoBehaviour
     {
         print("tween start");
         mainCamera.fieldOfView = t.CurrentValue;
-    }
-
-    public static Vector3 SetVectorLength(Vector3 vector, float length)
-    {
-        return vector.normalized * length;
-    }
-
-    public static Vector3 SetVectorYToZero(Vector3 vector, bool maintainMagnitude = false)
-    {
-        if (!maintainMagnitude)
-            return new(vector.x, 0, vector.z);
-
-        return SetVectorLength(new(vector.x, 0, vector.z), vector.magnitude);
-    }
-
-    public static Vector3 ClampVectorToSqrLength(Vector3 vector, float maxSqrLength)
-    {
-        if (vector.sqrMagnitude > maxSqrLength)
-            return SetVectorLength(vector, Mathf.Sqrt(maxSqrLength));
-
-        return vector;
     }
 
     // Target's velocity is predicted, observer is checking collision / shooting with observerVelocity

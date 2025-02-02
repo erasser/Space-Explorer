@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using static UniverseController;
 using static Ship;
+using static MyMath;
 
 public abstract class Projectile : MonoBehaviour
 {
@@ -93,7 +94,7 @@ public abstract class Projectile : MonoBehaviour
         // Debug.DrawRay(transform.position, transformCached.forward * _speedV3.z, Color.yellow);
 
         // if (Physics.Raycast(transformCached.position, transformCached.forward, out var hit, _sqrRaycastLength, universeController.shootableLayer))
-        if (Physics.Raycast(new(transform.position.x, 0, transform.position.z), transform.forward, out var hit, _sqrRaycastLength, _shootableLayerMask))
+        if (Physics.Raycast(SetVectorYToZero(transform.position), transform.forward, out var hit, _sqrRaycastLength, _shootableLayerMask))
         {
             Uc.LaunchHitEffect(hit.point, hit.normal);
 

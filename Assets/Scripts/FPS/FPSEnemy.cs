@@ -3,6 +3,7 @@ using UnityEngine.AI;
 using static FPSPlayer;
 using static WorldController;
 using Random = UnityEngine.Random;
+using static MyMath;
 
 public class FPSEnemy : MonoBehaviour
 {
@@ -133,7 +134,7 @@ public class FPSEnemy : MonoBehaviour
 
         void SetFightingDestination(float halfAngle)  // halfAngle = 0 => to player
         {
-            var direction = Quaternion.Euler(0, Random.Range(- halfAngle, halfAngle), 0) * new Vector3(_toTarget.x, 0, _toTarget.z).normalized;
+            var direction = Quaternion.Euler(0, Random.Range(- halfAngle, halfAngle), 0) * SetVectorYToZero(_toTarget).normalized;
             var distance = Random.Range(3f, 15f);
 
             SetDestination(transform.position + direction * distance);

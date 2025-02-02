@@ -1,4 +1,4 @@
-using System;
+using static MyMath;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -301,7 +301,7 @@ public class Ship : MonoBehaviour
     {
         // TODO: Pokud je to player, transform.position bych nahradil za ActiveShipTransform
         toTargetV3 = IsPlayer() || turnType == TurnType.CustomTarget ? _customTarget - transform.position : rb.velocity;
-        toTargetV3 = new(toTargetV3.x, 0, toTargetV3.z);
+        toTargetV3 = SetVectorYToZero(toTargetV3);
     }
 
     public void SetCustomTarget(Vector3 target)

@@ -1,4 +1,4 @@
-using System;
+using static MyMath;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -323,8 +323,7 @@ public class MyNavMeshAgent : MonoBehaviour
 
     bool GeneratePathTo(Vector3 targetLocation)
     {
-        var position = transform.position;
-        var result = NavMesh.CalculatePath(new(position.x, 0, position.z), targetLocation, NavMesh.AllAreas, _navMeshPath);
+        var result = NavMesh.CalculatePath(SetVectorYToZero(transform.position), targetLocation, NavMesh.AllAreas, _navMeshPath);
 
         if (!result)
         {
