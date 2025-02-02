@@ -77,10 +77,6 @@ public class Ship : MonoBehaviour
         shipCollider = GetComponent<Collider>();
         velocityEstimator = GetComponent<VelocityEstimator>();
         _rotationSpeedVector = rotationSpeed * Vector3.up;
-        // rb.automaticCenterOfMass = false;
-        // rb.automaticInertiaTensor = false;
-        // rb.centerOfMass = Vector3.zero;
-        // rb.inertiaTensorRotation = Quaternion.identity;
 
         if (IsEnemy())
             EnemyShips.Add(this);
@@ -246,7 +242,9 @@ public class Ship : MonoBehaviour
         var forward = transform.forward;
         var toTargetNormalized = toTargetV3.normalized;
         _forwardToTargetAngle = - Vector2.SignedAngle(new(forward.x, forward.z), new(toTargetNormalized.x, toTargetNormalized.z));
-        rb.AddTorque(_forwardToTargetAngle * _rotationSpeedVector, ForceMode.Acceleration);
+        // rb.AddTorque(_forwardToTargetAngle * _rotationSpeedVector, ForceMode.Acceleration);
+        
+        rb.AddTorque(GetSign() * _rotationSpeedVector, ForceMode.Acceleration);
 
         // InfoText.text = rb.angularVelocity.magnitude.ToString();
         // InfoText.text = (_forwardToTargetAngle > 0).ToString();
@@ -265,7 +263,11 @@ public class Ship : MonoBehaviour
         
         // • Aplikovat konstantní sílu
         // • Spočítat Δv na 1° úhlu a zobrazit si to, jestli je to konstantní
-        
+
+        int GetSign()
+        {
+            return _forwardToTargetAngle > 0 ? 1 : -1;
+        }
 
     }
 

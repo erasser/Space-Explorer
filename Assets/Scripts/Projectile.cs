@@ -14,6 +14,7 @@ public abstract class Projectile : MonoBehaviour
     [HideInInspector]
     public Vector3 velocity;  // m / s
     LayerMask _shootableLayerMask;
+    public float kineticEnergy = 500;
     // public bool followTarget;
     // [Range(0, 200)]
     // public float followTargetRotationSpeed = 50;
@@ -33,6 +34,7 @@ public abstract class Projectile : MonoBehaviour
     public void Start()
     {
         velocity = speed * Time.fixedDeltaTime * Vector3.forward;
+        kineticEnergy *= - 1;
     }
 
     public void FixedUpdate()
@@ -98,6 +100,14 @@ public abstract class Projectile : MonoBehaviour
             hit.collider.gameObject.GetComponent<Damageable>()?.TakeDamage(10);
             // TODO: SEND MESSAGE
             // LaserHitEvent(this);
+
+            var rb = hit.collider.gameObject.GetComponent<Rigidbody>();
+            if (rb)
+            {
+                var force = kineticEnergy * hit.normal;
+                force = SetVectorYToZero(force, true);
+                rb.AddForceAtPosition(force, hit.point, ForceMode.Impulse);
+            }
 
             Destroy(gameObject);
         }

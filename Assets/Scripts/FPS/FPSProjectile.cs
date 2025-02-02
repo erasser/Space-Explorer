@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 using static Decal;
@@ -55,7 +54,7 @@ public class FPSProjectile : MonoBehaviour
 
             var rb = hit.collider.gameObject.GetComponent<Rigidbody>();
             if (rb)
-                rb.AddForceAtPosition(kineticEnergy / (_bouncesDone + 1) * hit.normal, hit.point);
+                rb.AddForceAtPosition(kineticEnergy / (_bouncesDone + 1) * hit.normal, hit.point, ForceMode.Impulse);
 
             var reflectionVector = Vector3.Reflect(transform.forward, hit.normal);
 

@@ -101,6 +101,7 @@ MonoBehaviour:
   range: 1000
   speed: 70
   velocity: {x: 0, y: 0, z: 0}
+  kineticEnergy: 1000
   rotationSpeed: 2
   trail: {fileID: 8477747844253394583}
 --- !u!1 &4643131898297040200

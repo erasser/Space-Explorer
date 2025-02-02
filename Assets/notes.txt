@@ -22,7 +22,7 @@ Daly by se traily renderovat pod lodí? Možná pomocí sorting layers u trail r
 
 Captions se renderují i mimo kameru.
 
-TODO: projectile pooling
+TODO: projectile pooling +  udělat z nich scriptable objekty pro úsporu paměti?
 
 Unity hierarchia: - doporučoval by som dodržovať nejaké "naming conventions" - každý objekt v scéne je nazvaný inak a vytvára to zbytočný chaos
 

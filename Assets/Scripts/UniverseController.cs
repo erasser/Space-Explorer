@@ -276,7 +276,9 @@ public class UniverseController : MonoBehaviour
 
     void UpdateCameraPosition()
     {
-        MainCameraTransform.position = ActiveShipTransform.position + InitialCameraOffset;
+        var newCamPos = ActiveShipTransform.position + InitialCameraOffset;
+        newCamPos = new(newCamPos.x, InitialCameraOffset.y, newCamPos.z);
+        MainCameraTransform.position = newCamPos;
 
         UpdateMouseCursorHitPoint();  // This have to be right here, so camera movement is smooth.
 
@@ -356,6 +358,14 @@ public class UniverseController : MonoBehaviour
     public static Vector3 SetVectorLength(Vector3 vector, float length)
     {
         return vector.normalized * length;
+    }
+
+    public static Vector3 SetVectorYToZero(Vector3 vector, bool maintainMagnitude = false)
+    {
+        if (!maintainMagnitude)
+            return new(vector.x, 0, vector.z);
+
+        return SetVectorLength(new(vector.x, 0, vector.z), vector.magnitude);
     }
 
     public static Vector3 ClampVectorToSqrLength(Vector3 vector, float maxSqrLength)

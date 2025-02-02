@@ -100,3 +100,4 @@ MonoBehaviour:
   range: 200
   speed: 100
   velocity: {x: 0, y: 0, z: 0}
+  kineticEnergy: 400
