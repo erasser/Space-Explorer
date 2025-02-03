@@ -55,7 +55,7 @@ public class Caption : MonoBehaviour
 
     void UpdatePosition()
     {
-        transform.position = Uc.mainCamera.WorldToScreenPoint(targetShip.transform.position + targetShip.shipCollider.bounds.extents.z * 2 * Vector3.back);
+        transform.position = MainCamera.WorldToScreenPoint(targetShip.transform.position + targetShip.shipCollider.bounds.extents.z * 2 * Vector3.back);
     }
 
     public void UpdateText(/*Content content*/)

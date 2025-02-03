@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using DigitalRuby.Tween;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.VFX;
@@ -24,6 +26,7 @@ public class UniverseController : MonoBehaviour
     // public LayerMask predictiveCollidersLayer;
     public static Vector3 MouseCursorHitPoint;
     public Camera mainCamera;
+    public static Camera MainCamera;
     public static Transform MainCameraTransform;
     public static Vector3 InitialCameraOffset;
     public GameObject astronautPrefab;
@@ -67,14 +70,15 @@ public class UniverseController : MonoBehaviour
     public Transform starFieldCameraTransform;
     public SS_Starfield2D starField;
     bool _warp;
-    static Plane _raycastPlane = new (Vector3.up, Vector3.zero);
+    public static Plane RaycastPlaneY0 = new (Vector3.up, Vector3.zero);
     Vector3 _debugV3;
     Vector3 _lastCamPos;
-    float _maxCamTranslation = 20;
+    const float MaxCamTranslation = 20;
     float _camTranslationFuncParam; 
     float _camTranslationFuncParamSqr; 
     float _camTranslationFuncParamSqrHalf; 
-    float _camTranslationFuncParamSqrQuarter; 
+    float _camTranslationFuncParamSqrQuarter;
+    public Comet cometPrefab;
 
     void Awake()
     {
@@ -87,8 +91,9 @@ public class UniverseController : MonoBehaviour
 
     void Start()
     {
-        MainCameraTransform = mainCamera.transform;
-        _initialFov = mainCamera.fieldOfView;
+        MainCamera = mainCamera;
+        MainCameraTransform = MainCamera.transform;
+        _initialFov = MainCamera.fieldOfView;
         Astronaut = Instantiate(astronautPrefab).GetComponent<Ship>();
         Astronaut.gameObject.SetActive(false);
         Cursor.SetCursor(mouseCursor, new(mouseCursor.width / 2f, mouseCursor.height / 2f), CursorMode.Auto);
@@ -102,10 +107,11 @@ public class UniverseController : MonoBehaviour
         InitialCameraOffset = MainCameraTransform.position - ActiveShipTransform.position;
         // _starMapMaterial = starMapBackgroundTransform.GetComponent<Renderer>().material;
         // _initialCameraToBackgroundOffset = starMapBackgroundTransform.position - MainCameraTransform.position;
-        _camTranslationFuncParam = 2 * Mathf.Sqrt(_maxCamTranslation);
+        _camTranslationFuncParam = 2 * Mathf.Sqrt(MaxCamTranslation);
         _camTranslationFuncParamSqr = Mathf.Pow(_camTranslationFuncParam, 2);
         _camTranslationFuncParamSqrHalf = _camTranslationFuncParamSqr / 2;
         _camTranslationFuncParamSqrQuarter = _camTranslationFuncParamSqrHalf / 2;
+        StartCoroutine(CreateComet());
     }
 
     void Update()
@@ -128,9 +134,7 @@ public class UniverseController : MonoBehaviour
 
     void UpdateMouseCursorHitPoint()
     {
-        var ray = ScreenPointToRay(mainCamera, Input.mousePosition);
-        _raycastPlane.Raycast(ray, out var distance);
-        MouseCursorHitPoint = ray.GetPoint(distance);
+        MouseCursorHitPoint = RaycastPlane();
     }
 
     void UpdateBackgroundTexture()
@@ -259,7 +263,7 @@ public class UniverseController : MonoBehaviour
         Astronaut.gameObject.SetActive(false);
         ship.SetAsActiveShip();
 
-        mainCamera.fieldOfView = _initialFov;
+        MainCamera.fieldOfView = _initialFov;
     }
 
     void EjectAstronaut()
@@ -272,7 +276,7 @@ public class UniverseController : MonoBehaviour
         ActiveShip.moveVector.x = ActiveShip.moveVector.z = 0;
         Astronaut.SetAsActiveShip();
 
-        mainCamera.fieldOfView = _initialFov / 2;
+        MainCamera.fieldOfView = _initialFov / 2;
     }
 
     void UpdateCameraPosition()
@@ -297,34 +301,6 @@ public class UniverseController : MonoBehaviour
         MainCameraTransform.Translate(translateAmount, Space.World);
     }
 
-    public static Ray ScreenPointToRay(Camera camera, Vector3 screenPos) {
-        // Remap so (0, 0) is the center of the window,
-        // and the edges are at -0.5 and +0.5.
-        Vector2 relative = new Vector2(
-            screenPos.x / Screen.width - .5f,
-            screenPos.y / Screen.height - .5f
-        );
-
-        // Angle in radians from the view axis
-        // to the top plane of the view pyramid.
-        float verticalAngle = 0.5f * Mathf.Deg2Rad * camera.fieldOfView;
-
-        // World space height of the view pyramid
-        // measured at 1 m depth from the camera.
-        float worldHeight = 2f * Mathf.Tan(verticalAngle);
-
-        // Convert relative position to world units.
-        Vector3 worldUnits = relative * worldHeight;
-        worldUnits.x *= camera.aspect;
-        worldUnits.z = 1;
-
-        // Rotate to match camera orientation.
-        Vector3 direction = camera.transform.rotation * worldUnits;
-
-        // Output a ray from camera position, along this direction.
-        return new Ray(camera.transform.position, direction);
-    }
-
     void SetCameraHeight(float multiplier)
     {
         var startPos = MainCameraTransform.position;
@@ -341,7 +317,7 @@ public class UniverseController : MonoBehaviour
 
     void ZoomIn()
     {
-        var startFov = mainCamera.fieldOfView;
+        var startFov = MainCamera.fieldOfView;
         var endFov = 40;
 
         // mainCamera.gameObject.Tween("ZoomIn", startFov, endFov, 100, TweenScaleFunctions.Linear, TweenFov);
@@ -352,7 +328,7 @@ public class UniverseController : MonoBehaviour
     void TweenFov(ITween<float> t)
     {
         print("tween start");
-        mainCamera.fieldOfView = t.CurrentValue;
+        MainCamera.fieldOfView = t.CurrentValue;
     }
 
     // Target's velocity is predicted, observer is checking collision / shooting with observerVelocity
@@ -439,7 +415,7 @@ public class UniverseController : MonoBehaviour
         if (selectedObject)
             selectedObject.caption.gameObject.SetActive(false);
 
-        if (Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out var hit, Mathf.Infinity, 1 << shootableShipsEnemyLayer | 1 << shootableShipsNeutralLayer))
+        if (Physics.Raycast(MainCamera.ScreenPointToRay(Input.mousePosition), out var hit, Mathf.Infinity, 1 << shootableShipsEnemyLayer | 1 << shootableShipsNeutralLayer))
         {
             selectedObject = hit.collider.gameObject.GetComponent<Ship>();
             selectedObject.caption.gameObject.SetActive(true);
@@ -472,5 +448,33 @@ public class UniverseController : MonoBehaviour
         // }
 
         starField.warp = 0;
+    }
+
+    IEnumerator CreateComet()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(30f, 60f));
+            var comet = Instantiate(cometPrefab);
+
+            var distance = Random.Range(400, 800);
+            var position = MainCamera.ScreenToWorldPoint(new(0, 0, distance));
+            position -= new Vector3(100, 0, 100);                  // translate off-screen
+
+            var rotateAround = MainCamera.ScreenToWorldPoint(new(Screen.width / 2f, Screen.height / 2f, distance));
+            var radius = (position - rotateAround).magnitude;
+            var angle = Random.Range(0f, TwoPI);
+
+            var x = rotateAround.x + radius * Mathf.Cos(angle);
+            var z = rotateAround.z + radius * Mathf.Sin(angle);
+
+            comet.transform.position = new(x, position.y, z);
+
+            var targetRange = radius / 2;
+            var targetX = rotateAround.x + Random.Range(- targetRange, targetRange);
+            var targetZ = rotateAround.z + Random.Range(- targetRange, targetRange);
+            Vector3 targetPoint = new(targetX, position.y, targetZ);
+            comet.transform.LookAt(targetPoint);
+        }
     }
 }

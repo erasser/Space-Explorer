@@ -130,7 +130,7 @@ public class Ship : MonoBehaviour
         // UpdatePredictiveCollider();
 
         if (predictPositionDummyTransform)
-            predictPositionDummyTransform.position = Uc.mainCamera.WorldToScreenPoint(transform.position + GetPredictedPositionOffset(this, rb.velocity, ActiveShip.gameObject, ActiveShip._fastestWeaponSpeedMetersPerSecond));
+            predictPositionDummyTransform.position = MainCamera.WorldToScreenPoint(transform.position + GetPredictedPositionOffset(this, rb.velocity, ActiveShip.gameObject, ActiveShip._fastestWeaponSpeedMetersPerSecond));
 
         if (_hasCollidedAt > 0 && Time.time - _hasCollidedAt > 1)
             _hasCollidedAt = 0;
@@ -138,7 +138,6 @@ public class Ship : MonoBehaviour
 
     void ProcessConstraints()
     {
-        InfoText.text = "not applying Y constraint";
         if (_hasCollidedAt == 0)
             // Rotation X and position Y constraints don't work together. This pushes object to position Y.
         {
