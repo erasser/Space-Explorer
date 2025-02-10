@@ -56,7 +56,7 @@ public class AiPilot : MonoBehaviour
                 IWantToPatrolTo(new(-100, 0, -75));
         }
 
-        if (Input.GetKeyDown(KeyCode.G))
+        if (Input.GetKeyDown(KeyCode.T))
         {
             _myNavMeshAgent.ReGeneratePath();
 

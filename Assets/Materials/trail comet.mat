@@ -178,7 +178,7 @@ Material:
     - _DistortionBlend: 0.5
     - _DistortionEnabled: 0
     - _DistortionStrength: 1
-    - _DistortionStrengthScaled: 0
+    - _DistortionStrengthScaled: 0.1
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 1

@@ -1,5 +1,5 @@
 ﻿TODO!
-• U shipů je ten VelocityEstimator snad zbytečnej, je to (skoro) totéž jako rb.velocity
+• Prevenci kolizí by mohly řešit NavMesh obstacle
 • Zkontrolovat všechny AddForce() a AddTorque(), viz ForceModes.txt
 • Když enemy nevidí přes překážku přímo na svůj target, neměl by se chovat jako debil tj. střílet do překážky
 • Position prediction nefunguje s VSyncem - mělo by se vyřešit po vyřešení framerate independency.

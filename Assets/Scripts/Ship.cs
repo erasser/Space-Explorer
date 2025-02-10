@@ -2,6 +2,7 @@ using static MyMath;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.VFX;
 using static UniverseController;
 
@@ -63,6 +64,7 @@ public class Ship : MonoBehaviour
     PidController _angularVelocityController;
     float _debugMaxAngularVelocity;
     float _hasCollidedAt;
+    public bool autopilot;
 
     public enum TurnType    // Type of Ship rotation
     {
@@ -73,6 +75,8 @@ public class Ship : MonoBehaviour
     void Start()
     {
         // ShipList.Add(this);
+        rb = GetComponent<Rigidbody>();
+        _rbTransform = rb.transform;
         ShootingSqrRange = Mathf.Pow(ShootingRange, 2);
         shipCollider = GetComponent<Collider>();
         velocityEstimator = GetComponent<VelocityEstimator>();
@@ -102,8 +106,7 @@ public class Ship : MonoBehaviour
 
     void OnEnable()
     {
-        rb = GetComponent<Rigidbody>();
-        _rbTransform = rb.transform;
+        // rb assign was there, IDK why
     }
 
     void Update()
@@ -115,8 +118,8 @@ public class Ship : MonoBehaviour
 
     void FixedUpdate()
     {
-        // return;
-        
+        // InfoText.text = toTargetV3.magnitude.ToString();
+
         Move();
         Rotate();
         // PidRotate();
@@ -129,7 +132,7 @@ public class Ship : MonoBehaviour
 
         // UpdatePredictiveCollider();
 
-        if (predictPositionDummyTransform)
+        if (predictPositionDummyTransform)  // TODO: Místo rb.velocity by tu možná měl být VelocityEstimator
             predictPositionDummyTransform.position = MainCamera.WorldToScreenPoint(transform.position + GetPredictedPositionOffset(this, rb.velocity, ActiveShip.gameObject, ActiveShip._fastestWeaponSpeedMetersPerSecond));
 
         if (_hasCollidedAt > 0 && Time.time - _hasCollidedAt > 1)
@@ -142,7 +145,6 @@ public class Ship : MonoBehaviour
             // Rotation X and position Y constraints don't work together. This pushes object to position Y.
         {
             rb.AddForce(200 * _rbTransform.position.y * Time.fixedDeltaTime * Vector3.down, ForceMode.Acceleration);
-            InfoText.text = "applying Y constraint";
         }
     }
 
@@ -176,11 +178,13 @@ public class Ship : MonoBehaviour
         if (ActiveShip)
         {
             ActiveShip.gameObject.layer = Uc.shootableShipsNeutralLayer;
+            ActiveShip.turnType = TurnType.Velocity;
             // ActiveShip.predictPositionDummyTransform  // TODO: Ten predictPositionDummyTransform by nakonec asi mohli mít všichni. Tady to zapínat/vypínat.
         }
 
         ActiveShip = this;
-        ActiveShipTransform = ActiveShip.transform;
+        ActiveShipTransform = transform;
+        turnType = TurnType.CustomTarget;
 
         gameObject.layer = Uc.shootablePlayerLayer;
 
@@ -232,7 +236,12 @@ public class Ship : MonoBehaviour
         var forwardness = Vector3.Dot(transform.forward, rb.velocity.normalized) / 4 + .75f;  // .5f .. 1
 
         rb.AddForce(SetVectorLength(moveVector, speed * afterburnerCoefficient * forwardness), ForceMode.Acceleration);
-        // transform.Translate(Vector3.right * Time.deltaTime * 1000);
+
+        if (autopilot)
+        {
+            if ((_customTarget - transform.position).sqrMagnitude < 16)
+                ToggleActiveShipAutopilot(false);
+        }
     }
 
     void Rotate()
@@ -241,33 +250,25 @@ public class Ship : MonoBehaviour
         var forward = transform.forward;
         var toTargetNormalized = toTargetV3.normalized;
         _forwardToTargetAngle = - Vector2.SignedAngle(new(forward.x, forward.z), new(toTargetNormalized.x, toTargetNormalized.z));
-        // rb.AddTorque(_forwardToTargetAngle * _rotationSpeedVector, ForceMode.Acceleration);
-        
-        rb.AddTorque(GetSign() * _rotationSpeedVector, ForceMode.Acceleration);
 
-        // InfoText.text = rb.angularVelocity.magnitude.ToString();
-        // InfoText.text = (_forwardToTargetAngle > 0).ToString();
+        var absAngle = Mathf.Abs(_forwardToTargetAngle);
 
+        // d = braking distance
+        var d = rb.angularVelocity.magnitude * Mathf.Rad2Deg * (1 / rb.angularDrag - Time.fixedDeltaTime);
+        var angleDegreesToBeAddedNextFrame = rotationSpeed * Mathf.Rad2Deg * Time.fixedDeltaTime;
 
-        // var b = a >= 3 ? 10 : a <= -3 ? -10 : 0;
-        // rb.AddTorque(b * rotationSpeed * Vector3.up, ForceMode.Acceleration);
+        InfoText.text = "to be added: " + angleDegreesToBeAddedNextFrame + "\nabs angle: " + absAngle;
 
-        // if (this == ActiveShip)
-        //     InfoText.text = "angle: " + _forwardToTargetAngle;
+        if (absAngle > d && absAngle > angleDegreesToBeAddedNextFrame)
+            rb.AddTorque(rotationSpeed * GetSign() * Vector3.up, ForceMode.Acceleration);
 
         // roll
         _rbTransform.localEulerAngles = new(0, transform.localEulerAngles.y, Mathf.Clamp(- 20 * rb.angularVelocity.y, - maxRollAngle, maxRollAngle));
-
-        // _debugMaxAngularVelocity = Mathf.Max(_debugMaxAngularVelocity, rb.angularVelocity.magnitude);
-        
-        // • Aplikovat konstantní sílu
-        // • Spočítat Δv na 1° úhlu a zobrazit si to, jestli je to konstantní
 
         int GetSign()
         {
             return _forwardToTargetAngle > 0 ? 1 : -1;
         }
-
     }
 
     void InitiatePids()
@@ -293,19 +294,19 @@ public class Ship : MonoBehaviour
         PidController.Torque = 100 * transform.up * (torqueCorrectionForAngle + torqueCorrectionForAngularVelocity);
         rb.AddTorque(PidController.Torque);
 
-        InfoText.text = "torque = " + PidController.Torque;
+        // InfoText.text = "torque = " + PidController.Torque;
     }
 
     public void UpdateToTargetV3()
     {
         // TODO: Pokud je to player, transform.position bych nahradil za ActiveShipTransform
-        toTargetV3 = IsPlayer() || turnType == TurnType.CustomTarget ? _customTarget - transform.position : rb.velocity;
+        toTargetV3 = /*IsPlayer() ||*/ turnType == TurnType.CustomTarget ? _customTarget - transform.position : rb.velocity;
         toTargetV3 = SetVectorYToZero(toTargetV3);
     }
 
     public void SetCustomTarget(Vector3 target)
     {
-        _customTarget = target;
+        _customTarget = SetVectorYToZero(target);
     }
 
     void PrepareJets()
@@ -518,6 +519,17 @@ public class Ship : MonoBehaviour
     void OnCollisionStay(Collision other)
     {
         _hasCollidedAt = Time.time;
+    }
+
+    public static void ToggleActiveShipAutopilot(bool enable)
+    {
+        ActiveShip.autopilot = enable;
+        ActiveShip.turnType = TurnType.Velocity;
+        ToggleShipControls(!enable);
+        ActiveShip.SetCustomTarget(new(200, 0, 100));
+        var toTarget = ActiveShip._customTarget - ActiveShip.transform.position;
+        ActiveShip.SetMoveVectorHorizontal(toTarget.x);
+        ActiveShip.SetMoveVectorVertical(toTarget.z);
     }
 
     /*void CheckCollidedWithOtherShipAt()

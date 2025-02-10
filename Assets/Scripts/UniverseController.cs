@@ -79,6 +79,8 @@ public class UniverseController : MonoBehaviour
     float _camTranslationFuncParamSqrHalf; 
     float _camTranslationFuncParamSqrQuarter;
     public Comet cometPrefab;
+    public static bool ShipControlsEnabled = true;
+    public GameObject grid;
 
     void Awake()
     {
@@ -116,9 +118,12 @@ public class UniverseController : MonoBehaviour
 
     void Update()
     {
-        ProcessControls();
+        ProcessGeneralControls();
 
-        ActiveShip.SetCustomTarget(MouseCursorHitPoint);
+        ProcessShipControls();
+
+        if (!ActiveShip.autopilot)
+            ActiveShip.SetCustomTarget(MouseCursorHitPoint);
 
         UpdateCameraPosition();
 
@@ -157,8 +162,47 @@ public class UniverseController : MonoBehaviour
         // MyNavMeshAgent.PredictCollisions();
     }
 
-    void ProcessControls()
+    void ProcessGeneralControls()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // List<SpawnData> testSequence1 = new();
+            // testSequence1.Add(new SpawnData(0, 1));
+            // testSequence1.Add(new SpawnData(0, 2, 5));
+            // aiGeneral.SpawnSequence(testSequence1);
+
+            List<SpawnData> testSequence2 = new();
+            testSequence2.Add(new SpawnData(0, 3));
+            // testSequence2.Add(new SpawnData(0, 2, 1));
+            // testSequence2.Add(new SpawnData(0, 2, 2));
+            // testSequence2.Add(new SpawnData(0, 4, 2));
+            aiGeneral.SpawnSequence(testSequence2);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Return))
+            SceneController.LoadScene("FPS Scene");
+
+        // if (Input.GetKeyDown(KeyCode.P))
+        //     Time.timeScale = Time.timeScale > 0 ? 0 : 1;
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            ToggleActiveShipAutopilot(!ActiveShip.autopilot);
+            
+            // ActiveShip.debugRotationEnabled = !ActiveShip.debugRotationEnabled;
+            // ActiveShip.debugUhelPriStopu = ActiveShip.transform.eulerAngles.y;
+            // print(ActiveShip.transform.eulerAngles.y);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.G))
+            grid.SetActive(!grid.activeSelf);
+    }
+
+    void ProcessShipControls()
+    {
+        if (!ShipControlsEnabled)
+            return;
+
         ActiveShip.SetIsFiring(Input.GetMouseButton(0));
 
         if (Input.GetMouseButtonDown(1))
@@ -214,28 +258,6 @@ public class UniverseController : MonoBehaviour
                 }
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // List<SpawnData> testSequence1 = new();
-            // testSequence1.Add(new SpawnData(0, 1));
-            // testSequence1.Add(new SpawnData(0, 2, 5));
-            // aiGeneral.SpawnSequence(testSequence1);
-
-            List<SpawnData> testSequence2 = new();
-            testSequence2.Add(new SpawnData(0, 3));
-            // testSequence2.Add(new SpawnData(0, 2, 1));
-            // testSequence2.Add(new SpawnData(0, 2, 2));
-            // testSequence2.Add(new SpawnData(0, 4, 2));
-            aiGeneral.SpawnSequence(testSequence2);
-        }
-        
-        if (Input.GetKeyDown(KeyCode.Return))
-            SceneController.LoadScene("FPS Scene");
-
-        if (Input.GetKeyDown(KeyCode.P))
-            Time.timeScale = Time.timeScale > 0 ? 0 : 1;
-
         //AdjustScrollWheelZoom(Input.mouseScrollDelta.y);
     }
 
@@ -476,5 +498,13 @@ public class UniverseController : MonoBehaviour
             Vector3 targetPoint = new(targetX, position.y, targetZ);
             comet.transform.LookAt(targetPoint);
         }
+    }
+
+    public static void ToggleShipControls(bool enable)
+    {
+        ShipControlsEnabled = enable;
+
+        if (!enable)
+            ActiveShip.SetIsFiring(false);
     }
 }

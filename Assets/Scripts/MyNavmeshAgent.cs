@@ -107,6 +107,9 @@ public class MyNavMeshAgent : MonoBehaviour
         // if (_actualPathPointIndex >= 0 && _actualPathPointIndex < _pathPoints.Count)
         //     _tmpActivePointDummy.position = _pathPoints[_actualPathPointIndex];
 
+        // if (!_ship.IsPlayer())
+        //     InfoText.text = state.ToString();
+        
         ProcessAgentFixedUpdateDeltaTime();
 
         if (_needsRegeneratePath)
