@@ -10,6 +10,7 @@ using static Ship;
 using static AiGeneral;
 using Random = UnityEngine.Random;
 using static MyMath;
+using static Comet;
 
 public class UniverseController : MonoBehaviour
 {
@@ -113,7 +114,7 @@ public class UniverseController : MonoBehaviour
         _camTranslationFuncParamSqr = Mathf.Pow(_camTranslationFuncParam, 2);
         _camTranslationFuncParamSqrHalf = _camTranslationFuncParamSqr / 2;
         _camTranslationFuncParamSqrQuarter = _camTranslationFuncParamSqrHalf / 2;
-        StartCoroutine(CreateComet());
+        StartCoroutine(CheckCreateComet());
     }
 
     void Update()
@@ -196,6 +197,18 @@ public class UniverseController : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.G))
             grid.SetActive(!grid.activeSelf);
+
+        if (Input.GetKeyDown(KeyCode.Comma))
+        {
+            Time.timeScale /= 2;
+            print("time scale: " + Time.timeScale);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Period))
+        {
+            Time.timeScale *= 2;
+            print("time scale: " + Time.timeScale);
+        }
     }
 
     void ProcessShipControls()
@@ -472,32 +485,22 @@ public class UniverseController : MonoBehaviour
         starField.warp = 0;
     }
 
-    IEnumerator CreateComet()
+    IEnumerator CheckCreateComet()
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(30f, 60f));
-            var comet = Instantiate(cometPrefab);
+            if (FirstComet)
+                yield return null;
+            else
+                yield return new WaitForSeconds(Random.Range(50f, 100f));  // TODO: V různých vesmírech by se range mohlo lišit => různý počet komet na různých místech
 
-            var distance = Random.Range(400, 800);
-            var position = MainCamera.ScreenToWorldPoint(new(0, 0, distance));
-            position -= new Vector3(100, 0, 100);                  // translate off-screen
-
-            var rotateAround = MainCamera.ScreenToWorldPoint(new(Screen.width / 2f, Screen.height / 2f, distance));
-            var radius = (position - rotateAround).magnitude;
-            var angle = Random.Range(0f, TwoPI);
-
-            var x = rotateAround.x + radius * Mathf.Cos(angle);
-            var z = rotateAround.z + radius * Mathf.Sin(angle);
-
-            comet.transform.position = new(x, position.y, z);
-
-            var targetRange = radius / 2;
-            var targetX = rotateAround.x + Random.Range(- targetRange, targetRange);
-            var targetZ = rotateAround.z + Random.Range(- targetRange, targetRange);
-            Vector3 targetPoint = new(targetX, position.y, targetZ);
-            comet.transform.LookAt(targetPoint);
+            CreateComet();            
         }
+    }
+
+    public void CreateComet()
+    {
+        Instantiate(cometPrefab);
     }
 
     public static void ToggleShipControls(bool enable)

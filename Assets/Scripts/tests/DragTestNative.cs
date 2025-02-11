@@ -65,7 +65,7 @@ public class DragTestNative : DragTest
             // Pozn.: Z nějakého důvodu jsem musel ze vzorce pro brzdnou dráhu vypustit násobení 2 🤔
 
             // brzdná dráha: d = v²/(2a)
-            // d = _stoppingSqrVelocity / a;  // ok
+            // d = _stoppingSqrVelocity / a;  // where a = _v * (1 - z) / (z * Δt)
             // d = _v * _v / (-_v * (z - 1) / (z * Δt));  // ok
             // d = - _v * _v / (_v * ((1 - rb.drag * Time.fixedDeltaTime) - 1) / ((1 - rb.drag * Time.fixedDeltaTime) * Δt));  // ok
 
