@@ -1,6 +1,7 @@
 using static MyMath;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
@@ -62,10 +63,8 @@ public class Ship : MonoBehaviour
     public static Vector3 ActiveShipVelocityEstimate;
     PidController _angleController;
     PidController _angularVelocityController;
-    float _debugMaxAngularVelocity;
     float _hasCollidedAt;
     public bool autopilot;
-    bool _wasDebugKeyPressed;
 
     public enum TurnType    // Type of Ship rotation
     {
@@ -113,9 +112,6 @@ public class Ship : MonoBehaviour
     void Update()
     {
         UpdateToTargetV3();  // TODO: Má to smysl mít tady? Možná jen pro playera; pak to možná rozdělit?
-
-        if (Input.GetKeyDown(KeyCode.X))
-            _wasDebugKeyPressed = true;
     }
 
     void FixedUpdate()
@@ -251,53 +247,27 @@ public class Ship : MonoBehaviour
         // yaw      (angles are in radians)
         var forward = transform.forward;
         var toTargetNormalized = toTargetV3.normalized;
-        _forwardToTargetAngle = - Vector2.SignedAngle(new(forward.x, forward.z), new(toTargetNormalized.x, toTargetNormalized.z))
-            * Mathf.Deg2Rad;
-
+        _forwardToTargetAngle = - Vector2.SignedAngle(new(forward.x, forward.z), new(toTargetNormalized.x, toTargetNormalized.z)) * Mathf.Deg2Rad;
         var absAngle = Mathf.Abs(_forwardToTargetAngle);
 
-        // d = braking distance
-        var d = rb.angularVelocity.magnitude * (1 / rb.angularDrag - Time.fixedDeltaTime);
-        var angleDegreesToBeAddedNextFrame = rotationSpeed * Time.fixedDeltaTime * (1 - rb.angularDrag * Time.fixedDeltaTime);  // to v závorce je drag
+        var brakingDistance = rb.angularVelocity.magnitude * (1 / rb.angularDrag - Time.fixedDeltaTime);
 
-        // TODO: if (absAngle > angleDegreesToBeAddedNextFrame) => Calculate force needed to rotate next frame
-        // • Vypnout automatickou rotaci a vyzkoušet nejdřív samotný impuls
-        // a = _v * (1 - z) / (z * Δt)
-        // F = a
-        // F = s / t²
-
-        // InfoText.text = "to be added: " + angleDegreesToBeAddedNextFrame + "\nabs angle: " + absAngle;
-
-        // rad / s              // rad / frame
-        rb.maxAngularVelocity = _forwardToTargetAngle / Time.fixedDeltaTime;  // ?
-
-        
-        // if (absAngle > d && absAngle > angleDegreesToBeAddedNextFrame)
-        if (absAngle > d)
+        if (absAngle > brakingDistance)
         {
             rb.AddTorque(rotationSpeed * GetSign() * Vector3.up, ForceMode.Acceleration);
         }
-
-        InfoText.text = "angular velocity = " + rb.angularVelocity.y + "\nmax ang. vel.: " + rb.maxAngularVelocity +
-                        "\nangle = " + absAngle;
-
-        // if (_wasDebugKeyPressed)
-        // {
-            // var f = _forwardToTargetAngle / Mathf.Pow(Time.fixedDeltaTime, 2);
-            
-            // var z = 1 - rb.angularDrag * Time.fixedDeltaTime;
-            // var f = rb.angularVelocity.magnitude * (1 - z) / (z * Time.fixedDeltaTime);
-            
-            // rb.AddTorque(f * GetSign() * Vector3.up, ForceMode.Acceleration);
-            // _wasDebugKeyPressed = false;
-            // InfoText.text  = "force applied: " + f;
-        // }
+        else  // braking phase
+        {     // Another possible solution for anti-jiggling is to set maxAngularVelocity = _forwardToTargetAngle / Time.fixedDeltaTime (and re-enabling it in OnCollisionEnter) 
+                                    // prediction of angle increment next frame
+            if (absAngle < Mathf.Abs(rb.angularVelocity.y * Time.fixedDeltaTime * (1 - rb.angularDrag * Time.fixedDeltaTime)))
+                rb.angularVelocity = Vector3.zero;
+        }
 
         // Roll();
 
         int GetSign()
         {
-            return _forwardToTargetAngle > 0 ? 1 : -1;
+            return _forwardToTargetAngle >= 0 ? 1 : -1;
         }
     }
 

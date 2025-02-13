@@ -70,7 +70,7 @@ public class Comet : MonoBehaviour
         {
             yield return new WaitForSeconds(5);
 
-            if ((SetVectorYToZero(transform.position) - SetVectorYToZero(MainCameraTransform.position)).sqrMagnitude > 16e6)  // player is too far
+            if ((SetVectorYToZero(transform.position) - SetVectorYToZero(MainCameraTransform.position)).sqrMagnitude > 2e6)  // player is too far
             {
                 Destroy(gameObject);
                 Uc.CreateComet();
