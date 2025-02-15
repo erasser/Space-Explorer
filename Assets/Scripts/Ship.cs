@@ -65,6 +65,7 @@ public class Ship : MonoBehaviour
     PidController _angularVelocityController;
     float _hasCollidedAt;
     public bool autopilot;
+    LineRenderer _lineRenderer;
 
     public enum TurnType    // Type of Ship rotation
     {
@@ -100,8 +101,6 @@ public class Ship : MonoBehaviour
         PrepareJets();
 
         // InitiatePids();
-
-        // rb.maxAngularVelocity = .1f;
     }
 
     void OnEnable()
@@ -111,13 +110,11 @@ public class Ship : MonoBehaviour
 
     void Update()
     {
-        UpdateToTargetV3();  // TODO: Má to smysl mít tady? Možná jen pro playera; pak to možná rozdělit?
+        UpdateToTargetV3();
     }
 
     void FixedUpdate()
     {
-        // InfoText.text = toTargetV3.magnitude.ToString();
-
         Move();
         Rotate();
         // PidRotate();
@@ -228,6 +225,9 @@ public class Ship : MonoBehaviour
 
     void Move()
     {
+        // rb.AddForce(Vector3.forward * speed, ForceMode.Acceleration);
+        // return;
+ 
         if (moveVector is { x: 0, z: 0 })
             return;
 
@@ -244,24 +244,31 @@ public class Ship : MonoBehaviour
 
     void Rotate()
     {
+        // var screenShipPos = MainCamera.WorldToScreenPoint(transform.position);
+        // var screenShipToTarget = (Input.mousePosition - screenShipPos).normalized;
+
         // yaw      (angles are in radians)
         var forward = transform.forward;
         var toTargetNormalized = toTargetV3.normalized;
         _forwardToTargetAngle = - Vector2.SignedAngle(new(forward.x, forward.z), new(toTargetNormalized.x, toTargetNormalized.z)) * Mathf.Deg2Rad;
+        // _forwardToTargetAngle = - Vector2.SignedAngle(new(forward.x, forward.z), new(screenShipToTarget.x, screenShipToTarget.y)) * Mathf.Deg2Rad;
+
+        // Solves jiggling when moving
+            if (_forwardToTargetAngle < .005 && _forwardToTargetAngle > -.005)
+                _forwardToTargetAngle = 0;
+
         var absAngle = Mathf.Abs(_forwardToTargetAngle);
 
         var brakingDistance = rb.angularVelocity.magnitude * (1 / rb.angularDrag - Time.fixedDeltaTime);
 
         if (absAngle > brakingDistance)
-        {
             rb.AddTorque(rotationSpeed * GetSign() * Vector3.up, ForceMode.Acceleration);
-        }
         else  // braking phase
-        {     // Another possible solution for anti-jiggling is to set maxAngularVelocity = _forwardToTargetAngle / Time.fixedDeltaTime (and re-enabling it in OnCollisionEnter) 
+              // Another possible solution for anti-jiggling is to set maxAngularVelocity = _forwardToTargetAngle / Time.fixedDeltaTime (and re-enabling it in OnCollisionEnter) 
                                     // prediction of angle increment next frame
             if (absAngle < Mathf.Abs(rb.angularVelocity.y * Time.fixedDeltaTime * (1 - rb.angularDrag * Time.fixedDeltaTime)))
                 rb.angularVelocity = Vector3.zero;
-        }
+
 
         // Roll();
 
@@ -305,7 +312,7 @@ public class Ship : MonoBehaviour
     public void UpdateToTargetV3()
     {
         // TODO: Pokud je to player, transform.position bych nahradil za ActiveShipTransform
-        toTargetV3 = /*IsPlayer() ||*/ turnType == TurnType.CustomTarget ? _customTarget - transform.position : rb.velocity;
+        toTargetV3 = IsPlayer() || turnType == TurnType.CustomTarget ? _customTarget - transform.position : rb.velocity;
         toTargetV3 = SetVectorYToZero(toTargetV3);
     }
 

@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using static UniverseController;
 using static MyMath;
+// TODO: Až bude vyřešený zoom kamery, zkontrolovat, jestli to nemá vliv na pozici komety
+// (na základě toho, jestli kamera bude měnit pozici Y nebo FOV)  
 
 public class Comet : MonoBehaviour
 {

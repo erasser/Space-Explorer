@@ -12,6 +12,7 @@
 • Ty collidery by snad šly udělat jednoduššeji - třeba s pevně předsunutým colliderem?
 • ship position constraint Y po kolizi nedrží >:-[
 • Jak funguje ten GPU instancing? Automaticky, nebo to musim nascriptovat?
+Otestovat s ultrawide rozlišením - bude problém s pozadím
 
 Spacecrafts: https://www.facebook.com/groups/630871225725554?multi_permalinks=874140171398657&hoisted_section_header_type=recently_seen
 

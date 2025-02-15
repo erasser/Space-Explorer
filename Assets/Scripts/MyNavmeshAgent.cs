@@ -14,7 +14,7 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(Rigidbody), typeof(LineRenderer))]
 public class MyNavMeshAgent : MonoBehaviour
 {
-    public bool showPath = false;
+    public bool showPath;
     const float TargetMinDistance = 5;
     static float _targetSqrMinDistance;
     static readonly float AgentFixedUpdateDeltaTime = .1f;
