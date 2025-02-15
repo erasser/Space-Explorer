@@ -66,6 +66,9 @@ public class Ship : MonoBehaviour
     float _hasCollidedAt;
     public bool autopilot;
     LineRenderer _lineRenderer;
+    float _terminalRotationSpeed;
+    float _lastRotY;
+    Quaternion _lastQuaternion;
 
     public enum TurnType    // Type of Ship rotation
     {
@@ -247,7 +250,7 @@ public class Ship : MonoBehaviour
         // var screenShipPos = MainCamera.WorldToScreenPoint(transform.position);
         // var screenShipToTarget = (Input.mousePosition - screenShipPos).normalized;
 
-        // yaw      (angles are in radians)
+        // YAW      (angles are in radians)
         var forward = transform.forward;
         var toTargetNormalized = toTargetV3.normalized;
         _forwardToTargetAngle = - Vector2.SignedAngle(new(forward.x, forward.z), new(toTargetNormalized.x, toTargetNormalized.z)) * Mathf.Deg2Rad;
@@ -269,8 +272,36 @@ public class Ship : MonoBehaviour
             if (absAngle < Mathf.Abs(rb.angularVelocity.y * Time.fixedDeltaTime * (1 - rb.angularDrag * Time.fixedDeltaTime)))
                 rb.angularVelocity = Vector3.zero;
 
+        // rad / s
+        _terminalRotationSpeed = rotationSpeed * (1 / rb.angularDrag - Time.fixedDeltaTime);  // TODO: Compute once
 
-        // Roll();
+        // ROLL
+        // print(_lastRotY + " • " + transform.eulerAngles.y);
+        var realAngularVelocity = _lastRotY - transform.eulerAngles.y;
+        _lastRotY = transform.eulerAngles.y;
+
+        if (realAngularVelocity < - 180)
+            realAngularVelocity += 360;
+        else if (realAngularVelocity > 180)
+            realAngularVelocity -= 360;
+        
+
+        // var thisQuat = Quaternion.Euler(0, transform.localEulerAngles.y, 0);
+        // var angle = Quaternion.Angle(thisQuat, _lastQuaternion);
+        // _lastQuaternion = Quaternion.Euler(0, transform.localEulerAngles.y, 0);
+        // var z = - angle / _terminalRotationSpeed * maxRollAngle * GetSign();
+
+        // InfoText.text = angle.ToString() + "\n" + _terminalRotationSpeed;
+        var z = realAngularVelocity / _terminalRotationSpeed * maxRollAngle;
+        // _rbTransform.localEulerAngles = new(0, transform.localEulerAngles.y, z);
+        // rb.MoveRotation(Quaternion.Euler(0, transform.localEulerAngles.y, z));
+        transform.rotation = Quaternion.Euler(0, transform.localEulerAngles.y, z);
+
+        DrawGraph.DrawPoint(realAngularVelocity / _terminalRotationSpeed);
+        // DrawGraph.DrawPoint( Mathf.Sin(Time.time * 10));
+        
+        // _rbTransform.localEulerAngles = Vector3.MoveTowards(_rbTransform.localEulerAngles,
+            // new(0, transform.localEulerAngles.y, z), 200 * Time.fixedDeltaTime);
 
         int GetSign()
         {
@@ -280,7 +311,11 @@ public class Ship : MonoBehaviour
 
     void Roll()
     {
-        _rbTransform.localEulerAngles = new(0, transform.localEulerAngles.y, Mathf.Clamp(- 20 * rb.angularVelocity.y, - maxRollAngle, maxRollAngle));
+        // _maxRotationSpeed ... 
+ 
+
+        // _rbTransform.localEulerAngles = new(0, transform.localEulerAngles.y, Mathf.Clamp(- 20 * rb.angularVelocity.y, - maxRollAngle, maxRollAngle));
+        // _rbTransform.localEulerAngles = new(0, transform.localEulerAngles.y, z);
     }
 
     void InitiatePids()

@@ -467,6 +467,7 @@ public class UniverseController : MonoBehaviour
 
     void UpdateWarpEffect()  // velocity 100 .. 400
     {
+        // TODO: Lens distortion by se k tomu mohl přidat
         // _warp = enable;
 
         // if (enable)
