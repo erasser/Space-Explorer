@@ -271,35 +271,39 @@ public class Ship : MonoBehaviour
                                     // prediction of angle increment next frame
             if (absAngle < Mathf.Abs(rb.angularVelocity.y * Time.fixedDeltaTime * (1 - rb.angularDrag * Time.fixedDeltaTime)))
                 rb.angularVelocity = Vector3.zero;
+                // rb.angularVelocity *= .2f;
 
         // rad / s
         _terminalRotationSpeed = rotationSpeed * (1 / rb.angularDrag - Time.fixedDeltaTime);  // TODO: Compute once
 
         // ROLL
-        // print(_lastRotY + " • " + transform.eulerAngles.y);
-        var realAngularVelocity = _lastRotY - transform.eulerAngles.y;
-        _lastRotY = transform.eulerAngles.y;
+        // TODO: Problém dělá toto: rb.angularVelocity = Vector3.zero, možná by se to dalo jen zmenšit
+        // TODO: Zkusit damping na to z
+        // TODO: Prověřit tu změnu y - podle grafu je instantní, ale měla by tam být nějaká setrvačnost
+        // TODO: Nějak ošetřit příliš velkou braking distance (90°? 180°?)
+
+        var realAngularVelocity = _lastRotY - transform.localEulerAngles.y;
+        _lastRotY = transform.localEulerAngles.y;
+        // var realAngularVelocity = _lastRotY - rb.angularVelocity.y;
+        // _lastRotY = rb.angularVelocity.y;
 
         if (realAngularVelocity < - 180)
             realAngularVelocity += 360;
         else if (realAngularVelocity > 180)
             realAngularVelocity -= 360;
-        
-
-        // var thisQuat = Quaternion.Euler(0, transform.localEulerAngles.y, 0);
-        // var angle = Quaternion.Angle(thisQuat, _lastQuaternion);
-        // _lastQuaternion = Quaternion.Euler(0, transform.localEulerAngles.y, 0);
-        // var z = - angle / _terminalRotationSpeed * maxRollAngle * GetSign();
 
         // InfoText.text = angle.ToString() + "\n" + _terminalRotationSpeed;
         var z = realAngularVelocity / _terminalRotationSpeed * maxRollAngle;
+
         // _rbTransform.localEulerAngles = new(0, transform.localEulerAngles.y, z);
         // rb.MoveRotation(Quaternion.Euler(0, transform.localEulerAngles.y, z));
         transform.rotation = Quaternion.Euler(0, transform.localEulerAngles.y, z);
 
-        DrawGraph.DrawPoint(realAngularVelocity / _terminalRotationSpeed);
-        // DrawGraph.DrawPoint( Mathf.Sin(Time.time * 10));
-        
+        // DrawGraph.DrawPoints(realAngularVelocity / _terminalRotationSpeed, z / maxRollAngle);
+        // DrawGraph.DrawPointAbsolute(transform.localEulerAngles.y);
+        // DrawGraph.DrawPointAbsolute(rb.angularVelocity.y * Mathf.Rad2Deg * 2);
+        DrawGraph.DrawPoint(z / maxRollAngle);
+
         // _rbTransform.localEulerAngles = Vector3.MoveTowards(_rbTransform.localEulerAngles,
             // new(0, transform.localEulerAngles.y, z), 200 * Time.fixedDeltaTime);
 
@@ -366,7 +370,7 @@ public class Ship : MonoBehaviour
         {
             _jetsTransforms.Add(jetTransform);
             _jetsVisualEffects.Add(jetTransform.GetComponent<VisualEffect>());
-            _jetsVelocityEstimators.Add(jetTransform.AddComponent<VelocityEstimator>());
+            _jetsVelocityEstimators.Add(jetTransform.gameObject.AddComponent<VelocityEstimator>());
         }
         _jetAngleCos = - Mathf.Cos(jetAngle * Mathf.Deg2Rad);
     }

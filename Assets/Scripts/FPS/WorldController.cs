@@ -46,8 +46,9 @@ public class WorldController : MonoBehaviour
 
     void ProcessControls()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
-            SceneController.LoadScene("Initial Scene");
+        // TODO: Resolve SceneController assembly
+        // if (Input.GetKeyDown(KeyCode.Return))
+        //     SceneController.LoadScene("Initial Scene");
 
         if (Input.GetKeyDown(KeyCode.F))
             fpsPlayer.flashLight.SetActive(!fpsPlayer.flashLight.activeSelf);

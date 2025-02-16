@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DigitalRuby.Tween;
+// using DigitalRuby.Tween;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -140,7 +140,7 @@ public class UniverseController : MonoBehaviour
 
     void UpdateMouseCursorHitPoint()
     {
-        MouseCursorHitPoint = RaycastPlane();
+        MouseCursorHitPoint = RaycastPlane(RaycastPlaneY0, MainCamera);
     }
 
     void UpdateBackgroundTexture()
@@ -336,7 +336,7 @@ public class UniverseController : MonoBehaviour
         MainCameraTransform.Translate(translateAmount, Space.World);
     }
 
-    void SetCameraHeight(float multiplier)
+    /*void SetCameraHeight(float multiplier)
     {
         var startPos = MainCameraTransform.position;
         // var endPos = SetVectorLength(startPos, multiplier * startPos.y);
@@ -348,9 +348,9 @@ public class UniverseController : MonoBehaviour
         {
             MainCameraTransform.position = t.CurrentValue;
         }
-    }
+    }*/
 
-    void ZoomIn()
+    /*void ZoomIn()
     {
         var startFov = MainCamera.fieldOfView;
         var endFov = 40;
@@ -358,13 +358,13 @@ public class UniverseController : MonoBehaviour
         // mainCamera.gameObject.Tween("ZoomIn", startFov, endFov, 100, TweenScaleFunctions.Linear, TweenFov);
         TweenFactory.Tween("ZoomIn", startFov, endFov, 100, TweenScaleFunctions.Linear, TweenFov);
 
-    }
+    }*/
 
-    void TweenFov(ITween<float> t)
+    /*void TweenFov(ITween<float> t)
     {
         print("tween start");
         MainCamera.fieldOfView = t.CurrentValue;
-    }
+    }*/
 
     // Target's velocity is predicted, observer is checking collision / shooting with observerVelocity
     public static Vector3 GetPredictedPositionOffset(Ship target, Vector3 targetVelocity, GameObject observer, float observerSpeed)  // https://gamedev.stackexchange.com/questions/25277/how-to-calculate-shot-angle-and-velocity-to-hit-a-moving-target

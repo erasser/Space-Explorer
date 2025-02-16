@@ -1,0 +1,21 @@
+{
+    "name": "Universe",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:457756d89b35d2941b3e7b37b4ece6f1",
+        "GUID:0c240852b16e6564b9e373640327db1e",
+        "GUID:53a2b7e7540d7d2409c6238f41a48fb9"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "WindowsStandalone64Server"
+    ],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

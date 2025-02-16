@@ -1,0 +1,19 @@
+{
+    "name": "SS_Starfield3D",
+    "rootNamespace": "",
+    "references": [
+        "GUID:151616a34a3bd264e8dace1be99d72b8",
+        "GUID:18da04ba9bfd8be4c807fb64e5b9fc3c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "WindowsStandalone64Server"
+    ],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

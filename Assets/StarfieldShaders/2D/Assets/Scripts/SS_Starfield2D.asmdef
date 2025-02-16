@@ -1,0 +1,19 @@
+{
+    "name": "SS_Starfield2D",
+    "rootNamespace": "",
+    "references": [
+        "GUID:151616a34a3bd264e8dace1be99d72b8",
+        "GUID:cfdc503281d9ec24ab39f604d04a6efa"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "WindowsStandalone64Server"
+    ],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
