@@ -69,6 +69,8 @@ public class Ship : MonoBehaviour
     float _terminalRotationSpeed;
     float _lastRotY;
     Quaternion _lastQuaternion;
+    float _lastAngularVelocityY;
+    float _initialAngularDrag;
 
     public enum TurnType    // Type of Ship rotation
     {
@@ -85,6 +87,7 @@ public class Ship : MonoBehaviour
         shipCollider = GetComponent<Collider>();
         velocityEstimator = GetComponent<VelocityEstimator>();
         _rotationSpeedVector = rotationSpeed * Vector3.up;
+        _initialAngularDrag = rb.angularDrag;
 
         if (IsEnemy())
             EnemyShips.Add(this);
@@ -114,6 +117,9 @@ public class Ship : MonoBehaviour
     void Update()
     {
         UpdateToTargetV3();
+        
+        if (Input.GetKeyDown(KeyCode.X))
+            rb.AddForceAtPosition(Vector3.right * 100, Vector3.forward * 40, ForceMode.VelocityChange);
     }
 
     void FixedUpdate()
@@ -133,7 +139,7 @@ public class Ship : MonoBehaviour
         if (predictPositionDummyTransform)  // TODO: Místo rb.velocity by tu možná měl být VelocityEstimator
             predictPositionDummyTransform.position = MainCamera.WorldToScreenPoint(transform.position + GetPredictedPositionOffset(this, rb.velocity, ActiveShip.gameObject, ActiveShip._fastestWeaponSpeedMetersPerSecond));
 
-        if (_hasCollidedAt > 0 && Time.time - _hasCollidedAt > 1)
+        if (HasCollidedRecently())
             _hasCollidedAt = 0;
     }
 
@@ -249,6 +255,7 @@ public class Ship : MonoBehaviour
     {
         // var screenShipPos = MainCamera.WorldToScreenPoint(transform.position);
         // var screenShipToTarget = (Input.mousePosition - screenShipPos).normalized;
+        var slowingDrag = _initialAngularDrag * 2;
 
         // YAW      (angles are in radians)
         var forward = transform.forward;
@@ -262,9 +269,18 @@ public class Ship : MonoBehaviour
 
         var absAngle = Mathf.Abs(_forwardToTargetAngle);
 
-        
-        // TODO: Braking distance brání vyšší rychlosti rotace. Zkusit vyšší drag pro zpomalování než pro zrychlování. Nějak pak vyresetit při kolizi.
-        var brakingDistance = rb.angularVelocity.magnitude * (1 / rb.angularDrag - Time.fixedDeltaTime);
+        var ΔangularVelocityY = rb.angularVelocity.y - _lastAngularVelocityY;
+        bool isAccelerating = false;  // Is true even when still => resets angular drag
+
+        if (rb.angularVelocity.y >= 0 && _lastAngularVelocityY >= 0)
+            isAccelerating = ΔangularVelocityY >= 0;
+        else if (rb.angularVelocity.y < 0 && _lastAngularVelocityY < 0)
+            isAccelerating = ΔangularVelocityY <= 0;
+
+        rb.angularDrag = isAccelerating ? _initialAngularDrag : slowingDrag;
+
+        // TODO: Asi můžu nahradit za rb.angularVelocity.y
+        var brakingDistance = rb.angularVelocity.magnitude * (1 / slowingDrag - Time.fixedDeltaTime);
 
         if (absAngle > brakingDistance)
             rb.AddTorque(rotationSpeed * GetSign() * Vector3.up, ForceMode.Acceleration);
@@ -272,13 +288,31 @@ public class Ship : MonoBehaviour
               // Another possible solution for anti-jiggling is to set maxAngularVelocity = _forwardToTargetAngle / Time.fixedDeltaTime (and re-enabling it in OnCollisionEnter) 
                                     // prediction of angle increment next frame
             if (absAngle < Mathf.Abs(rb.angularVelocity.y * Time.fixedDeltaTime * (1 - rb.angularDrag * Time.fixedDeltaTime)))
+            {
+                rb.transform.LookAt(_customTarget);
                 rb.angularVelocity = Vector3.zero;
-                // rb.angularVelocity *= .2f;
-                
-                
+                // rb.angularDrag = _forwardToTargetAngle == 0 ? _initialAngularDrag : _initialAngularDrag * 20;
+                // TODO: Možná by se tady dal ten drag vypočítat 😆 (viz braking distance vzorec)
+                // TODO: NaN => debugnout hodnoty, případně zkontrolovat vzorec
+                var dragToStop = 1 / (absAngle / rb.angularVelocity.z + Time.fixedDeltaTime);
+                rb.angularDrag = _forwardToTargetAngle == 0 ? _initialAngularDrag : dragToStop;
+                InfoText.text = "drag to stop: " + dragToStop;
+
+            }
+
+        // TODO: Potřebuji vyřešit změnu dragu po kolizi (HasCollidedRecently()).
+        // TODO: Možná by nakonec stačilo opravdu jen vyresetovat drag při kolizi
+        // TODO: Lepší nápad: Můžu spočítat braking distance s normálním dragem (resetovat drag při kolizi)
+        //       Nápad: Zjistit, jakou angulární sílu to dostalo z kolize (Collision.impulse) (a nějak to oddělit?)
+        
+        _lastAngularVelocityY = rb.angularVelocity.y;
+        // DrawGraph.DrawPoint(rb.angularDrag, _initialAngularDrag * 20 + 1);
+        // InfoText.text = "drag: " + rb.angularDrag + "\nangle: " + absAngle;
+
         return;
         // rad / s
         _terminalRotationSpeed = rotationSpeed * (1 / rb.angularDrag - Time.fixedDeltaTime);  // TODO: Compute once
+        // Pozn.: drag = acceleration / top speed
 
         // ROLL
         // TODO: Problém dělá toto: rb.angularVelocity = Vector3.zero, možná by se to dalo jen zmenšit
@@ -574,6 +608,11 @@ public class Ship : MonoBehaviour
     void OnCollisionStay(Collision other)
     {
         _hasCollidedAt = Time.time;
+    }
+
+    bool HasCollidedRecently()
+    {
+        return _hasCollidedAt > 0 && Time.time - _hasCollidedAt > 1;
     }
 
     public static void ToggleActiveShipAutopilot(bool enable)

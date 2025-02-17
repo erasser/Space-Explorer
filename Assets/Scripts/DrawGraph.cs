@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+// TODO: Od určitého místa v grafu by se graf mohl posouvat o pixel doleva
+// TODO: Clear() - Dal by se z toho udělat background a pak použít texture copy
 
 public class DrawGraph : MonoBehaviour
 {
@@ -76,7 +78,7 @@ public class DrawGraph : MonoBehaviour
         }
     }
 
-    static void Clear()  // TODO: Dal by se z toho udělat background a pak použít texture copy
+    static void Clear()
     {
         for (int y = 0; y < _height; ++y)
             for (int x = 0; x < _width; ++x)
