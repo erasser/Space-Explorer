@@ -262,6 +262,8 @@ public class Ship : MonoBehaviour
 
         var absAngle = Mathf.Abs(_forwardToTargetAngle);
 
+        
+        // TODO: Braking distance brání vyšší rychlosti rotace. Zkusit vyšší drag pro zpomalování než pro zrychlování. Nějak pak vyresetit při kolizi.
         var brakingDistance = rb.angularVelocity.magnitude * (1 / rb.angularDrag - Time.fixedDeltaTime);
 
         if (absAngle > brakingDistance)
@@ -272,7 +274,9 @@ public class Ship : MonoBehaviour
             if (absAngle < Mathf.Abs(rb.angularVelocity.y * Time.fixedDeltaTime * (1 - rb.angularDrag * Time.fixedDeltaTime)))
                 rb.angularVelocity = Vector3.zero;
                 // rb.angularVelocity *= .2f;
-
+                
+                
+        return;
         // rad / s
         _terminalRotationSpeed = rotationSpeed * (1 / rb.angularDrag - Time.fixedDeltaTime);  // TODO: Compute once
 
@@ -280,29 +284,29 @@ public class Ship : MonoBehaviour
         // TODO: Problém dělá toto: rb.angularVelocity = Vector3.zero, možná by se to dalo jen zmenšit
         // TODO: Zkusit damping na to z
         // TODO: Prověřit tu změnu y - podle grafu je instantní, ale měla by tam být nějaká setrvačnost
-        // TODO: Nějak ošetřit příliš velkou braking distance (90°? 180°?)
-
+        // TODO: Nějak ošetřit příliš velkou braking distance (90°? 180°?) - a dopsat k tomu, v jakých je to jednotkách
+        // Pozn.: Rozdíl v Y rotaci je menší než terminal speed, protože je to po započítání dragu
+        
         var realAngularVelocity = _lastRotY - transform.localEulerAngles.y;
         _lastRotY = transform.localEulerAngles.y;
-        // var realAngularVelocity = _lastRotY - rb.angularVelocity.y;
-        // _lastRotY = rb.angularVelocity.y;
 
         if (realAngularVelocity < - 180)
             realAngularVelocity += 360;
         else if (realAngularVelocity > 180)
             realAngularVelocity -= 360;
 
-        // InfoText.text = angle.ToString() + "\n" + _terminalRotationSpeed;
-        var z = realAngularVelocity / _terminalRotationSpeed * maxRollAngle;
+        InfoText.text = "velocity: " + rb.angularVelocity.y  + "\nmax vel.: " + _terminalRotationSpeed + "\nbraking distance: " + brakingDistance;
+        // var z = realAngularVelocity / _terminalRotationSpeed * maxRollAngle;
+        var z = - rb.angularVelocity.y / _terminalRotationSpeed * maxRollAngle;
+        // InfoText.text = z.ToString();
 
-        // _rbTransform.localEulerAngles = new(0, transform.localEulerAngles.y, z);
-        // rb.MoveRotation(Quaternion.Euler(0, transform.localEulerAngles.y, z));
         transform.rotation = Quaternion.Euler(0, transform.localEulerAngles.y, z);
 
         // DrawGraph.DrawPoints(realAngularVelocity / _terminalRotationSpeed, z / maxRollAngle);
         // DrawGraph.DrawPointAbsolute(transform.localEulerAngles.y);
         // DrawGraph.DrawPointAbsolute(rb.angularVelocity.y * Mathf.Rad2Deg * 2);
-        DrawGraph.DrawPoint(z / maxRollAngle);
+        // DrawGraph.DrawPoint(z, maxRollAngle);
+        DrawGraph.DrawPoint(rb.angularVelocity.y, _terminalRotationSpeed);
 
         // _rbTransform.localEulerAngles = Vector3.MoveTowards(_rbTransform.localEulerAngles,
             // new(0, transform.localEulerAngles.y, z), 200 * Time.fixedDeltaTime);

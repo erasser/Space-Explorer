@@ -101,7 +101,7 @@ public class UniverseController : MonoBehaviour
         Astronaut.gameObject.SetActive(false);
         Cursor.SetCursor(mouseCursor, new(mouseCursor.width / 2f, mouseCursor.height / 2f), CursorMode.Auto);
         explosionEffect = Instantiate(explosionEffectPrefab);
-        UI = GameObject.Find("UI");
+        UI = GameObject.Find("UI dynamic");
         InfoText = UI.transform.Find("infoText").GetComponent<Text>();
         canBeBoardedList.RemoveAll(ship => !ship.gameObject.activeSelf);
         // selectionSprite = Instantiate(selectionSpritePrefab);

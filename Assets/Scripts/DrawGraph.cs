@@ -24,11 +24,11 @@ public class DrawGraph : MonoBehaviour
         Clear();
     }
 
-    public static void DrawPoint(float y)
+    public static void DrawPoint(float value, float maximumValue)
     {
         IncrementPointer();
 
-        _texture.SetPixel(_pixelPointer, (int)(y * _halfHeight + _halfHeight), Color.cyan);
+        _texture.SetPixel(_pixelPointer, (int)(value / maximumValue * _halfHeight + _halfHeight), Color.cyan);
 
         // _lastPoint = new(_pixelPointer, (int)(y * _halfHeight + _halfHeight));
 
