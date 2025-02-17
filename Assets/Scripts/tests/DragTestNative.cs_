@@ -59,7 +59,7 @@ public class DragTestNative : DragTest
             _stoppedMovementAt = Time.time;
 
             // Shrnutí: Vyšel jsem ze vzorce pro zrychlení:     a = (v - v₀) / Δt,
-            // vzorce pro zpomalení:                            v = v₀ * Mathf.Clamp01(1 - rb.drag * Δt) a
+            // vzorce pro zpomalení:                            v = v₀ * Mathf.Clamp01(1 - rb.drag * Δt),
             // vzorce pro brzdnou dráhu:                        d = v²/(2a)
             // Pozn.: Zrychlení vychází záporně (protože je to zpomalení), je po třeba někde převrátit známénko
             // Pozn.: Z nějakého důvodu jsem musel ze vzorce pro brzdnou dráhu vypustit násobení 2 🤔

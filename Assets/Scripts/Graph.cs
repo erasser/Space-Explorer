@@ -3,7 +3,7 @@ using UnityEngine.UI;
 // TODO: Od určitého místa v grafu by se graf mohl posouvat o pixel doleva
 // TODO: Clear() - Dal by se z toho udělat background a pak použít texture copy
 
-public class DrawGraph : MonoBehaviour
+public class Graph : MonoBehaviour
 {
     static Texture2D _texture;
     static int _pixelPointer = 1;
@@ -26,8 +26,11 @@ public class DrawGraph : MonoBehaviour
         Clear();
     }
 
-    public static void DrawPoint(float value, float maximumValue)
+    public void DrawPoint(float value, float maximumValue)
     {
+        if (!gameObject.activeSelf)
+            return;
+
         IncrementPointer();
 
         _texture.SetPixel(_pixelPointer, (int)(value / maximumValue * _halfHeight + _halfHeight), Color.cyan);
@@ -37,8 +40,11 @@ public class DrawGraph : MonoBehaviour
         _texture.Apply();
     }
 
-    public static void DrawPointAbsolute(float y)
+    public void DrawPointAbsolute(float y)
     {
+        if (!gameObject.activeSelf)
+            return;
+
         IncrementPointer();
 
         _texture.SetPixel(_pixelPointer, (int)(y + _halfHeight), Color.red);
@@ -46,8 +52,11 @@ public class DrawGraph : MonoBehaviour
         _texture.Apply();
     }
 
-    public static void DrawPoints(float y1, float y2)
+    public void DrawPoints(float y1, float y2)
     {
+        if (!gameObject.activeSelf)
+            return;
+
         IncrementPointer();
 
         if (_pixelPointer % 2 == 0)  // solves overdrawing
@@ -67,7 +76,7 @@ public class DrawGraph : MonoBehaviour
         //     print("overdrawing!");
     }
 
-    static void IncrementPointer()
+    void IncrementPointer()
     {
         _pixelPointer++;
 
@@ -78,7 +87,7 @@ public class DrawGraph : MonoBehaviour
         }
     }
 
-    static void Clear()
+    void Clear()
     {
         for (int y = 0; y < _height; ++y)
             for (int x = 0; x < _width; ++x)

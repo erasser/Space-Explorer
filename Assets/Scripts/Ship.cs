@@ -291,14 +291,28 @@ public class Ship : MonoBehaviour
             {
                 rb.transform.LookAt(_customTarget);
                 rb.angularVelocity = Vector3.zero;
+                rb.angularDrag = _forwardToTargetAngle == 0 ? _initialAngularDrag : _initialAngularDrag * 20;
+
+                /*
+                // var dragToStop = 1 / (absAngle / rb.angularVelocity.y + Time.fixedDeltaTime);
+                // InfoText.text = "drag to stop: " + dragToStop;
+                // print(rb.angularVelocity.y);
+                // rb.angularDrag = _initialAngularDrag * 20;
+                // print("angle: " + absAngle + " • compare: " + Mathf.Abs(rb.angularVelocity.y * Time.fixedDeltaTime * (1 - rb.angularDrag * Time.fixedDeltaTime)));
+                // rb.angularDrag = _forwardToTargetAngle == 0  || rb.angularVelocity.y == 0   ? _initialAngularDrag : 1 / (absAngle / rb.angularVelocity.y + Time.fixedDeltaTime);
+                rb.transform.LookAt(_customTarget);
+                rb.angularVelocity = Vector3.zero;
                 // rb.angularDrag = _forwardToTargetAngle == 0 ? _initialAngularDrag : _initialAngularDrag * 20;
                 // TODO: Možná by se tady dal ten drag vypočítat 😆 (viz braking distance vzorec)
                 // TODO: NaN => debugnout hodnoty, případně zkontrolovat vzorec
-                var dragToStop = 1 / (absAngle / rb.angularVelocity.z + Time.fixedDeltaTime);
-                rb.angularDrag = _forwardToTargetAngle == 0 ? _initialAngularDrag : dragToStop;
-                InfoText.text = "drag to stop: " + dragToStop;
-
+                // print("angle: " + absAngle + " • velocity: " + rb.angularVelocity.y);
+                                                                                                                // drag to stop (derived from braking distance)
+                // rb.angularDrag = _forwardToTargetAngle == 0  /*|| rb.angularVelocity.y == 0#1# ? _initialAngularDrag : 1 / (absAngle / rb.angularVelocity.y + Time.fixedDeltaTime);
+            */
             }
+        
+        // rb.drag = 1 / Δt
+
 
         // TODO: Potřebuji vyřešit změnu dragu po kolizi (HasCollidedRecently()).
         // TODO: Možná by nakonec stačilo opravdu jen vyresetovat drag při kolizi
@@ -340,7 +354,7 @@ public class Ship : MonoBehaviour
         // DrawGraph.DrawPointAbsolute(transform.localEulerAngles.y);
         // DrawGraph.DrawPointAbsolute(rb.angularVelocity.y * Mathf.Rad2Deg * 2);
         // DrawGraph.DrawPoint(z, maxRollAngle);
-        DrawGraph.DrawPoint(rb.angularVelocity.y, _terminalRotationSpeed);
+        Uc.graph.DrawPoint(rb.angularVelocity.y, _terminalRotationSpeed);
 
         // _rbTransform.localEulerAngles = Vector3.MoveTowards(_rbTransform.localEulerAngles,
             // new(0, transform.localEulerAngles.y, z), 200 * Time.fixedDeltaTime);

@@ -82,6 +82,7 @@ public class UniverseController : MonoBehaviour
     public Comet cometPrefab;
     public static bool ShipControlsEnabled = true;
     public GameObject grid;
+    public Graph graph;
 
     void Awake()
     {
